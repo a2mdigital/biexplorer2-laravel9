@@ -27,8 +27,8 @@ class RedirectIfAuthenticated
         */
         if (Auth::guard($guard)->check()) {
             
-            return redirect()->route('login-novamente');
-            //return redirect('login');
+            //return redirect()->route('login-novamente');
+            return redirect('login');
            // return redirect(RouteServiceProvider::HOME);
         }
 

@@ -16,7 +16,7 @@ class Authenticate extends Middleware
     {
         //tentando acessar uma pagina sem autenticar
         if (! $request->expectsJson()) {
-            return route('login-novamente');
+            return route('login');
         }
     }
 }

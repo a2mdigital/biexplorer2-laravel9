@@ -68,10 +68,6 @@ Route::get('/reset-password/{token}',[ResetPasswordController::class, 'getPasswo
 Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'])->name('reset-password');
 
 
-/*LOGINS PERSONALIZADOS*/
-Route::get('/login/visionway', function () {
-    return view('pages.login_personalizado.visionway.login');
-})->name('visionway');
 
 
 

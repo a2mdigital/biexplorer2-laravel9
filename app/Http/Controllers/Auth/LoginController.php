@@ -120,11 +120,14 @@ class LoginController extends Controller
         $request->session()->regenerate();
         Auth::guard('parceiro')->logout();
 
+        return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
+        /*
         if($rota_parceiro == 'padrao'){
              return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
         }else{
               return redirect()->route($rota_parceiro)->with('toast_success', 'Sessão Finalizada');
         }
+        */
         
     }
 
@@ -140,11 +143,14 @@ class LoginController extends Controller
         $request->session()->regenerate();
         Auth::guard('web')->logout();
 
+        return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
+        /*
         if($parceiro->rota_login_logout == 'padrao'){
             return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
        }else{
              return redirect()->route($parceiro->rota_login_logout)->with('toast_success', 'Sessão Finalizada');
        }
+       */
     }
 
     public function userLogout(Request $request){
@@ -159,11 +165,14 @@ class LoginController extends Controller
         $request->session()->regenerate();
         Auth::guard('web')->logout();
 
+        return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
+        /*
         if($parceiro->rota_login_logout == 'padrao'){
             return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
        }else{
              return redirect()->route($parceiro->rota_login_logout)->with('toast_success', 'Sessão Finalizada');
        }
+       */
         
     }
 
