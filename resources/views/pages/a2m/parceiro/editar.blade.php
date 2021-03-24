@@ -56,7 +56,7 @@
               </div><!-- Col -->
             </div>
             <div class="row">
-              <div class="col-sm-2">
+              <div class="col-sm-5">
               <div class="form-group">
 					<div class="custom-control custom-switch">
 							<input type="checkbox" {{$parceiro->troca_senha == 'S' ? 'checked' : ''}} class="custom-control-input" value="on" name="troca_senha" id="troca_senha">
@@ -68,8 +68,14 @@
             <div class="row">
             <div class="col-sm-5">
                 <div class="form-group">
-                  <label class="control-label">Rota</label>
-                  <input type="text" value="{{$parceiro->rota_login_logout}}" class="form-control" name="rota_login_logout" placeholder="Rota Padrão">
+                  <label class="control-label">Subdomain</label>
+                  <input type="text" value="{{$parceiro->subdomain}}" class="form-control" name="subdomain" placeholder="Subdominio">
+                </div>
+             </div><!-- Col -->
+             <div class="col-sm-5">
+                <div class="form-group">
+                  <label class="control-label">Imagem Login</label>
+                  <input type="text" value="{{$parceiro->imagem_login}}" class="form-control" name="imagem_login" placeholder="Imagem Login">
                 </div>
              </div><!-- Col -->
             </div>
