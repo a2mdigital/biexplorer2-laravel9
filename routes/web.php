@@ -45,6 +45,7 @@ Route::get('/clinica/{key1}/{key2}', function($key1, $key2) {
     }
 });
 */
+/*
 Route::get('/', function () {
     return view('pages.auth.login');
 });
@@ -52,7 +53,9 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('pages.auth.login');
 })->name('form-login');
-
+*/
+Route::get('/', [LoginController::class, 'showFormLogin'])->name('form-login');
+Route::get('/login', [LoginController::class, 'showFormLogin'])->name('form-login');
 //logar novamente
 Route::get('/login-novamente', function () {
     return view('pages.auth.login-novamente');
