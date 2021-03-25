@@ -80,7 +80,6 @@ class ParceirosA2mController extends Controller
                 'email' => $dados['email'],
                 'name' => $dados['email'],
                 'is_admin' => 0,
-                'rota_login_logout' => $dados['rota_login_logout'],
                 'subdomain' => $dados['subdomain'],
                 'imagem_login' => $dados['imagem_login'],
                 'menu_color' => 1,

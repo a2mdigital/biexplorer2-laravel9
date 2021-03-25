@@ -18,6 +18,8 @@ class Parceiro extends Authenticatable
         'name',
         'is_admin',
         'rota_login_logout',
+        'subdomain',
+        'imagem_login',
         'menu_color',
         'menu_contraido',
         'password',
