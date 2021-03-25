@@ -54,7 +54,7 @@
                           <td style="font-family:'Lucida Grande',Helvetica,Arial,sans-serif;line-height:18px;text-align:left;font-size:14px;color:#333;padding:18px 0 0 0">
                             Caso seja você que tenha solicitado por favor clique no link a seguir para redefinir sua senha.
                             <br><br>
-                            <a href="{{$host}}/reset-password/{{$token}}" class="btn btn-primary mr-2 mb-2 mb-md-0">Redefinir Senha</a>
+                            <a href="http://{{$host}}/reset-password/{{$token}}" class="btn btn-primary mr-2 mb-2 mb-md-0">Redefinir Senha</a>
                           </td>
                           <td style="width:40px"></td>
                         </tr>
