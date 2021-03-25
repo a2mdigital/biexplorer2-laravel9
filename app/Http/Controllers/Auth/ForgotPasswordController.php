@@ -6,10 +6,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Jobs\SendMailResetPassword;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
+
 class ForgotPasswordController extends Controller
 {
     /*
@@ -30,17 +32,16 @@ class ForgotPasswordController extends Controller
     }
 
     public function postEmail(Request $request){
-        
-        $request->validate([
-            'email' => 'required|email|exists:users',
-            'email' => 'required|email|exists:parceiros',
+     
+       $request->validate([
+            'email' => 'required|email',
+            //'email' => 'required|email|exists:parceiros',
         ],
         [
             'email.required' => 'Preencha o e-mail',
             'email.email' => 'Insira um e-mail válido',
-            'email.exists' => 'E-mail não está cadastrado'
         ]);
-    
+      
         $token = Str::random(64);
         $subdomain = explode('.', request()->getHost());
         $subdomain = $subdomain[0];    

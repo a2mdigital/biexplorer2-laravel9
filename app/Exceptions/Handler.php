@@ -82,9 +82,8 @@ class Handler extends ExceptionHandler
         
 
 
-
         if ($exception instanceof TokenMismatchException) {
-            return response()->view('pages.auth.login-novamente', [], 419);
+            return response()->view('pages.auth.login', [], 419);
         } else {
             return parent::render($request, $exception);
         }
