@@ -22,6 +22,7 @@ class CreateParceirosTable extends Migration
             $table->string('subdomain')->nullable();
             $table->string('imagem_login')->nullable();
             $table->string('tamanho_imagem_login')->nullable();
+            $table->string('fundo_imagem_login')->nullable();
             $table->boolean('menu_color')->nullable();
             $table->boolean('menu_contraido')->nullable();
             $table->string('password');

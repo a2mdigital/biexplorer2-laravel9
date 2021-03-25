@@ -23,6 +23,7 @@ class CheckSingleSession
     
             if ($previous_session !== Session::getId()) {
             
+               
                 Session::getHandler()->destroy($previous_session);
         
                 $request->session()->regenerate();

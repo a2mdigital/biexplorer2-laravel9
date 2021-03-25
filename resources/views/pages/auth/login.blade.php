@@ -3,7 +3,7 @@
 <style type="text/css">
 body {
     /* background: rgba(0, 26, 227, 0.63) !important; */
-    background-image:url({{asset('assets/images/bg/bg.jpg')}});
+    background-image:url({{asset('assets/images/bg/'.$background)}});
     /*background-image: url({{asset("assets/images/bg/bg3.png")}});*/
     background-position:center; /* Center the image */
     background-repeat:no-repeat; /* Do not repeat the image */

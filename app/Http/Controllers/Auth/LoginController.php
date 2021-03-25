@@ -49,14 +49,16 @@ class LoginController extends Controller
  
     public function showFormLogin(){
         $subdomain = explode('.', request()->getHost());
-        $img = Parceiro::select('imagem_login', 'tamanho_imagem_login')
+        $img = Parceiro::select('imagem_login', 'tamanho_imagem_login', 'fundo_imagem_login')
             ->where('subdomain', $subdomain[0])->first();
         if(!$img){
             $imagem_login = 'logo-a2m.png';
             $tamanho_imagem = '75%';
+            $background = 'bg.jpg';
         }else{
             $imagem_login = $img->imagem_login;
             $tamanho_imagem = $img->tamanho_imagem_login;
+            $background = $img->fundo_imagem_login;
         }
         /*
         if($subdomain == 'biexplorer' || 'dados' || 'a2m'){
@@ -69,7 +71,7 @@ class LoginController extends Controller
             $imagem_login = $imagem_login->imagem_login;
         }
         */
-        return view('pages.auth.login', compact('imagem_login', 'tamanho_imagem'));
+        return view('pages.auth.login', compact('imagem_login', 'tamanho_imagem', 'background'));
     }
 
     public function showParceiroLoginForm()

@@ -21,6 +21,7 @@ class Parceiro extends Authenticatable
         'subdomain',
         'imagem_login',
         'tamanho_imagem_login',
+        'fundo_imagem_login',
         'menu_color',
         'menu_contraido',
         'password',
