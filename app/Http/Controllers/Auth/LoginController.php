@@ -49,14 +49,14 @@ class LoginController extends Controller
  
     public function showFormLogin(){
         $subdomain = explode('.', request()->getHost());
-        $img = Parceiro::select('imagem_login')
+        $img = Parceiro::select('imagem_login', 'tamanho_imagem_login')
             ->where('subdomain', $subdomain[0])->first();
         if(!$img){
             $imagem_login = 'logo-a2m.png';
             $tamanho_imagem = '75%';
         }else{
             $imagem_login = $img->imagem_login;
-            $tamanho_imagem = $img->tamanho_imagem;
+            $tamanho_imagem = $img->tamanho_imagem_login;
         }
         /*
         if($subdomain == 'biexplorer' || 'dados' || 'a2m'){
