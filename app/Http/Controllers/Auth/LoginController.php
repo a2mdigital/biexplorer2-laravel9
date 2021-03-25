@@ -50,7 +50,7 @@ class LoginController extends Controller
     public function showFormLogin(){
         $subdomain = explode('.', request()->getHost());
         $img = Parceiro::select('imagem_login')
-            ->where('subdomain', $subdomain)->first();
+            ->where('subdomain', $subdomain[0])->first();
         if(!$img){
             $imagem_login = 'logo-a2m.png';
         }else{
