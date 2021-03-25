@@ -46,7 +46,7 @@ class ForgotPasswordController extends Controller
               ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
           );
 
-          Mail::send('pages.auth.password-email', ['token' => $token, 'now' => Carbon::now()], function($message, $subdomain) use($request){
+          Mail::send('pages.auth.password-email', ['token' => $token, 'now' => Carbon::now()], function($message) use($request, $subdomain){
               $message->from('biexplorer@'.$subdomain.'.com.br','Bi Explorer');
               $message->to($request->email);
               $message->subject('Redefinição de Senha');
