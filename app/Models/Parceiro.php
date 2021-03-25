@@ -20,6 +20,7 @@ class Parceiro extends Authenticatable
         'rota_login_logout',
         'subdomain',
         'imagem_login',
+        'tamanho_imagem_login',
         'menu_color',
         'menu_contraido',
         'password',

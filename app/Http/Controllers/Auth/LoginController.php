@@ -53,8 +53,10 @@ class LoginController extends Controller
             ->where('subdomain', $subdomain[0])->first();
         if(!$img){
             $imagem_login = 'logo-a2m.png';
+            $tamanho_imagem = '75%';
         }else{
             $imagem_login = $img->imagem_login;
+            $tamanho_imagem = $img->tamanho_imagem;
         }
         /*
         if($subdomain == 'biexplorer' || 'dados' || 'a2m'){
@@ -67,7 +69,7 @@ class LoginController extends Controller
             $imagem_login = $imagem_login->imagem_login;
         }
         */
-        return view('pages.auth.login', compact('imagem_login'));
+        return view('pages.auth.login', compact('imagem_login', 'tamanho_imagem'));
     }
 
     public function showParceiroLoginForm()

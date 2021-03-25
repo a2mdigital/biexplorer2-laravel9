@@ -66,16 +66,22 @@
               </div><!-- Col -->
             </div><!-- Row -->
             <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-4">
                 <div class="form-group">
                   <label class="control-label">Subdomain</label>
                   <input type="text" value="{{$parceiro->subdomain}}" class="form-control" name="subdomain" placeholder="Subdominio">
                 </div>
              </div><!-- Col -->
-             <div class="col-sm-5">
+             <div class="col-sm-4">
                 <div class="form-group">
                   <label class="control-label">Imagem Login</label>
                   <input type="text" value="{{$parceiro->imagem_login}}" class="form-control" name="imagem_login" placeholder="Imagem Login">
+                </div>
+             </div><!-- Col -->
+             <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="control-label">Tamanho Imagem</label>
+                  <input type="text" value="{{$parceiro->tamanho_imagem_login}}" class="form-control" name="tamanho_imagem_login" placeholder="Tamanho Imagem">
                 </div>
              </div><!-- Col -->
             </div>

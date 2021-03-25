@@ -65,16 +65,22 @@
               </div><!-- Col -->
             </div><!-- Row -->
             <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               <div class="form-group">
                   <label class="control-label">Subdomain</label>
                   <input type="text" value="a2m" class="form-control" name="subdomain" placeholder="Subdominio">
                 </div>
              </div><!-- Col -->
-             <div class="col-sm-5">
+             <div class="col-sm-4">
                 <div class="form-group">
                   <label class="control-label">Imagem Login</label>
                   <input type="text" value="logo-a2m.png" class="form-control" name="imagem_login" placeholder="Imagem Login">
+                </div>
+             </div><!-- Col -->
+             <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="control-label">Tamanho Imagem</label>
+                  <input type="text" value="75%" class="form-control" name="tamanho_imagem_login" placeholder="Tamanho Imagem Login">
                 </div>
              </div><!-- Col -->
             </div>

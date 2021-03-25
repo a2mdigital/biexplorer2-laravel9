@@ -82,6 +82,7 @@ class ParceirosA2mController extends Controller
                 'is_admin' => 0,
                 'subdomain' => $dados['subdomain'],
                 'imagem_login' => $dados['imagem_login'],
+                'tamanho_imagem_login' => $dados['tamanho_imagem_login'],
                 'menu_color' => 1,
                 'menu_contraido' => 0,
                 'password' => bcrypt($dados['password']),
