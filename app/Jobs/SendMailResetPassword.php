@@ -35,11 +35,15 @@ class SendMailResetPassword implements ShouldQueue
 
     /**
      * Execute the job.
-     *
+     * Para o Job funcionar o Supervisor do servidor deveráe estar rodando
+     * o comando php artisan queue:work para ficar verificando as filas de e-mail
+     * o endereço do supervisor é: /etc/supervisord.conf
+     * restar do supervisor: systemctl restart supervisord
      * @return void
      */
     public function handle()
     {
+    
         Mail::send('pages.auth.password-email', ['host' => $this->host, 'token' => $this->token, 'now' => Carbon::now()], function($message){
             $message->from('biexplorer@'.$this->subdomain.'.com.br','Bi Explorer');
             $message->to($this->email);
