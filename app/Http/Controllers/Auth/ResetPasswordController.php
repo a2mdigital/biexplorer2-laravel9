@@ -12,7 +12,6 @@ use RealRashid\SweetAlert\Facades\Alert;
 class ResetPasswordController extends Controller
 {
   public function getPassword($token) { 
-   
     return view('pages.auth.password-reset', ['token' => $token]);
   }
   public function updatePassword(Request $request)

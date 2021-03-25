@@ -42,11 +42,12 @@ class ForgotPasswordController extends Controller
         $token = Str::random(64);
         $subdomain = explode('.', request()->getHost());
         $subdomain = $subdomain[0];    
+        $host = request()->getHost();
           DB::table('password_resets')->insert(
               ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
           );
 
-          Mail::send('pages.auth.password-email', ['token' => $token, 'now' => Carbon::now()], function($message) use($request, $subdomain){
+          Mail::send('pages.auth.password-email', ['host' => $host, 'token' => $token, 'now' => Carbon::now()], function($message) use($request, $subdomain){
               $message->from('biexplorer@'.$subdomain.'.com.br','Bi Explorer');
               $message->to($request->email);
               $message->subject('Redefinição de Senha');

@@ -1,6 +1,14 @@
 @extends('layout.auth.master-personalizado')
-@push('plugin-styles')
+@push('plugin-styles') 
 <link href="{{ asset('assets/css/auth-personalizado/auth-personalizado.css') }}" rel="stylesheet" />
+<style>
+body {
+    background-image: url({{asset("assets/images/bg/bg2.jpg")}});
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container*/
+ }
+ </style>
 @endpush
 @section('content')
 <div class="page-content d-flex align-items-center justify-content-center">
