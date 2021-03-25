@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        /*
+        
          //ERRO 403
         if ($exception instanceof UnauthorizedException)  {
             return response()->view('pages.error.403');
@@ -88,7 +88,7 @@ class Handler extends ExceptionHandler
         } else {
             return parent::render($request, $exception);
         }
-        */
+        
 
         return parent::render($request, $exception);
     }
