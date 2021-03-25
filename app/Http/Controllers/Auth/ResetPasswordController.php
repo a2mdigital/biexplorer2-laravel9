@@ -47,7 +47,7 @@ class ResetPasswordController extends Controller
 
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
 
-        return redirect('/login-novamente')->with('success', 'Sua Senha foi Alterada!');
+        return redirect('/login')->with('success', 'Sua Senha foi Alterada!');
 
   }
 }

@@ -9,7 +9,7 @@
           <div class="col-md-8 pl-md-0 form-login">
             <div class="auth-form-wrapper px-4 py-5">
              <!-- <a href="#" class="noble-ui-logo d-block mb-2">Noble<span>UI</span></a> --> 
-             <img src="{{asset('assets/images/password.png')}}" width="30%" style="margin-left:35%" >
+             <img src="{{asset('assets/images/'.$imagem_login)}}" width="75%">
             
               <h5 class="text-muted font-weight-normal mb-4"><b>Troque sua senha inicial!</b></h5>
               <form  method="POST" action="{{route('parceiro.atualizar.senha.inicial', $parceiro->id)}}">

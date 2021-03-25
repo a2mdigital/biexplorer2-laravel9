@@ -53,9 +53,16 @@ class ParceiroController extends Controller
     }
 
     public function trocarSenhaInicial(){
-      
         $parceiro = Auth::guard('parceiro')->user();
-        return view('pages.parceiro.parceiro.trocar-senha-inicial', compact('parceiro'));
+        $subdomain = explode('.', request()->getHost());
+        $img = Parceiro::select('imagem_login')
+            ->where('subdomain', $subdomain)->first();
+        if(!$img){
+            $imagem_login = 'logo-a2m.png';
+        }else{
+            $imagem_login = $img->imagem_login;
+        }
+        return view('pages.parceiro.parceiro.trocar-senha-inicial', compact('parceiro', 'imagem_login'));
     }
     public function atualizarSenhaInicial(Request $request, $id){
 
