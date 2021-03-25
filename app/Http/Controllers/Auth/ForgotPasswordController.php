@@ -30,7 +30,7 @@ class ForgotPasswordController extends Controller
     }
 
     public function postEmail(Request $request){
-        dd($request);
+        
         $request->validate([
             'email' => 'required|email|exists:users',
             'email' => 'required|email|exists:parceiros',
