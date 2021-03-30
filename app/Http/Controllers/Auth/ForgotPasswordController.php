@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\DB;
 use App\Jobs\SendMailResetPassword;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -32,15 +33,14 @@ class ForgotPasswordController extends Controller
     }
 
     public function postEmail(Request $request){
-     
+        $locale = App::currentLocale();
+        
+
        $request->validate([
             'email' => 'required|email',
             //'email' => 'required|email|exists:parceiros',
-        ],
-        [
-            'email.required' => 'Preencha o e-mail',
-            'email.email' => 'Insira um e-mail válido',
-        ]);
+        ]
+       );
       
         $token = Str::random(64);
         $subdomain = explode('.', request()->getHost());
@@ -50,7 +50,7 @@ class ForgotPasswordController extends Controller
               ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
           );
 
-          SendMailResetPassword::dispatch($host, $token, $subdomain, $request->email)->delay(now()->addSeconds('5'));
+          SendMailResetPassword::dispatch($host, $token, $subdomain, $request->email, $locale)->delay(now()->addSeconds('5'));
 
           /*
           Mail::send('pages.auth.password-email', ['host' => $host, 'token' => $token, 'now' => Carbon::now()], function($message) use($request, $subdomain){
@@ -60,6 +60,6 @@ class ForgotPasswordController extends Controller
           });
           */
     
-          return back()->with('success', 'O Link de redefinição da senha foi enviado ao seu e-mail!');
+          return back()->with('success', trans('auth.message_forgot_password'));
     }
 }

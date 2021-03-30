@@ -23,7 +23,7 @@ body {
             <div class="auth-form-wrapper px-4 py-5">
              <!-- <img src="{{asset('assets/images/logo-a2m.png')}}" width="75%"  alt="Logo"> -->
              <img src="{{asset('assets/images/'.$imagem_login)}}" width="{{$tamanho_imagem}}"  alt="Logo">
-              <h5 class="text-muted font-weight-normal mb-4">Bem vindo! Entre com seus dados para login!</h5>
+              <h5 class="text-muted font-weight-normal mb-4">{{__('auth.text_welcome')}}</h5>
               <form  method="POST" action="{{route('login')}}">
               @csrf 
               <div class="form-group {{$errors->has('email') ? 'has-danger' : ''}}">
@@ -36,7 +36,7 @@ body {
                   @endif 
                 </div>
                 <div class="form-group {{$errors->has('password') ? 'has-danger' : ''}}">
-                  <label for="exampleInputPassword1">Senha</label>
+                  <label for="exampleInputPassword1">{{__('auth.password')}}</label>
                   <input type="password" class="form-control {{$errors->has('password') ? 'form-control-danger' : ''}}" id="password" name="password" autocomplete="current-password" placeholder="Password">
                   @if($errors->has('password'))
                     <label id="name-error" class="error mt-2 text-danger" for="password">
@@ -48,7 +48,7 @@ body {
                   <input type="submit" value="Login" class="btn btn-primary mr-2 mb-2 mb-md-0">
                   <a href="{{route('esqueceu-senha')}}"  class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                     <i class="btn-icon-prepend" data-feather="lock"></i>
-                   Esqueceu a senha?
+                   {{__('auth.forgot_password')}}
                   </a>
                 </div>
              </form>

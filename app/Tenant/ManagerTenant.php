@@ -8,6 +8,7 @@ class ManagerTenant{
     public function getTenantIdentify(){
    
       return auth()->user()->tenant->id; 
+      dd(auth()->user());
     
     }
 }

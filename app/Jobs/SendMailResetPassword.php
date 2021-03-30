@@ -20,17 +20,19 @@ class SendMailResetPassword implements ShouldQueue
     private $token;
     private $subdomain;
     private $email;
+    private $locale;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($host, $token, $subdomain, $email)
+    public function __construct($host, $token, $subdomain, $email, $locale)
     {
         $this->host = $host;
         $this->token = $token;
         $this->subdomain = $subdomain;
         $this->email = $email;
+        $this->locale = $locale;
     }
 
     /**
@@ -43,11 +45,20 @@ class SendMailResetPassword implements ShouldQueue
      */
     public function handle()
     {
-    
-        Mail::send('pages.auth.password-email', ['host' => $this->host, 'token' => $this->token, 'now' => Carbon::now()], function($message){
-            $message->from('biexplorer@'.$this->subdomain.'.com.br','Bi Explorer');
-            $message->to($this->email);
-            $message->subject('Redefinição de Senha');
-        });
+       
+        if($this->locale == 'pt-BR'){
+            Mail::send('pages.auth.password-email', ['host' => $this->host, 'token' => $this->token, 'now' => Carbon::now()], function($message){
+                $message->from('biexplorer@'.$this->subdomain.'.com.br','Bi Explorer');
+                $message->to($this->email);
+                $message->subject('Redefinição de Senha');
+            });
+        }else{
+            Mail::send('pages.auth.password-email-en', ['host' => $this->host, 'token' => $this->token, 'now' => Carbon::now()], function($message){
+                $message->from('biexplorer@'.$this->subdomain.'.com','Bi Explorer');
+                $message->to($this->email);
+                $message->subject('Password Reset');
+            });
+        }
+       
     }
 }

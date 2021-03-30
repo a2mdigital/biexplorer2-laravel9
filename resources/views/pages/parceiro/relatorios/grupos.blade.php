@@ -44,7 +44,7 @@
             @csrf
               <div class="form-group {{$errors->has('nome') ? 'has-danger' : ''}}">
                 <label for="nome">Nome do Grupo</label>
-                <input type="text" class="form-control {{$errors->has('nome') ? 'form-control-danger' : ''}}" id="nome" name="nome" placeholder="Nome do Grupo">
+                <input type="text" class="form-control {{$errors->has('nome') ? 'form-control-danger' : ''}}" id="nome" name="nome" autofocus placeholder="Nome do Grupo">
                 @if($errors->has('nome'))
                     <label id="name-error" class="error mt-2 text-danger" for="nome">
                       {{$errors->first('nome')}}

@@ -88,20 +88,15 @@ class LoginController extends Controller
             'email'   => 'required|email',
             'password' => 'required|min:5'
         ],
-        [
-            'password.required' => 'Senha não pode ficar em branco',
-            'password.min' => 'A Senha deve conter no mínimo 5 caracteres',
-            'email.required' => 'Preencha o e-mail',
-            'email.email' => 'Insira um e-mail válido',
-        ]);  
+       );  
        
         if (Auth::guard('parceiro')->attempt(['email' => $request->email, 'password' => $request->password])) {
                 $troca_senha = Auth::guard('parceiro')->user()->troca_senha;
                 if($troca_senha != 'S'){
-                    return redirect()->route('dashboard-parceiro')->with('toast_success', 'Bem Vindo!');
+                    return redirect()->route('dashboard-parceiro')->with('toast_success', trans('messages.welcome'));
                 }else{
                     //trocar a senha inicial 
-                    return redirect()->route('parceiro.trocar.senha.inicial')->with('toast_success', 'Troque seua senha!');
+                    return redirect()->route('parceiro.trocar.senha.inicial')->with('toast_success', trans('auth.change_password'));
                 }
            
         }else if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -112,7 +107,7 @@ class LoginController extends Controller
                 $user->update([
                     'ultimo_login' => Carbon::now('America/Sao_Paulo')
                 ]);
-                return redirect()->route('dashboard-admin')->with('toast_success', 'Bem Vindo!');
+                return redirect()->route('dashboard-admin')->with('toast_success',trans('messages.welcome'));
             }else{
 
                 $troca_senha = Auth::guard('web')->user()->troca_senha;
@@ -122,17 +117,17 @@ class LoginController extends Controller
                     $user->update([
                         'ultimo_login' => Carbon::now('America/Sao_Paulo')
                     ]);
-                    return redirect()->route('dashboard-users')->with('toast_success', 'Bem Vindo!');
+                    return redirect()->route('dashboard-users')->with('toast_success', trans('messages.welcome'));
                 }else{
                     //trocar a senha inicial 
-                    return redirect()->route('users.tenant.trocar.senha.inicial')->with('toast_success', 'Troque seua senha!');
+                    return redirect()->route('users.tenant.trocar.senha.inicial')->with('toast_success', trans('auth.change_password'));
                 
                 }
 
             }
           
         }else{
-           return redirect()->back()->with('toast_error', 'Usuário ou Senha Inválidos');
+           return redirect()->back()->with('toast_error', trans('auth.failed'));
         }
     }
 
@@ -147,7 +142,7 @@ class LoginController extends Controller
         $request->session()->regenerate();
         Auth::guard('parceiro')->logout();
 
-        return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
+        return redirect()->route('form-login')->with('toast_success', trans('auth.logout'));
         /*
         if($rota_parceiro == 'padrao'){
              return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
@@ -170,7 +165,7 @@ class LoginController extends Controller
         $request->session()->regenerate();
         Auth::guard('web')->logout();
 
-        return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
+        return redirect()->route('form-login')->with('toast_success', trans('auth.logout'));
         /*
         if($parceiro->rota_login_logout == 'padrao'){
             return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
@@ -192,7 +187,7 @@ class LoginController extends Controller
         $request->session()->regenerate();
         Auth::guard('web')->logout();
 
-        return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
+        return redirect()->route('form-login')->with('toast_success', trans('auth.logout'));
         /*
         if($parceiro->rota_login_logout == 'padrao'){
             return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');

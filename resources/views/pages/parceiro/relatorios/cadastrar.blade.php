@@ -23,7 +23,7 @@
               <div class="col-sm-5">
                 <div class="form-group {{$errors->has('nome') ? 'has-danger' : ''}}">
                   <label class="control-label">Nome</label>
-                  <input type="text" value="{{old('nome')}}" class="form-control {{$errors->has('nome') ? 'form-control-danger' : ''}}" name="nome" placeholder="Nome do Relatório">
+                  <input type="text" value="{{old('nome')}}" class="form-control {{$errors->has('nome') ? 'form-control-danger' : ''}}" name="nome" autofocus placeholder="Nome do Relatório">
                   @if($errors->has('nome'))
                     <label id="name-error" class="error mt-2 text-danger" for="nome">
                       {{$errors->first('nome')}}

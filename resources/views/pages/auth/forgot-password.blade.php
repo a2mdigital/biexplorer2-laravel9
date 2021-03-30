@@ -31,7 +31,7 @@ body {
             <div class="auth-form-wrapper px-4 py-5">
              <!-- <a href="#" class="noble-ui-logo d-block mb-2">Noble<span>UI</span></a> --> 
              <img src="{{asset('assets/images/email.png')}}" width="90%" alt="Logo">
-              <h5 class="text-muted font-weight-normal mb-4"><b>Digite o seu e-mail para recuperação da senha</b></h5>
+              <h5 class="text-muted font-weight-normal mb-4"><b>{{__('auth.text_forgot_password')}}</b></h5>
               <form  method="POST" action="{{route('forget-password')}}">
               @csrf 
               <div class="form-group {{$errors->has('email') ? 'has-danger' : ''}}">
@@ -44,7 +44,7 @@ body {
                   @endif 
                 </div>
                 <div class="mt-3">
-                  <input type="submit" value="Enviar link de Recuperação" class="btn btn-primary mr-2 mb-2 mb-md-0">
+                  <input type="submit" value="{{__('auth.text_button_forgot_password')}}" class="btn btn-primary mr-2 mb-2 mb-md-0">
                 </div>
              </form>
             </div>

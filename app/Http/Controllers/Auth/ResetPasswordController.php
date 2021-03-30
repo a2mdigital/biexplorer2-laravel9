@@ -21,13 +21,6 @@ class ResetPasswordController extends Controller
         'email' => 'required|email|exists:parceiros',
         'password' => 'required|string|min:5|confirmed',
         'password_confirmation' => 'required',
-    ], [
-        'email.required' => 'Digite o e-mail',
-        'email.email'   => 'Informe um e-mail válido',
-        'email.exists' => 'O E-mail não existe',  
-        'password.required' => 'Senha não pode ficar em branco',
-        'password.min' => 'A Senha deve conter no mínimo 5 caracteres',
-        'password.confirmed' => 'As senhas não são iguais',
     ]);
 
     
@@ -46,7 +39,7 @@ class ResetPasswordController extends Controller
 
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
 
-        return redirect('/login')->with('success', 'Sua Senha foi Alterada!');
+        return redirect('/login')->with('success', trans('auth.message_password_change'));
 
   }
 }

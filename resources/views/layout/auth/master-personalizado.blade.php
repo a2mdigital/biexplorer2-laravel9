@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app()->getLocale() }}">
 <head>
   <title>@yield('title', 'BI - EXPLORER')</title>
   <meta charset="utf-8">
