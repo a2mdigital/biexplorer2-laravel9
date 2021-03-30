@@ -103,16 +103,16 @@ class TenantController extends Controller
 
     public function editarTenant($id){
         $tenant = Tenant::findOrFail($id);
+   
+        $user = User::where('is_admin', '=', 1)->where('tenant_id', $id)->first();
         
-        $user = User::where('is_admin', '=', 1)->first();
-
         return view('pages.parceiro.tenants.editar', compact('tenant', 'user'));
     }
 
     public function atualizarTenant(Request $request, $id){
 
         $tenant = Tenant::find($id);
-       
+       // dd($tenant);
         //valida o formulário
         $this->validate($request, [
             'nome' => 'required',
@@ -132,8 +132,10 @@ class TenantController extends Controller
         $utiliza_rls = (isset($dados['utiliza_rls']) == 'on' ? 'S' : 'N');
         $dados['utiliza_filtro'] = $utiliza_filtro;
         $dados['utiliza_rls'] = $utiliza_rls;    
+   
         //pegando o usuário admin  
         $user = User::find($dados['usuario_admin']);
+       
         $dados_user['email'] = $dados['email_administrador'];
         if ($user->password == $dados['senha_administrador']) {
 
