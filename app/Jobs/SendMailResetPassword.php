@@ -46,7 +46,7 @@ class SendMailResetPassword implements ShouldQueue
     public function handle()
     {
        
-        if($this->locale == 'pt-BR'){
+        if($this->locale == 'pt-BR' || $this->locale == 'pt_BR' || $this->locale == 'pt-PT' || $this->locale == 'pt_PT'){
             Mail::send('pages.auth.password-email', ['host' => $this->host, 'token' => $this->token, 'now' => Carbon::now()], function($message){
                 $message->from('biexplorer@'.$this->subdomain.'.com.br','Bi Explorer');
                 $message->to($this->email);
