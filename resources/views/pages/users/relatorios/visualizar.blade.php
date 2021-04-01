@@ -16,7 +16,7 @@ iframe{
 </style>
 @endpush
 @section('titulo-pagina')
-<a class="voltar-relatorio" href="{{route('users.tenant.relatorios', $relatorio->subgrupo_relatorio_id)}}"><i data-feather="arrow-left-circle"></i> Relatórios </a>
+<a class="voltar-relatorio" href="{{route('users.tenant.relatorios', $relatorio->subgrupo_relatorio_id)}}"><i data-feather="arrow-left-circle"></i> {{__('messages.title_page_groups')}} </a>
 <span>/ {{$relatorio->nome}}</span>
 <div class="d-flex align-items-center flex-wrap text-nowrap">
     <button id="fullscreen" onclick="fullscreen()" class="btn btn-primary btn-icon-text">
@@ -28,7 +28,7 @@ iframe{
 <div class="d-flex align-items-center flex-wrap text-nowrap" style="margin-left: 5px;">
     <button id="atualizar" onclick="atualizar()" class="btn btn-primary btn-icon-text">
       <i class="btn-icon-prepend" data-feather="loader"></i>
-     Atualizar
+      {{__('messages.btn_update_report')}}
     </button>
 </div>
 @endsection

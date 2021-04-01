@@ -28,7 +28,7 @@
               <li class="nav-item">
                   <a href="{{route('users.tenant.trocar.senha')}}" class="nav-link">
                     <i data-feather="edit"></i>
-                    <span>Trocar Senha</span>
+                    <span>{{__('auth.change_password')}}</span>
                   </a>
                 </li>
               <li class="nav-item">

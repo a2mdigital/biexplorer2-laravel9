@@ -13,7 +13,7 @@
 <div class="col-md-12">
     <div class="d-flex justify-content-between align-items-center flex-wrap">
       <div>
-              <h4 class="mb-3 mb-md-0">Favoritos</h4>
+              <h4 class="mb-3 mb-md-0">{{__('messages.favorites')}}</h4>
       </div>
     </div>
 </div>
@@ -36,17 +36,17 @@
         <div class="icone-subtitulo">
         <i class="icon-subtitulo" data-feather="bar-chart"></i>
         </div>
-          <span class="texto-subtitulo">Relatório</span>
+          <span class="texto-subtitulo">{{__('messages.type_report')}}</span>
          @endif
          @if($favorito->relatorios->tipo == 'dashboard')
         <div class="icone-subtitulo">
         <i class="icon-subtitulo" data-feather="pie-chart"></i>
         </div>
-          <span class="texto-subtitulo">Dashboard</span>
+          <span class="texto-subtitulo">{{__('messages.type_dashboard')}}</span>
          @endif
       </div>
       <div class="informacoes">
-        <div class="texto-informacao">Acessado:<br></div>
+        <div class="texto-informacao">{{__('messages.opened')}}:<br></div>
         <span class="texto-subtitulo">{{date("d/m/Y H:i", strtotime($favorito->ultima_hora_acessada))}}</span>
       </div>
     </a>  
@@ -61,7 +61,7 @@
 <div class="col-md-12">
     <div class="d-flex justify-content-between align-items-center flex-wrap">
       <div>
-              <h4 class="mb-3 mb-md-0">Ultimos Acessados</h4>
+              <h4 class="mb-3 mb-md-0">{{__('messages.last_view_report')}}</h4>
       </div>
     </div>
 </div>
@@ -90,17 +90,17 @@
           <div class="icone-subtitulo">
             <i class="icon-subtitulo" data-feather="bar-chart"></i>
           </div>
-          <span class="texto-subtitulo">Relatório</span>
+          <span class="texto-subtitulo">{{__('messages.type_report')}}</span>
         @endif
         @if($ultimo->relatorios->tipo == 'dashboard')
           <div class="icone-subtitulo">
             <i class="icon-subtitulo" data-feather="pie-chart"></i>
           </div>
-          <span class="texto-subtitulo">Dashboard</span>
+          <span class="texto-subtitulo">{{__('messages.type_dashboard')}}</span>
         @endif
       </div>
       <div class="informacoes">
-            <div class="texto-informacao">Acessado:<br></div>
+            <div class="texto-informacao">{{__('messages.opened')}}:<br></div>
             <span class="texto-subtitulo">{{date("d/m/Y H:i", strtotime($ultimo->ultima_hora_acessada))}}</span>
       </div>
     </a>
@@ -114,7 +114,7 @@
 <div class="col-md-12">
     <div class="d-flex justify-content-between align-items-center flex-wrap">
       <div>
-              <h4 class="mb-3 mb-md-0">Mais Acessados</h4>
+              <h4 class="mb-3 mb-md-0">{{__('messages.more_view_report')}}</h4>
       </div>
     </div>
 </div>
@@ -142,17 +142,17 @@
         <div class="icone-subtitulo">
         <i class="icon-subtitulo" data-feather="bar-chart"></i>
         </div>
-          <span class="texto-subtitulo">Relatório</span>
+          <span class="texto-subtitulo">{{__('messages.type_report')}}</span>
          @endif
          @if($mais->relatorios->tipo == 'dashboard')
         <div class="icone-subtitulo">
         <i class="icon-subtitulo" data-feather="pie-chart"></i>
         </div>
-          <span class="texto-subtitulo">Dashboard</span>
+          <span class="texto-subtitulo">{{__('messages.type_dashboard')}}</span>
          @endif
       </div>
       <div class="informacoes">
-        <div class="texto-informacao">Acessado:<br></div>
+        <div class="texto-informacao">{{__('messages.opened')}}:<br></div>
         <span class="texto-subtitulo">{{date("d/m/Y H:i", strtotime($mais->ultima_hora_acessada))}}</span>
       </div>
     </a>
@@ -178,7 +178,7 @@
          favorito = "N";
                //ALERTA DE FAVORITO
         $.toast({
-                text: "Retirado dos Favoritos", // Text that is to be shown in the toast
+                text: "{{__('messages.remove_favorite')}}", // Text that is to be shown in the toast
 
                 icon: 'warning', // Type of toast icon
                 showHideTransition: 'fade', // fade, slide or plain
@@ -226,7 +226,7 @@
 
             //ALERTA DE FAVORITO
         $.toast({
-                text: "Adicionado aos Favoritos", // Text that is to be shown in the toast
+                text: "{{__('messages.add_favorite')}}", // Text that is to be shown in the toast
 
                 icon: 'info', // Type of toast icon
                 showHideTransition: 'fade', // fade, slide or plain

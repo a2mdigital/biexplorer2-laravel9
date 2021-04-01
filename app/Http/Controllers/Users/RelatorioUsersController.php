@@ -91,7 +91,7 @@ class RelatorioUsersController extends Controller
     
                           $botoes = '
                           <div style="display: flex; justify-content:flex-start">
-                            <a href="'. route('users.tenant.relatorios.visualizar',[$relatorio->subgrupo_relatorio_id, $relatorio->id]) .'" class="edit btn btn-primary btn-sm">Visualizar</a>
+                            <a href="'. route('users.tenant.relatorios.visualizar',[$relatorio->subgrupo_relatorio_id, $relatorio->id]) .'" class="edit btn btn-primary btn-sm">'.trans('messages.report_button_view').'</a>
                             </div>
                           ';  
     

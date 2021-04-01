@@ -7,7 +7,7 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
   <div>
-    <h4 class="mb-3 mb-md-0">Relatórios</h4>
+    <h4 class="mb-3 mb-md-0">{{__('messages.title_page_groups')}}</h4>
   </div>
 </div>
 <div class="row">
@@ -22,7 +22,7 @@
      </div>
     </div>
     <div class="card-body">
-    <center><a href={{route('users.tenant.relatorios', $grupo->id)}} class="btn btn-outline-light">Acessar</a></center>
+    <center><a href={{route('users.tenant.relatorios', $grupo->id)}} class="btn btn-outline-light">{{__('messages.open_group')}}</a></center>
     </div>
  </div>   
 </div>

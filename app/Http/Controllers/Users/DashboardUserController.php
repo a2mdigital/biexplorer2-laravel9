@@ -68,10 +68,6 @@ class DashboardUserController extends Controller
          //valida o formulário
          $this->validate($request, [
                'password' => 'required|confirmed|min:5'
-        ], [
-            'password.required' => 'Senha não pode ficar em branco',
-            'password.min' => 'A Senha deve conter no mínimo 5 caracteres',
-            'password.confirmed' => 'As senhas não são iguais',
         ]);
 
         $dados = $request->all();
@@ -86,7 +82,7 @@ class DashboardUserController extends Controller
             $user->update([
                 'ultimo_login' => Carbon::now('America/Sao_Paulo')
             ]);
-            return redirect()->route('dashboard-users')->with('toast_success', 'Bem Vindo!');
+            return redirect()->route('dashboard-users')->with('toast_success',trans('messages.welcome'));
            
         }else{
         return redirect()->route('login');
@@ -106,13 +102,6 @@ class DashboardUserController extends Controller
            'name' => 'required',
            'email' => 'required|email|unique:users,email,'.$id.'|unique:parceiros,email',
            'password' => 'required|min:5'
-       ], [
-           'name.required' => 'Preencha o nome!',
-           'password.required' => 'Senha não pode ficar em branco',
-           'password.min' => 'A Senha deve conter no mínimo 5 caracteres',
-           'email.required' => 'Preencha o e-mail do administrador',
-           'email.unique' => 'E-mail já cadastrado',
-           'email.email' => 'Insira um e-mail válido'
        ]);
 
        $dados = $request->all();
@@ -124,7 +113,7 @@ class DashboardUserController extends Controller
        }
        $usuario->update($dados);     
        
-       return redirect()->route('dashboard-users')->with('toast_success', 'Usuário atualizado com sucesso!');      
+       return redirect()->route('dashboard-users')->with('toast_success', trans('messages.message_update_data'));      
     
    }
 }

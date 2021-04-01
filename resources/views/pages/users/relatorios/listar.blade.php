@@ -6,12 +6,12 @@
 
 @section('content')
 
-
+ 
 
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('users.tenant.gruposrelatorio')}}">{{$grupo->nome}}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Relatórios</li>
+    <li class="breadcrumb-item active" aria-current="page">{{__('messages.title_page_groups')}}</li>
   </ol>
 </nav>
 
@@ -25,8 +25,8 @@
           <table id="relatoriosTable" class="relatoriosTable">
             <thead>
               <tr>
-                <th>Nome</th>
-                <th>Ações</th>
+                <th>{{__('messages.report_table_name')}}</th>
+                <th>{{__('messages.report_table_actions')}}</th>
               </tr>
             </thead>
             <tbody>
@@ -48,13 +48,24 @@
   <script src="{{ asset('assets/js/data-table.js') }}"></script>
   <script type="text/javascript">
         $(document).ready(function() {
-         
+          function getLanguage(){
+            var lang = $('html').attr('lang');
+            if(lang == 'en'){
+              var language = '{{asset("assets/lang/data-table-en.json")}}';
+            }else{
+              var language = '{{asset("assets/lang/data-table-pt.json")}}';
+            }
+            return language
+          }
             var table = $('#relatoriosTable').DataTable({
+              language: {
+                  url: getLanguage(),
+                },
                 processing: true,
                 serverSide: true,
                 responsive: true,
                 columnDefs: [
-                    { width: "100%", targets: 0 }
+                    { width: "70%", targets: 0 }
                 ],
                 ajax: "{{ route('users.tenant.relatorios', request()->route('id'))}}",
                columns: [

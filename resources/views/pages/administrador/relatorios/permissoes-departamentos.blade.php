@@ -7,18 +7,18 @@
 @section('content')
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{route('tenant.relatorios', $relatorio->subgrupo_relatorio_id)}}">Relatórios</a></li>
+    <li class="breadcrumb-item"><a href="{{route('tenant.relatorios', $relatorio->subgrupo_relatorio_id)}}">{{__('messages.title_link_page_reports_permission')}}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{$relatorio->nome}}</li>
   </ol>
 </nav>
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
   <div>
-    <h4 class="mb-3 mb-md-0">Permissões do Relatório - Departamentos</h4>
+    <h4 class="mb-3 mb-md-0">{{__('messages.title_page_reports_permission_departaments')}}</h4>
   </div>
   <div class="d-flex align-items-center flex-wrap text-nowrap">
     <button type="button" data-toggle="modal" data-target="#relatorioModal" class="btn btn-primary btn-icon-text">
       <i class="btn-icon-prepend" data-feather="check-square"></i>
-     Adicionar Departamento
+      {{__('messages.btn_add_departament_report_permission')}}
     </button>
   </div>
 </div>
@@ -29,8 +29,8 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 id="modalTitle2" class="modal-title">Adicionar Departamento</h4>
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">Fechar</span></button>
+            <h4 id="modalTitle2" class="modal-title"> {{__('messages.btn_add_departament_report_permission')}}</h4>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">{{__('messages.btn_close_users_modal_report_permission')}}</span></button>
           </div>
           <div id="modalBody2" class="modal-body">
             <form method="post" action="{{route('tenant.relatorio.permissao.departamento.salvar')}}">
@@ -39,9 +39,9 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="form-group {{$errors->has('departamento_id') ? 'has-danger' : ''}}">
-                    <label class="control-label">Selecione um Departamento</label>
+                    <label class="control-label">{{__('messages.select_departaments_modal_report_permission')}}</label>
                         <select  class="departamentos w-100 form-control {{$errors->has('workspace_id') ? 'form-control-danger' : ''}}" name="departamento_id" id="departamento_id">
-                        <option value="">Selecione um Departamento </option>
+                        <option value="">{{__('messages.select_departaments_modal_report_permission')}}</option>
                         @foreach($departamentos as $departamento)
                                 <option value="{{$departamento->id}}">{{$departamento->nome}}</option>
                         @endforeach
@@ -59,7 +59,7 @@
               <div class="form-group">
 										<div class="custom-control custom-switch">
 											<input type="checkbox" class="custom-control-input" value="on" name="utiliza_filtro" id="utilizaFiltroToggle">
-											<label class="custom-control-label" for="utilizaFiltroToggle">Utiliza Filtro</label>
+											<label class="custom-control-label" for="utilizaFiltroToggle">{{__('messages.filters_report')}}</label>
 										</div>
 									</div>
               </div><!-- Col -->
@@ -67,7 +67,7 @@
               <div class="form-group">
 										<div class="custom-control custom-switch">
 											<input type="checkbox" class="custom-control-input" value="on" name="utiliza_rls" id="utilizaRlsToggle">
-											<label class="custom-control-label" for="utilizaRlsToggle">Utiliza Rls</label>
+											<label class="custom-control-label" for="utilizaRlsToggle">{{__('messages.rls_report')}}</label>
 										</div>
 									</div>
               </div><!-- Col -->
@@ -75,28 +75,28 @@
             <div class="row" id="linhaFiltros">
               <div class="col-sm-4">
                 <div class="form-group">
-                  <label class="control-label">Tabela</label>
-                  <input type="text" name="filtro_tabela" id="tabela" class="form-control" placeholder="Tabela">
+                  <label class="control-label">{{__('messages.table_table_report_permission')}}</label>
+                  <input type="text" name="filtro_tabela" id="tabela" class="form-control" placeholder="{{__('messages.table_table_report_permission')}}">
                 </div>
               </div><!-- Col -->
               <div class="col-sm-4">
                 <div class="form-group">
-                  <label class="control-label">Coluna</label>
-                  <input type="text" name="filtro_coluna" id="coluna" class="form-control" placeholder="Coluna">
+                  <label class="control-label">{{__('messages.column_table_report_permission')}}</label>
+                  <input type="text" name="filtro_coluna" id="coluna" class="form-control" placeholder="{{__('messages.column_table_report_permission')}}">
                 </div>
               </div><!-- Col -->
               <div class="col-sm-4">
                 <div class="form-group">
-                  <label class="control-label">Valor</label>
-                  <input type="text" name="filtro_valor" id="valor" class="form-control" placeholder="Valor">
+                  <label class="control-label">{{__('messages.value_table_report_permission')}}</label>
+                  <input type="text" name="filtro_valor" id="valor" class="form-control" placeholder="{{__('messages.value_table_report_permission')}}">
                 </div>
               </div><!-- Col -->
             </div><!-- Row -->
             <div class="row" id="linhaRls">
               <div class="col-sm-4">
                 <div class="form-group">
-                  <label class="control-label">Regra</label>
-                  <input type="text" name="regra_rls" id="regra_rls" class="form-control" placeholder="Regra RLS">
+                  <label class="control-label">{{__('messages.role_rls_report')}}</label>
+                  <input type="text" name="regra_rls" id="regra_rls" class="form-control" placeholder="{{__('messages.role_rls_report')}}">
                 </div>
               </div><!-- Col -->
               <div class="col-sm-4">
@@ -108,8 +108,8 @@
             </div><!-- Row -->
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-            <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{__('messages.btn_close_users_modal_report_permission')}}</button>
+            <button type="submit" class="btn btn-primary">{{__('messages.btn_save_users_modal_report_permission')}}</button>
           </div>
           </form>
         </div>
@@ -127,13 +127,13 @@
           <table id="permisssoesTable" class="permisssoesTable">
             <thead>
               <tr>
-                <th>Departamento</th>
-                <th>Tabela</th>
-                <th>Coluna</th>
-                <th>Valor</th>
+                <th>{{__('messages.departament_table_report_permission')}}</th>
+                <th>{{__('messages.table_table_report_permission')}}</th>
+                <th>{{__('messages.column_table_report_permission')}}</th>
+                <th>{{__('messages.value_table_report_permission')}}</th>
                 <th>Rls</th>
                 <th>Username</th>
-                <th>Ações</th>
+                <th>{{__('messages.actions_table_report_permission')}}</th>
               </tr>
             </thead>
             <tbody>
@@ -207,9 +207,20 @@
         $("#username_rls").val('');
         }
     });
- 
+    function getLanguage(){
+            var lang = $('html').attr('lang');
+            if(lang == 'en'){
+              var language = '{{asset("assets/lang/data-table-en.json")}}';
+            }else{
+              var language = '{{asset("assets/lang/data-table-pt.json")}}';
+            }
+            return language
+          }
     //tabela permissoes
     var table = $('#permisssoesTable').DataTable({
+              language: {
+                  url: getLanguage(),
+                },
                 processing: true,
                 serverSide: true,
                 responsive: true,
@@ -224,29 +235,7 @@
                     {data: 'username_rls', name: 'username_rls'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
-                oLanguage: {
-                sEmptyTable: "Nenhum registro encontrado",
-                sInfo: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                sInfoEmpty: "Mostrando 0 até 0 de 0 registros",
-                sInfoFiltered: "(Filtrados de _MAX_ registros)",
-                sInfoPostFix: "",
-                sInfoThousands: ".",
-                sLengthMenu: "_MENU_ Resultados por página",
-                sLoadingRecords: "Carregando...",
-                sProcessing: "Processando...",
-                sZeroRecords: "Nenhum registro encontrado",
-                sSearch: "Pesquisar",
-                oPaginate: {
-                  sNext: "Próximo",
-                  sPrevious: "Anterior",
-                  sFirst: "Primeiro",
-                  sLast: "Último"
-                },
-                oAria: {
-                  sSortAscending: ": Ordenar colunas de forma ascendente",
-                  sSortDescending: ": Ordenar colunas de forma descendente"
-                }
-              }
+               
             });
             //fim tabela permissoes
   });

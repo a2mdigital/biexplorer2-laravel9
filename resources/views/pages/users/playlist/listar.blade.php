@@ -7,8 +7,8 @@
 @section('content')
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Playlists</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Listar Playlists</li>
+    <li class="breadcrumb-item"><a href="#">{{__('messages.title_link_playlist')}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{__('messages.actual_page_playlist')}}</li>
   </ol>
 </nav>
 
@@ -22,9 +22,9 @@
           <table id="playlistsTable" class="playlistsTable">
             <thead>
               <tr>
-                <th>Playlist</th>
-                <th>Tempo(Segundos)</th>
-                <th>Ações</th>
+                <th>{{__('messages.table_playlist')}}</th>
+                <th>{{__('messages.table_time_playlist')}}</th>
+                <th>{{__('messages.table_actions_playlist')}}</th>
               </tr>
             </thead>
             <tbody>
@@ -46,7 +46,19 @@
   <script src="{{ asset('assets/js/data-table.js') }}"></script>
   <script type="text/javascript">
         $(document).ready(function() {
+          function getLanguage(){
+              var lang = $('html').attr('lang');
+              if(lang == 'en'){
+                var language = '{{asset("assets/lang/data-table-en.json")}}';
+              }else{
+                var language = '{{asset("assets/lang/data-table-pt.json")}}';
+              }
+              return language
+            }
             var table = $('#playlistsTable').DataTable({
+              language: {
+                url: getLanguage(),
+              },
               "stripeClasses": [ 'strip1', 'strip2'],
                 processing: true,
                 serverSide: true,
@@ -58,29 +70,6 @@
                     {data: 'tempo_atualizacao', name: 'tempo_atualizacao'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
-                oLanguage: {
-                sEmptyTable: "Nenhum registro encontrado",
-                sInfo: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                sInfoEmpty: "Mostrando 0 até 0 de 0 registros",
-                sInfoFiltered: "(Filtrados de _MAX_ registros)",
-                sInfoPostFix: "",
-                sInfoThousands: ".",
-                sLengthMenu: "_MENU_ Resultados por página",
-                sLoadingRecords: "Carregando...",
-                sProcessing: "Processando...",
-                sZeroRecords: "Nenhum registro encontrado",
-                sSearch: "Pesquisar",
-                oPaginate: {
-                  sNext: "Próximo",
-                  sPrevious: "Anterior",
-                  sFirst: "Primeiro",
-                  sLast: "Último"
-                },
-                oAria: {
-                  sSortAscending: ": Ordenar colunas de forma ascendente",
-                  sSortDescending: ": Ordenar colunas de forma descendente"
-                }
-              }
             });
         });
       </script>

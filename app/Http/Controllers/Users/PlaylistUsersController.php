@@ -22,7 +22,7 @@ class PlaylistUsersController extends Controller
 
                       $botoes = '
                       <div style="display: flex; justify-content:flex-start">
-                        <a href="'. route('users.tenant.playlist.visualizar', $playlist->id) .'" class="btn btn-outline-primary btn-sm">Visualizar</a>     
+                        <a href="'. route('users.tenant.playlist.visualizar', $playlist->id) .'" class="btn btn-outline-primary btn-sm">'.trans('messages.btn_play_playlist').'</a>     
                         </div>
                       ';  
                  
