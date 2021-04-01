@@ -29,6 +29,8 @@ class LocalizationLanguage
         }else{
             App::setLocale('en');
         }
+
+        
       
      
         return $next($request);

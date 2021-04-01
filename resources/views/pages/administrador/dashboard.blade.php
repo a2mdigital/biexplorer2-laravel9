@@ -15,7 +15,7 @@
       <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-baseline">
-              <h6 class="card-title mb-0">Total de Usuários</h6>
+              <h6 class="card-title mb-0">{{__('messages.total_users')}}</h6>
               <div class="dropdown mb-2"><br></div>
             </div>
             <div class="row">
@@ -32,7 +32,7 @@
         <div class="card">
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-baseline">
-                  <h6 class="card-title mb-0">Relatórios Cadastrados</h6>
+                  <h6 class="card-title mb-0">{{__('messages.reports_added')}}</h6>
                   <div class="dropdown mb-2"><br></div>
                 </div>
                 <div class="row">
@@ -51,7 +51,7 @@
 <div class="col-md-12">
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
       <div>
-              <h4 class="mb-3 mb-md-0">Últimos Relatórios Adicionados</h4>
+              <h4 class="mb-3 mb-md-0">{{__('messages.last_report_add')}}</h4>
       </div>
     </div>
 </div>
@@ -74,17 +74,17 @@
         <div class="icone-subtitulo">
         <i class="icon-subtitulo" data-feather="bar-chart"></i>
         </div>
-          <span class="texto-subtitulo">Relatório</span>
+          <span class="texto-subtitulo">{{__('messages.type_report')}}</span>
          @endif
          @if($relatorio->tipo == 'dashboard')
         <div class="icone-subtitulo">
         <i class="icon-subtitulo" data-feather="pie-chart"></i>
         </div>
-          <span class="texto-subtitulo">Dashboard</span>
+          <span class="texto-subtitulo">{{__('messages.type_dashboard')}}</span>
          @endif
       </div>
       <div class="informacoes">
-        <div class="texto-informacao">Liberado:</div>
+        <div class="texto-informacao">{{__('messages.report_add_date')}}:</div>
         <span class="texto-subtitulo">{{$relatorio->created_at->format('d/m/Y')}}</span>
       </div>
       </a>  
@@ -97,23 +97,23 @@
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h6 class="card-title">Usuários</h6>
-        <p class="card-description">Informações Adicionais</p>
+        <h6 class="card-title">{{__('messages.title_table_users')}}</h6>
+        <p class="card-description">{{__('messages.information_table_users')}}</p>
         <div class="table-responsive pt-3">
           <table id="auditoriaTable" class="table table-bordered">
             <thead>
               <tr>
                 <th>
-                  Nome
+                  {{__('messages.name')}}
                 </th>
                 <th>
-                  Departamento
+                  {{__('messages.departaments_table')}}
                 </th>
                 <th>
-                  E-mail
+                  {{__('messages.email')}}
                 </th>
                 <th>
-                  Último Login
+                  {{__('messages.last_login')}}
                 </th>
               </tr>
             </thead>
@@ -167,34 +167,24 @@
         });
     });
 
+    function getLanguage(){
+      var lang = $('html').attr('lang');
+      if(lang == 'en'){
+        var language = '{{asset("assets/lang/data-table-en.json")}}';
+      }else{
+        var language = '{{asset("assets/lang/data-table-pt.json")}}';
+      }
+      return language
+    }
+    getLanguage();
     //DATATABLE
     $('#auditoriaTable').DataTable({
-     
+      language: {
+           url: getLanguage(),
+        },
       pageLength : 5,
       lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
-      oLanguage: {
-                sEmptyTable: "Nenhum registro encontrado",
-                sInfo: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                sInfoEmpty: "Mostrando 0 até 0 de 0 registros",
-                sInfoFiltered: "(Filtrados de _MAX_ registros)",
-                sInfoPostFix: "",
-                sInfoThousands: ".",
-                sLengthMenu: "_MENU_ Resultados por página",
-                sLoadingRecords: "Carregando...",
-                sProcessing: "Processando...",
-                sZeroRecords: "Nenhum registro encontrado",
-                sSearch: "Pesquisar",
-                oPaginate: {
-                  sNext: "Próximo",
-                  sPrevious: "Anterior",
-                  sFirst: "Primeiro",
-                  sLast: "Último"
-                },
-                oAria: {
-                  sSortAscending: ": Ordenar colunas de forma ascendente",
-                  sSortDescending: ": Ordenar colunas de forma descendente"
-                }
-              }
+      
     });
   
  });

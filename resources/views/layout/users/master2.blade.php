@@ -7,7 +7,7 @@ Contact: nobleui123@gmail.com
 License: You must have a valid license purchased only from https://themeforest.net/user/nobleui/portfolio/ in order to legally use the theme for your project.
 -->
 <html>
-<head>
+<head lang="{{ app()->getLocale() }}"> 
   <title>NobleUI Laravel Admin Dashboard Template</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">

@@ -4,7 +4,7 @@
 <link href="https://itsjavi.com/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css?v=1575468400921" rel="stylesheet">
 @endpush
 @section('content')
-@section('titulo-pagina', 'Relatórios')
+@section('titulo-pagina', __('messages.title_page_groups'))
 <div class="row">
 @foreach($grupos as $grupo)
 <div class="col-md-3 col-sm-3 col-xs-3">

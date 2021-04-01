@@ -85,14 +85,6 @@ class UsuarioController extends Controller
         'email' => 'required|email|unique:users,email|unique:parceiros,email',
         'password' => 'required|min:5',
         'departamento_id' => 'required'
-    ], [
-        'name.required' => 'Preencha o nome!',
-        'password.required' => 'Senha não pode ficar em branco',
-        'password.min' => 'A Senha deve conter no mínimo 5 caracteres',
-        'email.required' => 'Preencha o e-mail',
-        'email.unique' => 'E-mail já cadastrado',
-        'email.email' => 'Insira um e-mail válido',
-        'departamento_id.required' => 'Selecione um Departamento'
     ]);
         $dados = $request->all();
         $troca_senha = (isset($dados['troca_senha']) == 'on' ? 'S' : 'N');
@@ -158,14 +150,6 @@ class UsuarioController extends Controller
             'email' => 'required|email|unique:users,email,'.$id.'|unique:parceiros,email',
             'password' => 'required|min:5',
             'departamento_id' => 'required'
-        ], [
-            'name.required' => 'Preencha o nome!',
-            'password.required' => 'Senha não pode ficar em branco',
-            'password.min' => 'A Senha deve conter no mínimo 5 caracteres',
-            'email.required' => 'Preencha o e-mail',
-            'email.unique' => 'E-mail já cadastrado',
-            'email.email' => 'Insira um e-mail válido',
-            'departamento_id.required' => 'Selecione um Departamento'
         ]);
             $dados = $request->all();
          
@@ -207,7 +191,7 @@ class UsuarioController extends Controller
                $dados['departamento_id'] = $departamento->id;
                $usuario->update($dados);      
             }
-        return redirect()->route('tenant.usuarios')->with('toast_success', 'Usuário atualizado com sucesso!');      
+        return redirect()->route('tenant.usuarios')->with('toast_success', trans('messages.message_update_data'));      
                                                                        
     }
 
@@ -237,13 +221,6 @@ class UsuarioController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id.'|unique:parceiros,email',
             'password' => 'required|min:5'
-        ], [
-            'name.required' => 'Preencha o nome!',
-            'password.required' => 'Senha não pode ficar em branco',
-            'password.min' => 'A Senha deve conter no mínimo 5 caracteres',
-            'email.required' => 'Preencha o e-mail do administrador',
-            'email.unique' => 'E-mail já cadastrado',
-            'email.email' => 'Insira um e-mail válido'
         ]);
 
         $dados = $request->all();
@@ -259,7 +236,7 @@ class UsuarioController extends Controller
             'email_administrador' => $dados['email']
         ]);
        
-        return redirect()->route('dashboard-admin')->with('toast_success', 'Usuário atualizado com sucesso!');      
+        return redirect()->route('dashboard-admin')->with('toast_success', trans('messages.message_update_data'));      
      
     }
     
