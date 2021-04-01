@@ -21,6 +21,12 @@ return [
    'password' => 'Senha',
    'button_save' => 'Salvar',
    'message_update_data' => 'Dados Atualizados',
-    /*PAGINA DE GRUPOS*/
-    'title_page_groups' => 'Reports',
+    /*PAGINA RELATÓRIOS*/
+    'title_page_groups' => 'Relatórios',
+    'open_group' => 'Acessar',
+    'open_subgroup' => 'Acessar',
+    'permissions_report' => 'Permissions',
+    'report_table_name' => 'Name',
+    'report_table_actions' => 'Actions',
+    'report_button_view' => 'Visualizar'
 ];

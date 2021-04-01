@@ -17,7 +17,7 @@
      </div>
     </div>
     <div class="card-body">
-    <center><a href={{route('tenant.relatorios', $grupo->id)}} class="btn btn-outline-light">Acessar</a></center>
+    <center><a href={{route('tenant.relatorios', $grupo->id)}} class="btn btn-outline-light">{{__('messages.open_group')}}</a></center>
     </div>
  </div>   
 </div>

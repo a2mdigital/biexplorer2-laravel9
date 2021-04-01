@@ -45,7 +45,7 @@ body {
                   @endif 
                 </div>
                 <div class="mt-3">
-                  <input type="submit" value="Login" class="btn btn-primary mr-2 mb-2 mb-md-0">
+                  <input type="submit" value="{{__('auth.login')}}" class="btn btn-primary mr-2 mb-2 mb-md-0">
                   <a href="{{route('esqueceu-senha')}}"  class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                     <i class="btn-icon-prepend" data-feather="lock"></i>
                    {{__('auth.forgot_password')}}

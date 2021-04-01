@@ -176,7 +176,7 @@
       }
       return language
     }
-    getLanguage();
+  
     //DATATABLE
     $('#auditoriaTable').DataTable({
       language: {

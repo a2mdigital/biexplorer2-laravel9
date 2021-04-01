@@ -11,7 +11,7 @@
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('tenant.gruposrelatorio')}}">{{$grupo->nome}}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Relatórios</li>
+    <li class="breadcrumb-item active" aria-current="page">{{__('messages.title_page_groups')}}</li>
   </ol>
 </nav>
 
@@ -25,9 +25,9 @@
           <table id="relatoriosTable" class="relatoriosTable">
             <thead>
               <tr>
-                <th>Permissões</th>
-                <th>Nome</th>
-                <th>Ações</th>
+                <th>{{__('messages.permissions_report')}}</th>
+                <th>{{__('messages.report_table_name')}}</th>
+                <th>{{__('messages.report_table_actions')}}</th>
               </tr>
             </thead>
             <tbody>
@@ -49,13 +49,24 @@
   <script src="{{ asset('assets/js/data-table.js') }}"></script>
   <script type="text/javascript">
         $(document).ready(function() {
-         
+          function getLanguage(){
+            var lang = $('html').attr('lang');
+            if(lang == 'en'){
+              var language = '{{asset("assets/lang/data-table-en.json")}}';
+            }else{
+              var language = '{{asset("assets/lang/data-table-pt.json")}}';
+            }
+            return language
+          }
             var table = $('#relatoriosTable').DataTable({
+              language: {
+                  url: getLanguage(),
+                },
                 processing: true,
                 serverSide: true,
                 responsive: true,
                 columnDefs: [
-                    { width: "100%", targets: 1 }
+                    { width: "70%", targets: [1] }
                 ],
                 ajax: "{{ route('tenant.relatorios', request()->route('id'))}}",
                columns: [
@@ -73,29 +84,7 @@
                     {data: 'nome', name: 'nome'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
-                oLanguage: {
-                sEmptyTable: "Nenhum registro encontrado",
-                sInfo: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                sInfoEmpty: "Mostrando 0 até 0 de 0 registros",
-                sInfoFiltered: "(Filtrados de _MAX_ registros)",
-                sInfoPostFix: "",
-                sInfoThousands: ".",
-                sLengthMenu: "_MENU_ Resultados por página",
-                sLoadingRecords: "Carregando...",
-                sProcessing: "Processando...",
-                sZeroRecords: "Nenhum registro encontrado",
-                sSearch: "Pesquisar",
-                oPaginate: {
-                  sNext: "Próximo",
-                  sPrevious: "Anterior",
-                  sFirst: "Primeiro",
-                  sLast: "Último"
-                },
-                oAria: {
-                  sSortAscending: ": Ordenar colunas de forma ascendente",
-                  sSortDescending: ": Ordenar colunas de forma descendente"
-                }
-              }
+              
             });
         });
       </script>

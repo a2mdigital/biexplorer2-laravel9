@@ -22,6 +22,12 @@ return [
     'password' => 'Password',
     'button_save' => 'Submit',
     'message_update_data' => 'Data Updated Successfully',
-    /*PAGINA DE GRUPOS*/
+    /*PAGINA RELATÓRIOS*/
     'title_page_groups' => 'Reports',
+    'open_group' => 'Open',
+    'open_subgroup' => 'Open',
+    'permissions_report' => 'Permissions',
+    'report_table_name' => 'Name',
+    'report_table_actions' => 'Actions',
+    'report_button_view' => 'Open Report'
 ];
