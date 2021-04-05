@@ -22,8 +22,7 @@ body {
           <div class="col-md-8 pl-md-0 form-login">
             <div class="auth-form-wrapper px-4 py-5">
              <!-- <img src="{{asset('assets/images/logo-a2m.png')}}" width="75%"  alt="Logo"> -->
-             <img src="{{asset('assets/images/'.$imagem_login)}}" width="{{$tamanho_imagem}}"  alt="Logo">
-             <br>
+             <img src="{{asset('assets/images/'.$imagem_login)}}" width="{{$tamanho_imagem}}" style="padding-bottom: 15px;"  alt="Logo">
               <h5 class="text-muted font-weight-normal mb-4">{{__('auth.text_welcome')}}</h5>
               <form  method="POST" action="{{route('login')}}">
               @csrf 
