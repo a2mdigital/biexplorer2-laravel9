@@ -49,24 +49,56 @@
   </div>
 </div>
 <div class="row">
-<div class="col-md-5 btnCadastrar">
+<div class="col-md-3 btnCadastrar">
         <a href="{{route('parceiro.powerbi.cadastrar')}}" class="btn btn-primary btn-icon-text">
                 <i class="btn-icon-prepend" data-feather="check-square"></i>
                 Cadastrar Dados Power Bi
         </a>
 </div>
+<div class="col-md-3">
+        <button onclick="testarConexao()" class="btn btn-primary btn-icon-text">
+                <i class="btn-icon-prepend" data-feather="check-square"></i>
+                Testar Conexão
+        </button>
+</div>
 </div>
 @endsection
 @push('custom-scripts')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script type="text/javascript">
-        $(document).ready(function() {
-            var cadastro = $('#powerbiTable >tbody >tr').length;
-            if(cadastro > 0){
-               $('.btnCadastrar').hide(); 
-            }else{
-                $('.btnCadastrar').show(); 
-            }
 
-        });
+ function testarConexao(){
+
+    $.ajax({
+                              method: "GET",
+                              url:'{{route("parceiro.powerbi.testarconexao")}}',
+                              success: function(data) {
+                               if(data.resposta == 'ok'){
+                                Swal.fire(
+                                'OK',
+                                'Conexão testada com sucesso',
+                                'success'
+                              );
+                               }else{
+                                Swal.fire(
+                                'Erro',
+                                'Não foi possível realizar a conexão, verifique as configurações!',
+                                'error'
+                              );
+                               }
+                              }
+    });
+  }    
+$(document).ready(function() {
+    var cadastro = $('#powerbiTable >tbody >tr').length;
+    if(cadastro > 0){
+      $('.btnCadastrar').hide(); 
+    }else{
+      $('.btnCadastrar').show(); 
+    }
+
+ 
+
+});
 </script>
 @endpush
