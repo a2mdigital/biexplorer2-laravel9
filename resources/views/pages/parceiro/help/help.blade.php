@@ -98,22 +98,45 @@
     <div class="card-header" id="headingThree">
       <h2 class="mb-0">
         <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-         3 - Configuração da Conta no Portal
+         3 - Desabilitar Autenticação 2 Fatores Portal Azure
         </button>
       </h2>
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
       <div class="card-body">
-       <p>3.1 - Acesse o menu <a href="{{route('parceiro.powerbi')}}"><i class="link-icon" data-feather="pocket"></i> <span class="link-title">Power BI</span></a> aqui da Plataforma</p>
-       <p>3.2 - Clique no botão Cadastrar Dados Power BI</p> 
+       <p><b>3.1 - Dentro do <a href="https://portal.azure.com" target="_blank">Portal Azure</a> </p>
+       <p>3.2 - Acessar o menu e ir em Azure Active Directory</p> 
+       <br> <img src="{{asset('assets/images/help/4.png')}}" width="40%"/><br><br>   
+       <p>3.3 - No menu clique em Propriedades</p> 
+       <br> <img src="{{asset('assets/images/help/20.png')}}" width="40%"/><br><br>
+       <p>3.4 - A Direita, role a tela para baixo e clique no link Gerenciar Padrões de Segurança</p> 
+       <br> <img src="{{asset('assets/images/help/21.png')}}" width="40%"/><br><br>
+       <p>3.5 - Selecione a opção Não e clique em Salvar</p> 
+       <br> <img src="{{asset('assets/images/help/22.png')}}" width="40%"/><br><br>
+      </div>
+    </div>
+    </b>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingFour">
+      <h2 class="mb-0">
+        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+         4 - Configuração da Conta no Portal
+        </button>
+      </h2>
+    </div>
+    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+      <div class="card-body">
+       <p>4.1 - Acesse o menu <a href="{{route('parceiro.powerbi')}}"><i class="link-icon" data-feather="pocket"></i> <span class="link-title">Power BI</span></a> aqui da Plataforma</p>
+       <p>4.2 - Clique no botão Cadastrar Dados Power BI</p> 
        <br> <img src="{{asset('assets/images/help/19.png')}}" width="80%"/><br><br>  
        <p>
-        <b>3.3 - Preencher os dados com:</b><br>
-        3.31 - Seu usuário do Power BI PRO<br>
-        3.32 - Sua Senha do Power BI PRO<br>
-        3.33 - Seu Client ID que você pegou no <b>item 2.6 do Passo 2</b> que é o ID DO APLICATIVO<br>
-        3.34 - Seu Client Secret que você pegou no <b>item 2.9 do Passo 2</b><br>
-        3.35 - Seu Diretório ID que você pegou no <b>item 2.6 do Passo 2</b> que é o ID DO DIRETÓRIO(LOCATÁRIO)<br>
+        <b>4.3 - Preencher os dados com:</b><br>
+        4.31 - Seu usuário do Power BI PRO<br>
+        4.32 - Sua Senha do Power BI PRO<br>
+        4.33 - Seu Client ID que você pegou no <b>item 2.6 do Passo 2</b> que é o ID DO APLICATIVO<br>
+        4.34 - Seu Client Secret que você pegou no <b>item 2.9 do Passo 2</b><br>
+        4.35 - Seu Diretório ID que você pegou no <b>item 2.6 do Passo 2</b> que é o ID DO DIRETÓRIO(LOCATÁRIO)<br>
         <br>
          <b>Para testar o funcionamento, basta ir no menu Relatórios e adicionar um novo Relatório</b>
        </p>
