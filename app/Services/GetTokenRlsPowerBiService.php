@@ -383,8 +383,8 @@ public static function getTokenRlsRelatorioDepartamento(Relatorio $relatorio, Re
 //RLS POR USUÁRIO
 public static function getTokenRlsUser(Relatorio $relatorio, User $user){
     $dadosPowerBi = PowerBiParceiro::get()->first();
-
-    $user = $dadosPowerBi->user_powerbi;
+ 
+    $user_powerbi = $dadosPowerBi->user_powerbi;
     $password = Crypt::decryptString($dadosPowerBi->password_powerbi);
     $clientId = $dadosPowerBi->client_id;
     $clientSecret = $dadosPowerBi->client_secret;
@@ -425,7 +425,7 @@ public static function getTokenRlsUser(Relatorio $relatorio, User $user){
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
                     'grant_type'    => 'password',
-                    'username'      => $user,
+                    'username'      => $user_powerbi,
                     'password'      => $password,
                     'scope'         => 'openid',
                 ]
