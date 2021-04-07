@@ -105,6 +105,7 @@ class RelatorioController extends Controller
     public function listarRelatorios(Request $request, $subgrupo){
        
         $subgrupo = SubGrupoRelatorio::findOrFail($subgrupo);
+        $grupo = GrupoRelatorioParceiro::findOrFail($subgrupo->grp_rel_parceiro_id);
         if ($request->ajax()) {
             return Datatables::of(Relatorio::query()->where('subgrupo_relatorio_id', '=', $subgrupo->id))
                     ->addIndexColumn()
@@ -130,7 +131,7 @@ class RelatorioController extends Controller
                     ->make(true);
         }
         
-        return view('pages.parceiro.relatorios.listar', compact('subgrupo'));
+        return view('pages.parceiro.relatorios.listar', compact('grupo', 'subgrupo'));
     }
 
     public function cadastrarRelatorio($subgrupo){

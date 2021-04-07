@@ -31,6 +31,7 @@ iframe{
      Atualizar
     </button>
 </div>
+
 @endsection
 @section('content')
 <input type="hidden" name="token" id="token" value="{{$token}}">
@@ -74,6 +75,7 @@ iframe{
         // Displays the report in full screen mode.
         report.refresh();
     }
+
     $(document).ready(function() {
     
         //ESCONDE A NAVBAR AO ROLAR A PAGINA

@@ -76,17 +76,12 @@ class Handler extends ExceptionHandler
         
         if ($exception instanceof \ErrorException) {
             return response()->view('pages.error.500', [], 500);
-        } else {
-            return parent::render($request, $exception);
-        }
-        
+        } 
 
-
+        // ERRO 419
         if ($exception instanceof TokenMismatchException) {
             return response()->view('pages.auth.login', [], 419);
-        } else {
-            return parent::render($request, $exception);
-        }
+        } 
         */
 
         return parent::render($request, $exception);

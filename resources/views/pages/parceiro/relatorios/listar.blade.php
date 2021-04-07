@@ -9,6 +9,7 @@
 
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{route('parceiro.gruposrelatorio')}}">{{$grupo->nome}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('parceiro.subgrupos.relatorios', $subgrupo->grp_rel_parceiro_id)}}">{{$subgrupo->nome}}</a></li>
     <li class="breadcrumb-item active" aria-current="page">Relatórios</li>
   </ol>
