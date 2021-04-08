@@ -11,7 +11,6 @@
   <div class="col-12 col-xl-12 stretch-card">
     <div class="row flex-grow">
       <div class="col-md-4 grid-margin stretch-card">
-      <a href="{{ route('tenant.usuarios') }}">
       <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-baseline">
@@ -20,15 +19,13 @@
             </div>
             <div class="row">
               <div class="col-6 col-md-12 col-xl-5">
-                <h3 class="mb-2 contador">{{count($users)}}</h3> 
+              <a href="{{ route('tenant.usuarios') }}"><h3 class="mb-2 contador">{{count($users)}}</h3></a>
               </div>
-            </div>
+            </div> 
           </div>
         </div>
-        </a>
       </div>
       <div class="col-md-4 grid-margin stretch-card">
-      <a href="{{ route('tenant.gruposrelatorio') }}">
         <div class="card">
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-baseline">
@@ -37,12 +34,11 @@
                 </div>
                 <div class="row">
                   <div class="col-6 col-md-12 col-xl-5">
-                    <h3 class="mb-2 contador">{{$total_relatorios_tenant}}</h3>
+                  <a href="{{ route('tenant.gruposrelatorio') }}"> <h3 class="mb-2 contador">{{$total_relatorios_tenant}}</h3></a>
                   </div>
                 </div>
               </div>
         </div>
-        </a>
       </div>
     </div>
   </div>
