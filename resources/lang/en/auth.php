@@ -18,7 +18,7 @@ return [
     'password' => 'Password',
     'login' => 'Sign in',
     'forgot_password' => 'Forgot Your Password?',
-    'text_welcome' => 'Welcome! Insert your credentials',
+    'text_welcome' => 'Welcome! Sign in to your account.',
     'text_forgot_password' => 'E-mail Address',
     'text_button_forgot_password' => 'Send Password Reset Link',
     'message_forgot_password' => 'We have e-mailed your password reset link!',
