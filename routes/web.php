@@ -151,7 +151,7 @@ Route::group(['prefix' => 'parceiro', 'middleware' => 'auth:parceiro'], function
      /*FIM ROTAS PERMISSAO RELATORIOS*/
 });
 //ROTAS DE ADMINISTRADORES
-Route::group(['prefix' => 'admin', 'middleware' => ['auth:web','admin', 'checksinglesession']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth:web','admin', 'checksinglesession']], function () { 
  Route::post('admin-logout', [LoginController::class,'adminLogout'])->name('admin.logout');   
  Route::get('/dashboard', [DashboardAdmController::class, 'indexDashboard'])->name('dashboard-admin');
  Route::put('/tenant/custom-menu-color/salvar', [DashboardAdmController::class, 'salvarCustomMenuColor'])->name('tenant.custommenu.color.salvar');
@@ -237,7 +237,11 @@ Route::group(['prefix' => 'users','middleware' => ['auth:web','checksinglesessio
   /*FIM ROTA TOKEN POWER BI*/
 });
 /*FIM ROTAS USUÁRIOS */
-
+/*
+Route::group(['prefix' => 'login', 'middleware' => ['auth:web']], function () {
+    Route::get('pre-login', [LoginController::class,'preLogin'])->name('pre-login');   
+});
+*/
 Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');
     return "Cache is cleared";

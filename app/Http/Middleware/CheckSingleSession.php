@@ -20,20 +20,20 @@ class CheckSingleSession
     {
      
             $previous_session = Auth::user()->session_id;
-    
+           
             if ($previous_session !== Session::getId()) {
+          
+                    Session::getHandler()->destroy($previous_session);
+        
+                    $request->session()->regenerate();
+                  
+                    Auth::user()->session_id = Session::getId();
             
+                    Auth::user()->save();
                
-                Session::getHandler()->destroy($previous_session);
-        
-                $request->session()->regenerate();
-              
-                Auth::user()->session_id = Session::getId();
-        
-                Auth::user()->save();
             }
             
-        return $next($request);
-        
+            return $next($request);
+             
     }
 }

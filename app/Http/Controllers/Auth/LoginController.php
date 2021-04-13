@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
 use Carbon\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginController extends Controller
 {
@@ -131,6 +132,12 @@ class LoginController extends Controller
         }
     }
 
+    /*
+    public function preLogin(){
+        alert()->question('Title','Lorem Lorem Lorem');
+
+    }
+    */
     public function parceiroLogout(Request $request){
 
         $rota_parceiro = Auth::guard('parceiro')->user()->rota_login_logout;
@@ -143,20 +150,16 @@ class LoginController extends Controller
         Auth::guard('parceiro')->logout();
 
         return redirect()->route('form-login')->with('toast_success', trans('auth.logout'));
-        /*
-        if($rota_parceiro == 'padrao'){
-             return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
-        }else{
-              return redirect()->route($rota_parceiro)->with('toast_success', 'Sessão Finalizada');
-        }
-        */
+       
         
     }
 
     public function adminLogout(Request $request){
         $tenant_user = TenantUser::first();
         $parceiro = $tenant_user->parceiro()->first();
-        
+        //gravar que o usuário saiu..
+        Auth::user()->session_id = 'offline';
+        Auth::user()->save();
         header("cache-Control:no-store,no-cache, must-revalidate");
         header("cache-Control:post-check=0,pre-check=0",false);
         header("Pragma:no-cache");
@@ -166,19 +169,15 @@ class LoginController extends Controller
         Auth::guard('web')->logout();
 
         return redirect()->route('form-login')->with('toast_success', trans('auth.logout'));
-        /*
-        if($parceiro->rota_login_logout == 'padrao'){
-            return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
-       }else{
-             return redirect()->route($parceiro->rota_login_logout)->with('toast_success', 'Sessão Finalizada');
-       }
-       */
+      
     }
 
     public function userLogout(Request $request){
         $tenant_user = TenantUser::first();
         $parceiro = $tenant_user->parceiro()->first();
-        
+        //gravar que o usuário saiu..
+        Auth::user()->session_id = 'offline';
+        Auth::user()->save();
         header("cache-Control:no-store,no-cache, must-revalidate");
         header("cache-Control:post-check=0,pre-check=0",false);
         header("Pragma:no-cache");
@@ -188,13 +187,7 @@ class LoginController extends Controller
         Auth::guard('web')->logout();
 
         return redirect()->route('form-login')->with('toast_success', trans('auth.logout'));
-        /*
-        if($parceiro->rota_login_logout == 'padrao'){
-            return redirect()->route('form-login')->with('toast_success', 'Sessão Finalizada');
-       }else{
-             return redirect()->route($parceiro->rota_login_logout)->with('toast_success', 'Sessão Finalizada');
-       }
-       */
+       
         
     }
 

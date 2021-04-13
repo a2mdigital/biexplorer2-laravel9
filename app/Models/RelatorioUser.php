@@ -17,6 +17,7 @@ class RelatorioUser extends Model
         'user_id',
         'relatorio_id',
         'tenant_id',
+        'utiliza_filtro',
         'tipo_filtro',
         'filtro_tabela',
         'filtro_coluna',

@@ -168,6 +168,7 @@ class RelatorioUsersController extends Controller
                         $regra = 'rls_usuario';
                         break;
                     case "filtro_relatorio":
+                      
                         if($relatorios_user != null){
                             //VERIFICO SE O RELATÓRIO FOI DEFINIDO POR USUÁRIO
                           if($relatorios_user->utiliza_filtro == 'S'){
@@ -286,6 +287,7 @@ class RelatorioUsersController extends Controller
                 'ultima_hora_acessada' => Carbon::now('America/Sao_Paulo') 
                 ]
             );
+           
             return view('pages.users.relatorios.visualizar', compact('relatorio', 'token', 'tenant', 'user', 'departamento', 'regra', 'regra_tenant', 'relatorios_user', 'relatorios_departamento'));   
         }
     

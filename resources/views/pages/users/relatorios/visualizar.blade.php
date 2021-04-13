@@ -150,6 +150,7 @@ iframe{
           //VERIFICO PRIMEIRO O RLS DO TENANT 
           if(utiliza_rls_tenant == 'S'){
             //ABRIR RLS POR TENANT
+          
             abrirRelatorioRLS(token, report_id, filtro_lateral);
           }else if(utiliza_filtro_tenant == 'S'){
           //ABRIR RELATÓRIO COM FILTRO DE EMPRESA
@@ -390,26 +391,157 @@ iframe{
         function abrirRelatorioRLS(token, report_id, filtro_lateral){
            //MOSTRAR RELATÓRIO POWER BI COM RLS
          
-             var models = window['powerbi-client'].models;
-             var EmbedUrlReport = "https://app.powerbi.com/reportEmbed";
-             var tokenTypeReport = 0;
-             var permissions = models.Permissions.All;
-             var grTipoPowerBi = 'report';
-             var config = {
-                  type: 'report',
-                  tokenType: tokenTypeReport == '1' ? models.TokenType.Aad : models.TokenType.Embed,
-                  accessToken: token,
-                  embedUrl: EmbedUrlReport,
-                  id: report_id,
-                  permissions: permissions,
-                  settings: {
-                    filterPaneEnabled: filtro_lateral,
-                    navContentPaneEnabled: true
+            //VERIFICAR SE TEM FILTRO
+            var regra_filtro_rls = $('#regra_filtro_rls').val(); 
+            switch(regra_filtro_rls){
+              case 'filtro_relatorio_usuario':
+            
+                var filtro_tabela_relatorio_usuario = $('#filtro_tabela_relatorio_usuario').val();
+                var filtro_coluna_relatorio_usuario = $('#filtro_coluna_relatorio_usuario').val();
+                var filtro_valor_relatorio_usuario = $('#filtro_valor_relatorio_usuario').val().toString().split(',');
+                /*VERIFICO SE É DIGITADO NUMERO INTEIRO OU STRING*/
+                var array_valor_relatorio_usuario  = [];
+                $(filtro_valor_relatorio_usuario).each(function(key, value) {
+                  if($.isNumeric(value)){
+                          array_valor_relatorio_usuario.push(parseInt(value))
+                        }else{
+                          array_valor_relatorio_usuario.push(value)
+                        }
+                });
+                  var filtros_relatorio_usuario = {
+                              $schema: "http://powerbi.com/product/schema#basic",
+                              target: {
+                                          table: filtro_tabela_relatorio_usuario,
+                                          column: filtro_coluna_relatorio_usuario
+                                      },
+                              operator: "In",
+                              values: array_valor_relatorio_usuario,
+                              displaySettings: {
+                                  isLockedInViewMode: true
+                              }
+                  };
+                  var filtros = [filtros_relatorio_usuario];
+       
+                break;
+              case 'filtro_relatorio_departamento': 
+             
+                  var filtro_tabela_departamento = $('#filtro_tabela_departamento').val();
+                  var filtro_coluna_departamento = $('#filtro_coluna_departamento').val();
+                  var filtro_valor_departamento = $('#filtro_valor_departamento').val().toString().split(',');
+                  /*VERIFICO SE É DIGITADO NUMERO INTEIRO OU STRING*/
+                  var array_valor_relatorio_departamento  = [];
+                  $(filtro_valor_departamento).each(function(key, value) {
+                    if($.isNumeric(value)){
+                      array_valor_relatorio_departamento.push(parseInt(value))
+                    }else{
+                      array_valor_relatorio_departamento.push(value)
+                    }
+                  });
+                  var filtros_relatorio_departamento = {
+                              $schema: "http://powerbi.com/product/schema#basic",
+                              target: {
+                                          table: filtro_tabela_departamento,
+                                          column: filtro_coluna_departamento
+                                      },
+                              operator: "In",
+                              values: array_valor_relatorio_departamento,
+                              displaySettings: {
+                                  isLockedInViewMode: true
+                              }
+                  };
+                  var filtros = [filtros_relatorio_departamento];
+         
+                break;
+              case 'filtro_usuario': 
+               
+                var filtro_tabela_usuario = $('#filtro_tabela_usuario').val();
+                var filtro_coluna_usuario = $('#filtro_coluna_usuario').val();
+                var filtro_valor_usuario = $('#filtro_valor_usuario').val().toString().split(',');
+                /*VERIFICO SE É DIGITADO NUMERO INTEIRO OU STRING*/
+                var array_valor_usuario  = [];
+                $(filtro_valor_usuario).each(function(key, value) {
+                  if($.isNumeric(value)){
+                    array_valor_usuario.push(parseInt(value))
+                  }else{
+                    array_valor_usuario.push(value)
                   }
-              };
+                });
+                var filtros_por_usuario = {
+                              $schema: "http://powerbi.com/product/schema#basic",
+                              target: {
+                                          table: filtro_tabela_usuario,
+                                          column: filtro_coluna_usuario
+                                      },
+                              operator: "In",
+                              values: array_valor_usuario,
+                              displaySettings: {
+                                  isLockedInViewMode: true
+                              }
+                  };
+                  var filtros = [filtros_por_usuario];
+             
+                break;  
+              case 'filtro_departamento': 
+           
+                var filtro_tabela_departamento = $('#filtro_tabela_departamento').val();
+                var filtro_coluna_departamento = $('#filtro_coluna_departamento').val();
+                var filtro_valor_departamento = $('#filtro_valor_departamento').val().toString().split(',');
+                /*VERIFICO SE É DIGITADO NUMERO INTEIRO OU STRING*/
+                var array_valor_departamento  = [];
+                $(filtro_valor_departamento).each(function(key, value) {
+                  if($.isNumeric(value)){
+                    array_valor_departamento.push(parseInt(value))
+                  }else{
+                    array_valor_departamento.push(value)
+                  }
+                });
+                var filtros_por_departamento = {
+                              $schema: "http://powerbi.com/product/schema#basic",
+                              target: {
+                                          table: filtro_tabela_departamento,
+                                          column: filtro_coluna_departamento
+                                      },
+                              operator: "In",
+                              values: array_valor_departamento,
+                              displaySettings: {
+                                  isLockedInViewMode: true
+                              }
+                  };
+                  var filtros = [filtros_por_departamento];
+            
+                break;  
+                default:
+                 
+                var filtros = [];
 
-            var embedContainer = $('#powerBI')[0];
-            var report = powerbi.embed(embedContainer, config);
+                break;
+            }
+
+             //CASO NÃO TIVER NENHUM FILTRO ABRO SÓ O RLS DO TENANT
+             var models = window['powerbi-client'].models;
+                var EmbedUrlReport = "https://app.powerbi.com/reportEmbed";
+                var tokenTypeReport = 0;
+                var permissions = models.Permissions.All;
+                var grTipoPowerBi = 'report';
+                var config = {
+                      type: 'report',
+                      tokenType: tokenTypeReport == '1' ? models.TokenType.Aad : models.TokenType.Embed,
+                      accessToken: token,
+                      embedUrl: EmbedUrlReport,
+                      id: report_id,
+                      permissions: permissions,
+                      filters:filtros,
+                      settings: {
+                        filterPaneEnabled: filtro_lateral,
+                        navContentPaneEnabled: true
+                      }
+                  };
+
+                var embedContainer = $('#powerBI')[0];
+                var report = powerbi.embed(embedContainer, config);
+
+            //FIM VERIFICAR SE TEM FILTROS TBM
+            
         }
         //FUNÇÕES DE ABRIR OS RELATÓRIOS
         //ABRIR RELATÓRIOS COM FILTRO DE TENANT + OUTROS FILTROS JUNTOS COMO DEPARTAMENTO, USUÁRIO,ETC..

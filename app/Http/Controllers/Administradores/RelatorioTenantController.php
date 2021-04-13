@@ -185,6 +185,7 @@ class RelatorioTenantController extends Controller
      }
  
      public function salvarPermissaoRelatorioUsuarios(Request $request){
+        
          //valida o formulario
          $this->validate($request, [
              'user_id' => 'required',
@@ -192,15 +193,13 @@ class RelatorioTenantController extends Controller
                  'user_id.required' => 'Selecione um Usuário',
              ]);
          $dados = $request->all();
+         
          $utiliza_filtro = (isset($dados['utiliza_filtro']) == 'on' ? 'S' : 'N'); 
          $utiliza_rls = (isset($dados['utiliza_rls']) == 'on' ? 'S' : 'N'); 
        
              RelatorioUser::create([
                  'user_id' => $dados['user_id'],
                  'relatorio_id' => $dados['id_relatorio'],
-                 'favorito' => '',
-                 'ultima_hora_acessada' => null,
-                 'qtd_acessos' => 0,
                  'utiliza_filtro' => $utiliza_filtro,
                  'tipo_filtro' => '',
                  'filtro_tabela' => $dados['filtro_tabela'],
