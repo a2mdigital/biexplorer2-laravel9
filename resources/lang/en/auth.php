@@ -16,6 +16,8 @@ return [
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'password' => 'Password',
+    'confirm_password' => 'Confirm Passord',
+    'btn_change_password' => 'Submit',
     'login' => 'Sign in',
     'forgot_password' => 'Forgot Your Password?',
     'text_welcome' => 'Welcome! Sign in to your account.',

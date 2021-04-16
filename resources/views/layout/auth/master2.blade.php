@@ -1,12 +1,5 @@
 <!DOCTYPE html>
-<!--
-Template Name: NobleUI - Laravel Admin Dashboard Template
-Author: NobleUI
-Website: https://www.nobleui.com
-Contact: nobleui123@gmail.com
-License: You must have a valid license purchased only from https://themeforest.net/user/nobleui/portfolio/ in order to legally use the theme for your project.
--->
-<html>
+<html lang="{{ app()->getLocale() }}">
 <head>
   <title>BI - EXPLORER</title>
   <meta charset="utf-8">

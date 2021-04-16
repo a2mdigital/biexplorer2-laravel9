@@ -4,7 +4,7 @@
 @section('content')
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Usuário</a></li>
+    <li class="breadcrumb-item"><a href="#">{{__('messages.link_back_users')}}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{__('messages.title_edit_user')}}</li>
   </ol>
 </nav> 

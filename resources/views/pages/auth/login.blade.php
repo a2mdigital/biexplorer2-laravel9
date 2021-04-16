@@ -16,13 +16,15 @@ body {
 <div class="page-content d-flex align-items-center justify-content-center">
 
   <div class="row w-100 mx-0 auth-page">
-    <div class="col-md-8 col-xl-6 mx-auto">
+    <div class="col-md-6 col-xl-4 mx-auto">
       <div class="card">
         <div class="row">
-          <div class="col-md-8 pl-md-0 form-login">
+          <div class="col-md-11 pl-md-0 form-login">
             <div class="auth-form-wrapper px-4 py-5">
              <!-- <img src="{{asset('assets/images/logo-a2m.png')}}" width="75%"  alt="Logo"> -->
+             <div id="logo" style="text-align: center;">
              <img src="{{asset('assets/images/'.$imagem_login)}}" width="{{$tamanho_imagem}}" style="padding-bottom: 15px;"  alt="Logo">
+             </div>
               <h5 class="text-muted font-weight-normal mb-4">{{__('auth.text_welcome')}}</h5>
               <form  method="POST" action="{{route('login')}}">
               @csrf 
@@ -44,13 +46,13 @@ body {
                     </label>
                   @endif 
                 </div>
-                <div class="mt-3">
-                  <input type="submit" value="{{__('auth.login')}}" class="btn btn-primary mr-2 mb-2 mb-md-0">
-                  <a href="{{route('esqueceu-senha')}}"  class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
+               <div class="mt-3">
+                <input type="submit" value="{{__('auth.login')}}" class="btn btn-primary mr-2 mb-2 mb-md-0">
+                <a href="{{route('esqueceu-senha')}}"  class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                     <i class="btn-icon-prepend" data-feather="lock"></i>
                    {{__('auth.forgot_password')}}
                   </a>
-                </div>
+                </div> 
              </form>
             </div>
           </div>

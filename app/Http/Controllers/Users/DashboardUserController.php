@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 use Auth;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Parceiro;
 use App\Models\Relatorio;
 use App\Models\TenantUser;
 use App\Models\UserTenant;
@@ -59,9 +60,20 @@ class DashboardUserController extends Controller
     }
     
     public function trocarSenhaInicial(){
-      
         $usuario = Auth::guard('web')->user();
-        return view('pages.users.users.trocar-senha-inicial', compact('usuario'));
+        $subdomain = explode('.', request()->getHost());
+        $img = Parceiro::select('imagem_login', 'tamanho_imagem_login', 'fundo_imagem_login')
+            ->where('subdomain', $subdomain[0])->first();
+        if(!$img){
+            $imagem_login = 'logo-a2m.png';
+            $tamanho_imagem = '75%';
+            $background = 'bg.jpg';
+        }else{
+            $imagem_login = $img->imagem_login;
+            $tamanho_imagem = $img->tamanho_imagem_login;
+            $background = $img->fundo_imagem_login;
+        }
+        return view('pages.users.users.trocar-senha-inicial', compact('usuario', 'background'));
     }
     public function atualizarSenhaInicial(Request $request, $id){
 
