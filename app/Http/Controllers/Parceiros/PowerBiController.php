@@ -99,9 +99,9 @@ class PowerBiController extends Controller
        //testar conexão power bi
         if(Auth::guard('parceiro')->check()){
             $parceiro_id = auth()->user()->id;
-            dd($parceiro_id);
+          
         }
-
+        dd($parceiro_id);
         $dadosPowerBi = PowerBiParceiro::withoutGlobalScopes()->find($parceiro_id);  
         $user = $dadosPowerBi->user_powerbi;
         $password = Crypt::decryptString($dadosPowerBi->password_powerbi);
