@@ -102,7 +102,7 @@ class PowerBiController extends Controller
           
         }
        
-        $dadosPowerBi = PowerBiParceiro::withoutGlobalScopes()->find($parceiro_id);  
+        $dadosPowerBi = PowerBiParceiro::withoutGlobalScopes()->where('parceiro_id',$parceiro_id);  
         dd($dadosPowerBi);
         $user = $dadosPowerBi->user_powerbi;
         $password = Crypt::decryptString($dadosPowerBi->password_powerbi);
