@@ -73,6 +73,9 @@
                               method: "GET",
                               url:'{{route("parceiro.powerbi.testarconexao")}}',
                               success: function(data) {
+                                console.log(data);
+                              
+                                /*
                                if(data.resposta == 'ok'){
                                 Swal.fire(
                                 'OK',
@@ -86,6 +89,7 @@
                                 'error'
                               );
                                }
+                               */
                               }
     });
   }    

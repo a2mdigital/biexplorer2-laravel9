@@ -102,6 +102,7 @@ class PowerBiController extends Controller
         }
 
         $dadosPowerBi = PowerBiParceiro::withoutGlobalScopes()->find($parceiro_id);  
+        dd($dadosPowerBi);
         $user = $dadosPowerBi->user_powerbi;
         $password = Crypt::decryptString($dadosPowerBi->password_powerbi);
         $clientId = $dadosPowerBi->client_id;
@@ -140,11 +141,14 @@ class PowerBiController extends Controller
             );
 
         $body = json_decode($response->getBody()->getContents(), true);
-       // dd($body);
+            
+     
         return ['resposta' => 'ok'];
         } catch (ClientException $e) {
+            dd($e);
             return ['resposta' => 'erro'];
         }catch (ConnectException $e) {
+            dd($e);
             return ['resposta' => 'erro'];
         }
        
