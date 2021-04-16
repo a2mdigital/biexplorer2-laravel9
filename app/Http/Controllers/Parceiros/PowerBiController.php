@@ -96,7 +96,7 @@ class PowerBiController extends Controller
     }
 
     public function testarConexao(){
-      
+       //testar conexão power bi
         if(Auth::guard('parceiro')->check()){
             $parceiro_id = auth()->user()->id;
         }
