@@ -22,8 +22,9 @@
           <input type="hidden" name="subgrupo_relatorio_id" id="subgrupo_relatorio_id" value="{{$relatorio->subgrupo_relatorio_id}}">
           <input type="hidden" name="utilizafiltrorls" id="utilizafiltrorls" value="{{$relatorio->utiliza_filtro_rls}}"> 
           <input type="hidden" name="nivelfiltrorls" id="nivelfiltrorls" value="{{$nivel_filtro_rls}}"> 
+          <input type="hidden" name="grupo_relatorio_id" id="grupo_relatorio_id" value="{{$grupo_relatorio_id}}">
             <div class="row">
-              <div class="col-sm-5">
+              <div class="col-sm-4">
                 <div class="form-group {{$errors->has('nome') ? 'has-danger' : ''}}">
                   <label class="control-label">Nome</label>
                   <input type="text" value="{{$relatorio->nome}}" class="form-control {{$errors->has('nome') ? 'form-control-danger' : ''}}" name="nome" placeholder="Nome do Relatório">
@@ -86,6 +87,28 @@
                   </div>
               </div><!-- Col -->
             </div>
+            <div class="row">
+              <div class="col-sm-4">
+                  <div class="form-group {{$errors->has('subgrupo_relatorio_id') ? 'has-danger' : ''}}">
+                    <label class="control-label">Selecione o Grupo</label>
+                        <select class="subgrupo-relatorio w-100 form-control {{$errors->has('subgrupo_relatorio_id') ? 'form-control-danger' : ''}}" name="subgrupo_relatorio_id" id="subgrupo_relatorio_id">
+                        <option value="">Selecione o Grupo</option>
+                        @foreach($subgrupos as $subgrupo)
+                          @if($relatorio->subgrupo_relatorio_id == $subgrupo->id)
+                                <option value="{{$subgrupo->id}}" selected="selected">{{$subgrupo->nome}}</option>
+                          @else 
+                          <option value="{{$subgrupo->id}}">{{$subgrupo->nome}}</option>
+                          @endif      
+                        @endforeach
+                        </select>
+                        @if($errors->has('subgrupo_relatorio_id'))
+                        <label id="name-error" class="error mt-2 text-danger" for="departamento_id">
+                          {{$errors->first('subgrupo_relatorio_id')}}
+                        </label>
+                      @endif
+                  </div>
+              </div>
+            </div>
             <button type="submit" class="btn btn-primary submit">Salvar</button>  
           </form>
       </div>
@@ -99,7 +122,11 @@
 @push('custom-scripts')
 <script type="text/javascript">
  $(document).ready(function() {
-
+  if ($(".subgrupo-relatorio").length) {
+    $(".subgrupo-relatorio").select2({
+      tags:true
+    });
+    } 
       //esconde os filtros ao carregar a pagina
    $("#linhaFiltros").hide();
    $("#linhaRls").hide();   

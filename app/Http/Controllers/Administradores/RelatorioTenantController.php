@@ -121,13 +121,13 @@ class RelatorioTenantController extends Controller
          //GERAR TOKEN RLS OU TOKEM SEM RLS
          if($tenant->utiliza_rls == 'S'){
             $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant);  
-           
+     
          }else{
             $resposta = GetTokenPowerBiService::getToken();  
         
          }
        
-         
+        
          if($resposta['resposta'] == 'ok'){
              $token = $resposta['token'];
          }else{

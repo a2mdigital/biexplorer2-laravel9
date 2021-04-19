@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Parceiros;
 use Alert;
 use App\Models\Tenant;
 use App\Models\Relatorio;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PowerBiParceiro;
 use App\Models\SubGrupoRelatorio;
@@ -105,15 +106,18 @@ class RelatorioController extends Controller
     public function listarRelatorios(Request $request, $subgrupo){
        
         $subgrupo = SubGrupoRelatorio::findOrFail($subgrupo);
+     
+       
         $grupo = GrupoRelatorioParceiro::findOrFail($subgrupo->grp_rel_parceiro_id);
         if ($request->ajax()) {
+           
             return Datatables::of(Relatorio::query()->where('subgrupo_relatorio_id', '=', $subgrupo->id))
                     ->addIndexColumn()
                     ->addColumn('action', function($relatorio){
 
                       $botoes = '
                       <div style="display: flex; justify-content:flex-start">
-                        <a href="'. route('parceiro.relatorio.editar', $relatorio->id) .'" class="edit btn btn-primary btn-sm">Editar</a>
+                        <a href="'. route('parceiro.relatorio.editar', [$relatorio->id]) .'" class="edit btn btn-primary btn-sm">Editar</a>
 
                             <form action="'. route('parceiro.relatorio.excluir',[$relatorio->subgrupo_relatorio_id, $relatorio->id]). '" style="margin-left: 3px;" method="POST">
                             '.csrf_field().'
@@ -290,10 +294,13 @@ class RelatorioController extends Controller
 
     }
 
-    public function editarRelatorio(Request $request, $id){
+    public function editarRelatorio(Request $request,$id){
         
         $relatorio = Relatorio::findOrFail($id);
-
+        $subgrupos = SubGrupoRelatorio::get();
+        $subGrupoRelatorio = SubGrupoRelatorio::find($relatorio->subgrupo_relatorio_id);
+        $grupo_relatorio_id = $subGrupoRelatorio->grp_rel_parceiro_id;
+      
         if($relatorio->utiliza_filtro_rls == 'S'){
             $utiliza_filtro_rls = 'S';
         }else{
@@ -307,19 +314,27 @@ class RelatorioController extends Controller
             $nivel_filtro_rls = '';  
         }
      
-        return view('pages.parceiro.relatorios.editar', compact('relatorio', 'utiliza_filtro_rls', 'nivel_filtro_rls'));
+        return view('pages.parceiro.relatorios.editar', compact('relatorio', 'utiliza_filtro_rls', 'nivel_filtro_rls', 'subgrupos', 'grupo_relatorio_id'));
     }
 
     public function atualizarRelatorio(Request $request, $id){
         //valida o formulario
         $this->validate($request, [
             'nome' => 'required',
+            'subgrupo_relatorio_id' => 'required'
             ], [
                 'nome.required' => 'Digite um Nome para o Relatório',
+                'subgrupo_relatorio_id.required' => 'Campo Obrigatório',
             ]);
 
         $relatorio = Relatorio::find($id);   
         $dados = $request->all();
+       
+        $nome_subgrupo = Str::ucfirst($dados['subgrupo_relatorio_id']);    
+        $verifica_subgrupo = SubGrupoRelatorio::where('nome', '=', $nome_subgrupo)
+        ->orWhere('id', '=', $dados['subgrupo_relatorio_id'])
+        ->count();       
+       
        
         $filtro_lateral = (isset($dados['filtro_lateral']) == 'on' ? 'S' : 'N'); 
         $utiliza_filtro = (isset($dados['utiliza_filtro']) == 'on' ? 'S' : 'N');   
@@ -334,14 +349,38 @@ class RelatorioController extends Controller
              $utiliza_filtro_rls = 'S';
              $nivel_filtro_rls = $dados['nivel_rls'];
         }
-        $relatorio->update([
-            'nome' => $dados['nome'],
-            'filtro_lateral' => $filtro_lateral,
-            'utiliza_filtro_rls' => $utiliza_filtro_rls,
-            'nivel_filtro_rls' =>  $nivel_filtro_rls
-        ]);
+      
 
-        return redirect()->route('parceiro.relatorios', $dados['subgrupo_relatorio_id'])->with('toast_success', 'Relatório atualizado com sucesso!');
+        if($verifica_subgrupo > 0){
+            //CASO ENCONTRE O SUBGRUPO DO PARCEIRO
+            //COLOCO O RELATÓRIO NELE
+            $relatorio->update([
+                'nome' => $dados['nome'],
+                'subgrupo_relatorio_id' => $dados['subgrupo_relatorio_id'],
+                'filtro_lateral' => $filtro_lateral,
+                'utiliza_filtro_rls' => $utiliza_filtro_rls,
+                'nivel_filtro_rls' =>  $nivel_filtro_rls
+            ]);
+          $subgrupo_relatorio =  $dados['subgrupo_relatorio_id'];   
+         }else{
+             //CRIO O NOVO SUBGRUPO CASO NÃO EXISTA
+             $subgrupo = SubGrupoRelatorio::create([
+                 'nome' => $nome_subgrupo,
+                 'grp_rel_parceiro_id' => $dados['grupo_relatorio_id'],
+                 'cor'  => '#727CF5',
+             ]);
+             
+             $relatorio->update([
+                'nome' => $dados['nome'],
+                'subgrupo_relatorio_id' => $subgrupo->id,
+                'filtro_lateral' => $filtro_lateral,
+                'utiliza_filtro_rls' => $utiliza_filtro_rls,
+                'nivel_filtro_rls' =>  $nivel_filtro_rls
+            ]);
+            $subgrupo_relatorio =  $subgrupo->id;        
+         }    
+
+        return redirect()->route('parceiro.relatorios', $subgrupo_relatorio)->with('toast_success', 'Relatório atualizado com sucesso!');
     }
 
     public function excluirRelatorio($subgrupo, $id){
