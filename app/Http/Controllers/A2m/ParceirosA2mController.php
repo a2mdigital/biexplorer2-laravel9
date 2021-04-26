@@ -120,6 +120,7 @@ class ParceirosA2mController extends Controller
        $dados = $request->all();
        
        (isset($dados['troca_senha']) == 'on' ? $dados['troca_senha'] = 'S' : $dados['troca_senha'] = 'N');
+       (isset($dados['inativado']) == 'on' ? $dados['inativado'] = 'S' : $dados['inativado'] = 'N');
        $parceiro = Parceiro::find($id);
        if ($parceiro->password == $dados['password']) {
                unset($dados['password']);

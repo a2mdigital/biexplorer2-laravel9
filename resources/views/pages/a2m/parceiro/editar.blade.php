@@ -27,8 +27,14 @@
                   @endif
                 </div>
               </div><!-- Col -->
-              <div class="col-sm-2">
-             
+              <div class="col-sm-5">
+              <div class="form-group">
+              <label class="control-label">Ativar / Inativar</label>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" {{$parceiro->inativado == 'S' ? 'checked' : ''}} class="custom-control-input" value="on" name="inativado" id="inativado">
+                    <label class="custom-control-label" for="inativado">Inativar Parceiro</label>
+                </div>
+                </div>
               </div><!-- Col -->
             </div><!-- Row -->
             <div class="row">

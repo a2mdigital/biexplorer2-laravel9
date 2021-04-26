@@ -26,6 +26,7 @@ class Parceiro extends Authenticatable
         'menu_contraido',
         'password',
         'troca_senha',
+        'inativado'
     ];
 
 
