@@ -62,6 +62,10 @@
         </button>
 </div>
 </div>
+<br>
+<div class="row" id="error">
+
+</div>
 @endsection
 @push('custom-scripts')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -86,6 +90,7 @@
                                 'Não foi possível realizar a conexão, verifique as configurações!',
                                 'error'
                               );
+                                $('#error').text(data.msg);
                                }
                             
                               }

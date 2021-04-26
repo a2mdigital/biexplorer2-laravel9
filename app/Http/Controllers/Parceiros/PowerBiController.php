@@ -144,9 +144,11 @@ class PowerBiController extends Controller
             
         return ['resposta' => 'ok'];
         } catch (ClientException $e) {
-            return ['resposta' => 'erro'];
+            $error = json_decode($e->getResponse()->getBody()->getContents(), true);
+            return ['resposta' => 'erro', 'msg' => $error['error_description']];
         }catch (ConnectException $e) {
-            return ['resposta' => 'erro'];
+            
+            return ['resposta' => 'erro', 'msg' => $e->getMessage()];
         }
        
     }
