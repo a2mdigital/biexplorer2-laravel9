@@ -25,6 +25,7 @@
             <thead>
               <tr>
                 <th>Nome</th>
+                <th>Inativado</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -61,10 +62,10 @@
                 serverSide: true,
                 ajax: "{{ route('parceiros.listar')}}",
                columns: [
-                   // {data: 'id', name: 'id', orderable: false, searchable: false},
                     {data: 'name', name: 'name'},
+                    {data: 'inativado', name: 'inativado', orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
+                ], 
                 oLanguage: {
                 sEmptyTable: "Nenhum registro encontrado",
                 sInfo: "Mostrando de _START_ até _END_ de _TOTAL_ registros",

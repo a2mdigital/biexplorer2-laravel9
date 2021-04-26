@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Parceiro;
+use App\Models\TenantParceiro;
 use App\Models\TenantUser;
 use App\Models\UserTenant;
 use Illuminate\Support\Facades\Session;
@@ -92,6 +93,15 @@ class LoginController extends Controller
        );  
        
         if (Auth::guard('parceiro')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            //SE O PARCEIRO ESTIVER INATIVADO NÃO DEIXO LOGAR NA PLATAFORMA    
+            $inativado = Auth::guard('parceiro')->user()->inativado;
+                if($inativado == 'S'){
+                    return redirect()->route('login')->with('toast_error', trans('auth.inactive'));
+                    $request->session()->flush();
+                    $request->session()->regenerate();
+                    Auth::guard('parceiro')->logout();
+                }
+                //SE ESTIVER HABILITADO PARA TROCAR A SENHA ABRE O FORMULARIO
                 $troca_senha = Auth::guard('parceiro')->user()->troca_senha;
                 if($troca_senha != 'S'){
                     return redirect()->route('dashboard-parceiro')->with('toast_success', trans('messages.welcome'));
@@ -101,7 +111,17 @@ class LoginController extends Controller
                 }
            
         }else if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
-        
+            //VERIFICAR SE O PARCEIRO ESTÁ INATIVADO
+            $tenant_user = Auth::guard('web')->user()->tenant_id;
+            $tenant = TenantParceiro::find($tenant_user);
+            $parceiro_tenant = Parceiro::find($tenant->parceiro_id);
+            if($parceiro_tenant->inativado == 'S'){
+                return redirect()->route('login')->with('toast_error', trans('auth.inactive'));
+                $request->session()->flush();
+                $request->session()->regenerate();
+                Auth::guard('web')->logout();
+            }
+            //SE O USUÁRIO FOR ADMIN
             if(auth()->user()->is_admin){
                 //grava a data e hora do ultimo login
                 $user = Auth::guard('web')->user();
@@ -111,6 +131,17 @@ class LoginController extends Controller
                 return redirect()->route('dashboard-admin')->with('toast_success',trans('messages.welcome'));
             }else{
 
+                //VERIFICAR SE O PARCEIRO ESTÁ INATIVADO
+                $tenant_user = Auth::guard('web')->user()->tenant_id;
+                $tenant = TenantParceiro::find($tenant_user);
+                $parceiro_tenant = Parceiro::find($tenant->parceiro_id);
+                if($parceiro_tenant->inativado == 'S'){
+                    return redirect()->route('login')->with('toast_error', trans('auth.inactive'));
+                    $request->session()->flush();
+                    $request->session()->regenerate();
+                    Auth::guard('web')->logout();
+                }
+                //TROCAR A SENHA INICIAL
                 $troca_senha = Auth::guard('web')->user()->troca_senha;
                 if($troca_senha != 'S'){
                       //grava a data e hora do ultimo login

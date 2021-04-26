@@ -26,6 +26,6 @@ return [
     'message_forgot_password' => 'We have e-mailed your password reset link!',
     'message_password_change' => 'Your Password was changed',
     'change_password' => 'Change your Password',
-    'logout' => 'Logged out successfully'
-
+    'logout' => 'Logged out successfully',
+    'inactive' => 'Please, Contact your Administrator!'
 ];

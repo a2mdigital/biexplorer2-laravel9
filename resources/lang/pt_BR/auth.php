@@ -26,6 +26,7 @@ return [
     'message_forgot_password' => 'O Link de recuperação foi enviado para seu e-mail',
     'message_password_change' => 'Sua senha foi alterada',
     'change_password' => 'Troque sua senha',
-    'logout' => 'Sessão Finalizada'
+    'logout' => 'Sessão Finalizada',
+    'inactive' => 'Por favor entre em contato com o Administrador!'
 
 ];
