@@ -78,7 +78,7 @@ class ParceirosA2mController extends Controller
             $troca_senha = (isset($dados['troca_senha']) == 'on' ? 'S' : 'N');
             Parceiro::create([
                 'email' => $dados['email'],
-                'name' => $dados['email'],
+                'name' => $dados['name'],
                 'is_admin' => 0,
                 'subdomain' => $dados['subdomain'],
                 'imagem_login' => $dados['imagem_login'],
