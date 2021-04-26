@@ -1,4 +1,17 @@
-@extends('layout.auth.master2')
+@extends('layout.auth.master-personalizado')
+@push('plugin-styles')
+<style type="text/css">
+body {
+    /* background: rgba(0, 26, 227, 0.63) !important; */
+    background-image:url({{asset('assets/images/bg/'.$background)}});
+    /*background-image: url({{asset("assets/images/bg/bg3.png")}});*/
+    background-position:center; /* Center the image */
+    background-repeat:no-repeat; /* Do not repeat the image */
+    background-size:cover; /* Resize the background image to cover the entire container*/
+ }
+ </style>
+  <link href="{{ asset('assets/css/auth-personalizado/auth-personalizado.css') }}" rel="stylesheet" />
+@endpush
 @section('content')
 <div class="page-content d-flex align-items-center justify-content-center">
 
@@ -8,9 +21,9 @@
         <div class="row">
           <div class="col-md-8 pl-md-0 form-login">
             <div class="auth-form-wrapper px-4 py-5">
-             <!-- <a href="#" class="noble-ui-logo d-block mb-2">Noble<span>UI</span></a> --> 
-             <img src="{{asset('assets/images/'.$imagem_login)}}" width="75%">
-            
+             <div id="logo" style="text-align: center;">
+             <img src="{{asset('assets/images/'.$imagem_login)}}" width="{{$tamanho_imagem}}" style="padding-bottom: 15px;"  alt="Logo">
+              </div>
               <h5 class="text-muted font-weight-normal mb-4"><b>Troque sua senha inicial!</b></h5>
               <form  method="POST" action="{{route('parceiro.atualizar.senha.inicial', $parceiro->id)}}">
               @csrf 
