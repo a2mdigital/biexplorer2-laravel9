@@ -18,7 +18,7 @@
       <li class="nav-item {{ active_class(['/']) }}">
         <a href="#" onclick="atualizar()"  class="nav-link">
           <i class="link-icon" data-feather="refresh-ccw"></i>
-          <span class="link-title">Atualizar</span>
+          <span class="link-title">{{__('menu.update_report')}}</span>
         </a>
       </li>
       <li class="nav-item {{ active_class(['/']) }}">

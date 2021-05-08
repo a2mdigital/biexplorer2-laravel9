@@ -6,5 +6,7 @@ return [
     'users' => 'Users',
     'departaments' => 'Departaments',
     'customize' => 'Customize',
-    'sidebar_collapse' => 'Collapse Sidebar'
+    'sidebar_collapse' => 'Collapse Sidebar',
+    'update_report' => 'Update',
+    'back_to_reports' => 'Back to Reports'
 ];

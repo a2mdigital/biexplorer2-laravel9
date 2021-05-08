@@ -2,7 +2,7 @@
 @section('link-voltar-relatorios')
 <a href="{{route('tenant.relatorios', $relatorio->subgrupo_relatorio_id)}}" class="nav-link">
           <i class="link-icon" data-feather="arrow-left-circle"></i>
-          <span class="link-title">Voltar aos Relatórios</span>
+          <span class="link-title">{{__('menu.back_to_reports')}}</span>
 </a>
 @endsection
 @push('plugin-styles')
