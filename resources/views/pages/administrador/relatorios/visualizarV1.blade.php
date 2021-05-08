@@ -1,10 +1,4 @@
-@extends('layout.relatorio-admin.master')
-@section('link-voltar-relatorios')
-<a href="{{route('tenant.relatorios', $relatorio->subgrupo_relatorio_id)}}" class="nav-link">
-          <i class="link-icon" data-feather="arrow-left-circle"></i>
-          <span class="link-title">Voltar aos Relatórios</span>
-</a>
-@endsection
+@extends('layout.administradores.master')
 @push('plugin-styles')
 <style>
 .page-content{
@@ -16,11 +10,29 @@
 
 }
 iframe{
-     border-style: none; 
-   /* border: 1px solid;*/
+    /* border-style: none; */
+    border: 1px solid;
 }
 </style>
 @endpush
+@section('titulo-pagina')
+<a class="voltar-relatorio" href="{{route('tenant.relatorios', $relatorio->subgrupo_relatorio_id)}}"><i data-feather="arrow-left-circle"></i> Relatórios </a>
+<span>/ {{$relatorio->nome}}</span>
+<div class="d-flex align-items-center flex-wrap text-nowrap">
+    <button id="fullscreen" onclick="fullscreen()" class="btn btn-primary btn-icon-text">
+      <i class="btn-icon-prepend" data-feather="maximize"></i>
+     FullScreen
+    </button>
+</div>
+
+<div class="d-flex align-items-center flex-wrap text-nowrap" style="margin-left: 5px;">
+    <button id="atualizar" onclick="atualizar()" class="btn btn-primary btn-icon-text">
+      <i class="btn-icon-prepend" data-feather="loader"></i>
+     Atualizar
+    </button>
+</div>
+
+@endsection
 @section('content')
 <input type="hidden" name="token" id="token" value="{{$token}}">
 <input type="hidden" name="tipo" id="tipo" value="{{$relatorio->tipo}}">
@@ -45,6 +57,25 @@ iframe{
 <script src="{{ asset('assets/js/powerbi-models.min.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.powerbi.js') }}"></script>
 <script type="text/javascript">
+    //FULL SCREEN
+    function fullscreen() {
+        // Get a reference to the embedded report HTML element
+        var embedContainer = $('#powerBI')[0];
+        // Get a reference to the embedded report.
+        report = powerbi.get(embedContainer);
+        // Displays the report in full screen mode.
+        report.fullscreen();
+    }
+    //ATUALIZAR
+    function atualizar() {
+        // Get a reference to the embedded report HTML element
+        var embedContainer = $('#powerBI')[0];
+        // Get a reference to the embedded report.
+        report = powerbi.get(embedContainer);
+        // Displays the report in full screen mode.
+        report.refresh();
+    }
+
     $(document).ready(function() {
     
         //ESCONDE A NAVBAR AO ROLAR A PAGINA

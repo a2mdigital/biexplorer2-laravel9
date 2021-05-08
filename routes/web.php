@@ -152,6 +152,11 @@ Route::group(['prefix' => 'parceiro', 'middleware' => 'auth:parceiro'], function
 });
 //ROTAS DE ADMINISTRADORES
 Route::group(['prefix' => 'admin', 'middleware' => ['auth:web','admin', 'checksinglesession']], function () { 
+
+    Route::get('teste-relatorio-novo', function () {
+        return view('pages.teste');
+    })->name('teste.relatorio');
+
  Route::post('admin-logout', [LoginController::class,'adminLogout'])->name('admin.logout');   
  Route::get('/dashboard', [DashboardAdmController::class, 'indexDashboard'])->name('dashboard-admin');
  Route::put('/tenant/custom-menu-color/salvar', [DashboardAdmController::class, 'salvarCustomMenuColor'])->name('tenant.custommenu.color.salvar');
