@@ -201,7 +201,7 @@ class LoginController extends Controller
 
         return redirect()->route('form-login')->with('toast_success', trans('auth.logout'));
       
-    }
+    } 
 
     public function userLogout(Request $request){
         $tenant_user = TenantUser::first();
