@@ -41,7 +41,7 @@ return [
     'title_page_reports_permission' => 'Permissões do Relatório - Usuários',
     'title_page_reports_permission_departaments' => 'Permissões do Relatório - Departamentos',
     'btn_add_user_report_permission' => 'Adicionar Usuário',
-    'btn_add_departament_report_permission' => 'Aducuibar Departamento',
+    'btn_add_departament_report_permission' => 'Adicionar Departamento',
     'users_table_report_permission' => 'Usuário',
     'departament_table_report_permission' => 'Departamento',
     'table_table_report_permission' => 'Tabela',
