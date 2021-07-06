@@ -264,8 +264,8 @@ class RelatorioUsersController extends Controller
                 $erro = $resposta['error'];
                
                 $token = '';
-               // Alert::error('Erro', 'Não foi possível abrir o relatório');
-               Alert::error('Erro', $erro);
+                Alert::error('Erro', 'Não foi possível abrir o relatório');
+               //Alert::error('Erro', $erro);
             }
             //ALIMENTAR O HISTORICO
             $historico = HistoricoRelatoriosUser::where('relatorio_id', $relatorio->id)->first();

@@ -35,6 +35,16 @@
                   @endif
                 </div>
               </div><!-- Col -->
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label class="control-label">Tipo</label>
+                  @if($relatorio->tipo == 'relatorio')
+                  <input type="text" readonly value="Relatório">
+                  @else
+                  <input type="text" readonly value="Dashboard">
+                  @endif
+                </div>
+              </div><!-- Col -->
             </div><!-- Row -->
             <div class="row">
               <div class="col-sm-4">
