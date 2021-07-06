@@ -39,9 +39,9 @@
                 <div class="form-group">
                   <label class="control-label">Tipo</label>
                   @if($relatorio->tipo == 'relatorio')
-                  <input type="text" readonly value="Relatório">
+                  <input type="text" class="form-control" readonly value="Relatório">
                   @else
-                  <input type="text" readonly value="Dashboard">
+                  <input type="text" class="form-control" readonly value="Dashboard">
                   @endif
                 </div>
               </div><!-- Col -->
