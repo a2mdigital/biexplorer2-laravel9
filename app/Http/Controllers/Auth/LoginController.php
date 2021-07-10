@@ -112,6 +112,7 @@ class LoginController extends Controller
                 }
            
         }else if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            dd('attempt');
             //VERIFICAR SE O PARCEIRO ESTÁ INATIVADO
             $tenant_user = Auth::guard('web')->user()->tenant_id;
             $tenant = TenantParceiro::find($tenant_user);
@@ -160,6 +161,7 @@ class LoginController extends Controller
             }
           
         }else{
+            dd('else');
            return redirect()->back()->with('toast_error', trans('auth.failed'));
         }
     }
