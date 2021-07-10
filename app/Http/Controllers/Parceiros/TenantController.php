@@ -116,7 +116,7 @@ class TenantController extends Controller
         //valida o formulário
         $this->validate($request, [
             'nome' => 'required',
-            'email_administrador' => 'required|email|unique:tenants,email_administrador,'.$id.'|unique:parceiros,email|unique:users,email',
+            'email_administrador' => 'required|email|unique:tenants,email_administrador,'.$id.'|unique:parceiros,email',
             'senha_administrador' => 'required|min:5'
         ], [
             'nome.required' => 'Preencha o nome!',
