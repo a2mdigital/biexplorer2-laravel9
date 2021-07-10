@@ -92,6 +92,7 @@ class LoginController extends Controller
         ],
        );  
        
+       dd($request->email);
         if (Auth::guard('parceiro')->attempt(['email' => $request->email, 'password' => $request->password])) {
             //SE O PARCEIRO ESTIVER INATIVADO NÃO DEIXO LOGAR NA PLATAFORMA    
             $inativado = Auth::guard('parceiro')->user()->inativado;
