@@ -500,9 +500,14 @@ iframe{
                   var filtros = [filtros_por_departamento];
             
                 break;  
+                /*
              case 'rls_relatorio_usuario': 
-              console.log('caiu aqui');
+             //RLS POR RELATÓRIO
+              var regra_rls_relatorio = $('#regra_rls_relatorio_usuario').val();
+              var username_rls_relatorio = $('#username_rls_relatorio_usuario').val();
+
               break;
+              */
                 default:
                  
                 var filtros = [];

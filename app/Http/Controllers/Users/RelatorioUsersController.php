@@ -238,7 +238,7 @@ class RelatorioUsersController extends Controller
             }
 
               //GERAR TOKEN RLS OU TOKEM SEM RLS
-            if($tenant->utiliza_rls == 'S'){
+            if($tenant->utiliza_rls == 'S'){ 
                 $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant);  
              }else{
                  //SÓ POSSO GERAR TOKEN 1 VEZ OU POR TENANT OU POR USUÁRIO, OU POR DEPARTAMENTO.. 
@@ -264,8 +264,8 @@ class RelatorioUsersController extends Controller
                 $erro = $resposta['error'];
                
                 $token = '';
-                Alert::error('Erro', 'Não foi possível abrir o relatório');
-               //Alert::error('Erro', $erro);
+               // Alert::error('Erro', 'Não foi possível abrir o relatório');
+               Alert::error('Erro', $erro);
             }
             //ALIMENTAR O HISTORICO
             $historico = HistoricoRelatoriosUser::where('relatorio_id', $relatorio->id)->first();
