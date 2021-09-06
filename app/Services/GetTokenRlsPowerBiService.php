@@ -240,11 +240,14 @@ public static function getTokenRlsRelatorioUser(Relatorio $relatorio, RelatorioU
                     $tokenRLS = $bodyRLS['token'];
                     return ['resposta' => 'ok', 'token' => $tokenRLS];
                 } catch (ClientException $e) {
+                    $response = json_decode($e->getResponse()->getBody()->getContents(),true);
+                    $error = json_encode($response);
+                    return ['resposta' => 'erro', 'error' => $error];
                    // dd($e->getResponse()->getBody()->getContents());
-                    return ['resposta' => 'erro', 'error' => $e->getMessage()];
+                   // return ['resposta' => 'erro', 'error' => $e->getMessage()];
                     //return response()->json(["resposta" => $e->getMessage()]);
             }catch (ConnectException $e) {
-                
+                   
                     return ['resposta' => 'erro', 'error' => $e->getMessage()];
                     //return response()->json(["resposta" => $e->getMessage()]);
             }   
