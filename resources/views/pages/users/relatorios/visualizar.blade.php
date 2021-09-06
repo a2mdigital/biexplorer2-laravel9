@@ -500,6 +500,9 @@ iframe{
                   var filtros = [filtros_por_departamento];
             
                 break;  
+             case 'rls_relatorio_usuario': 
+              console.log('caiu aqui');
+              break;
                 default:
                  
                 var filtros = [];
