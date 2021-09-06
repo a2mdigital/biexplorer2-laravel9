@@ -297,6 +297,7 @@ iframe{
             case 'rls_relatorio_usuario':
             case 'rls_relatorio_departamento': 
             case 'rls_usuario': 
+            console.log("case rls relatorio");
              //ABRIR RELATÓRIO COM RLS
               abrirRelatorioRLS(token, report_id, filtro_lateral);
             break;
@@ -378,9 +379,10 @@ iframe{
         }
         function abrirRelatorioRLS(token, report_id, filtro_lateral){
            //MOSTRAR RELATÓRIO POWER BI COM RLS
-         
+          console.log("funcion abrir Relatorio RLS");
             //VERIFICAR SE TEM FILTRO
             var regra_filtro_rls = $('#regra_filtro_rls').val(); 
+            console.log("Regra: " + regra_filtro_rls);
             switch(regra_filtro_rls){
               case 'filtro_relatorio_usuario':
             
