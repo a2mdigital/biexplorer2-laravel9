@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 
 class GetTokenPowerBiService{
-
+ 
     public static function getToken(){
         $dadosPowerBi = PowerBiParceiro::get()->first();
 
@@ -53,8 +53,11 @@ class GetTokenPowerBiService{
             $token = $body['access_token'];
             return ['resposta' => 'ok', 'token' => $token];
         } catch (ClientException $e) {
+            $response = json_decode($e->getResponse()->getBody()->getContents(),true);
+            $error = json_encode($response);
+            return ['resposta' => 'erro', 'error' => $error];
             //    dd($e->getResponse()->getBody()->getContents());
-            return ['resposta' => 'erro', 'error' => $e->getMessage()];
+            //return ['resposta' => 'erro', 'error' => $e->getMessage()];
             //return response()->json(["resposta" => $e->getMessage()]);
         }catch (ConnectException $e) {
            

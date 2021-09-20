@@ -22,6 +22,8 @@ iframe{
 </style>
 @endpush
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+<input type="hidden" name="tipo_token" id="tipo_token" value="{{$tipo_token}}">
 <input type="hidden" name="token" id="token" value="{{$token}}">
 <input type="hidden" name="tipo" id="tipo" value="{{$relatorio->tipo}}">
 <input type="hidden" name="report_id" id="report_id" value="{{$relatorio->report_id}}">
@@ -95,6 +97,7 @@ iframe{
     }
     //ATUALIZAR
     function atualizar() {
+       // getToken();
         // Get a reference to the embedded report HTML element
         var embedContainer = $('#powerBI')[0];
         // Get a reference to the embedded report.
@@ -102,9 +105,28 @@ iframe{
         // Displays the report in full screen mode.
         report.refresh();
     }
+ 
+    function getToken(){
+       var tipo_token = $('#tipo_token').val(); 
+       var regra_rls = $('#regra_filtro_rls').val(); 
+       alert(regra_rls);
+       $.ajax({
+          headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: "GET",
+                    url:'{{route("users.tentant.powerbi.getToken")}}',
+          success:function(data){
+            console.log(data);
+          }
+
+       });
+    }
+    
+
     $(document).ready(function() {
         //ESCONDE A NAVBAR AO ROLAR A PAGINA
-        
+      /*  
       var prevScrollpos = window.pageYOffset;
        window.onscroll = function() {
         var currentScrollPos = window.pageYOffset;
@@ -115,6 +137,7 @@ iframe{
        }
         prevScrollpos = currentScrollPos;
       };
+      */
        
         //verica se esta habilitado o filtro lateral
         var habilita_filtro_lateral = $('#habilita_filtro_lateral').val();

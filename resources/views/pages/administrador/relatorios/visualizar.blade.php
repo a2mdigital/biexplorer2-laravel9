@@ -48,6 +48,7 @@ iframe{
     $(document).ready(function() {
     
         //ESCONDE A NAVBAR AO ROLAR A PAGINA
+      /*  
       var prevScrollpos = window.pageYOffset;
       window.onscroll = function() {
         var currentScrollPos = window.pageYOffset;
@@ -58,6 +59,7 @@ iframe{
        }
         prevScrollpos = currentScrollPos;
       }
+      */
         //verica se esta habilitado o filtro lateral
         var habilita_filtro_lateral = $('#habilita_filtro_lateral').val();
         var filtro_lateral = false;

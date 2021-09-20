@@ -239,28 +239,36 @@ class RelatorioUsersController extends Controller
 
               //GERAR TOKEN RLS OU TOKEM SEM RLS
             if($tenant->utiliza_rls == 'S'){ 
-                $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant);  
+                $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant); 
+                $regra = 'rls_tenant';
+                $tipo_token = 'rls'; 
              }else{
                  //SÓ POSSO GERAR TOKEN 1 VEZ OU POR TENANT OU POR USUÁRIO, OU POR DEPARTAMENTO.. 
                  //ENTÃO CASO O TENANT JA USA O RLS NÃO PODERÁ GERAR OUTRO TOKEN RLS PARA O USUÁRIO POR EXEMPLO..
                  switch($regra){
                     case "rls_relatorio_usuario":
                         $resposta = GetTokenRlsPowerBiService::getTokenRlsRelatorioUser($relatorio, $relatorios_user);
+                        $tipo_token = 'rls'; 
                         break;
                     case "rls_relatorio_departamento":
                         $resposta = GetTokenRlsPowerBiService::getTokenRlsRelatorioDepartamento($relatorio, $relatorios_departamento);
+                        $tipo_token = 'rls'; 
                         break;
                     case "rls_usuario":
                         $resposta = GetTokenRlsPowerBiService::getTokenRlsUser($relatorio, $user);
+                        $tipo_token = 'rls'; 
                         break;
                     default: 
+            
                      $resposta = GetTokenPowerBiService::getToken();  
+                     $tipo_token = 'semrls'; 
                    
                  }
              }
             if($resposta['resposta'] == 'ok'){
                 $token = $resposta['token'];
             }else{
+               
                 $erro = $resposta['error'];
                
                 $token = '';
@@ -289,7 +297,7 @@ class RelatorioUsersController extends Controller
                 ]
             );
            
-            return view('pages.users.relatorios.visualizar', compact('relatorio', 'token', 'tenant', 'user', 'departamento', 'regra', 'regra_tenant', 'relatorios_user', 'relatorios_departamento'));   
+            return view('pages.users.relatorios.visualizar', compact('relatorio', 'token', 'tenant', 'user', 'departamento', 'regra', 'regra_tenant', 'relatorios_user', 'relatorios_departamento', 'tipo_token'));   
         }
     
     }

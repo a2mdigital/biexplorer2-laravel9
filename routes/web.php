@@ -239,7 +239,8 @@ Route::group(['prefix' => 'users','middleware' => ['auth:web','checksinglesessio
   Route::get('/tenant/user/playlist/visualizar/{id}', [PlaylistUsersController::class, 'visualizarPlaylist'])->name('users.tenant.playlist.visualizar');
   /*FIM ROTAS PLAYLISTS */
   /*ROTA TOKEN POWER BI*/ 
-  Route::get('/tenant/user/powerbi/getTokenPowerBi', [PowerBiControllerAdmin::class, 'getToken']);
+  Route::get('/tenant/user/powerbi/getTokenPowerBi', [PowerBiControllerAdmin::class, 'getToken'])->name('users.tentant.powerbi.getToken');
+
   /*FIM ROTA TOKEN POWER BI*/
 });
 /*FIM ROTAS USUÁRIOS */
