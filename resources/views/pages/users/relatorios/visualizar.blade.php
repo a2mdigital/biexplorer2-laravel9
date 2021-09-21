@@ -97,8 +97,8 @@ iframe{
     }
     //ATUALIZAR
     function atualizar() {
-       // getToken();
-        // Get a reference to the embedded report HTML element
+        getToken();
+      // Get a reference to the embedded report HTML element
         var embedContainer = $('#powerBI')[0];
         // Get a reference to the embedded report.
         report = powerbi.get(embedContainer);
@@ -109,18 +109,31 @@ iframe{
     function getToken(){
        var tipo_token = $('#tipo_token').val(); 
        var regra_rls = $('#regra_filtro_rls').val(); 
-       alert(regra_rls);
-       $.ajax({
+       if(regra_rls == 'sem_filtro_rls'){
+        $.ajax({
           headers: {
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     method: "GET",
                     url:'{{route("users.tentant.powerbi.getToken")}}',
           success:function(data){
-            console.log(data);
+              updateToken(data);
           }
 
        });
+       
+       }
+     
+    }
+
+    function updateToken(newToken){
+       // Get a reference to the embedded report HTML element
+       var embedContainer = $('#powerBI')[0];
+        // Get a reference to the embedded report.
+        report = powerbi.get(embedContainer);
+        // Displays the report in full screen mode.
+        report.setAccessToken(newToken);
+        report.refresh();
     }
     
 
