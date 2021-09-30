@@ -174,7 +174,7 @@ iframe{
           //VERIFICO PRIMEIRO O RLS DO TENANT 
           if(utiliza_rls_tenant == 'S'){
             //ABRIR RLS POR TENANT
-          
+            
             abrirRelatorioRLS(token, report_id, filtro_lateral);
           }else if(utiliza_filtro_tenant == 'S'){
           //ABRIR RELATÓRIO COM FILTRO DE EMPRESA
@@ -415,6 +415,7 @@ iframe{
         }
         function abrirRelatorioRLS(token, report_id, filtro_lateral){
            //MOSTRAR RELATÓRIO POWER BI COM RLS
+           
           console.log("funcion abrir Relatorio RLS");
             //VERIFICAR SE TEM FILTRO
             var regra_filtro_rls = $('#regra_filtro_rls').val(); 
@@ -536,6 +537,38 @@ iframe{
                   var filtros = [filtros_por_departamento];
             
                 break;  
+                case 'rls_tenant_filtro_usuario': 
+                /*
+                  CAI NESSA CONDIÇÃO CASO O TENANT TENHA RLS 
+                  E NO CADASTRO DO USUÁRIO TENHA ALGUM FILTRO
+                */
+               var filtro_tabela_usuario = $('#filtro_tabela_usuario').val();
+               var filtro_coluna_usuario = $('#filtro_coluna_usuario').val();
+               var filtro_valor_usuario = $('#filtro_valor_usuario').val().toString().split(',');
+               /*VERIFICO SE É DIGITADO NUMERO INTEIRO OU STRING*/
+               var array_valor_usuario  = [];
+               $(filtro_valor_usuario).each(function(key, value) {
+                 if($.isNumeric(value)){
+                   array_valor_usuario.push(parseInt(value))
+                 }else{
+                   array_valor_usuario.push(value)
+                 }
+               });
+               var filtros_por_usuario = {
+                             $schema: "http://powerbi.com/product/schema#basic",
+                             target: {
+                                         table: filtro_tabela_usuario,
+                                         column: filtro_coluna_usuario
+                                     },
+                             operator: "In",
+                             values: array_valor_usuario,
+                             displaySettings: {
+                                 isLockedInViewMode: true
+                             }
+                 };
+                 var filtros = [filtros_por_usuario];
+            
+               break;  
                 /*
              case 'rls_relatorio_usuario': 
              //RLS POR RELATÓRIO

@@ -224,7 +224,9 @@ class RelatorioUsersController extends Controller
                    Alert::error('Erro', 'Verifique o RLS no cadastro da Empresa');
                    return redirect()->back();
                 }
-                $regra_tenant = 'rls_tenant';
+
+                    $regra_tenant = 'rls_tenant';
+              
             }else if($tenant->utiliza_filtro == 'S'){
                      /* VERIFICO SE TEM FILTRO POR TENANT
                      */
@@ -240,7 +242,12 @@ class RelatorioUsersController extends Controller
               //GERAR TOKEN RLS OU TOKEM SEM RLS
             if($tenant->utiliza_rls == 'S'){ 
                 $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant); 
+                //verifico se tem rls no tenant e filtro no usuário
+                if($user->utiliza_filtro = 'S'){
+                    $regra = 'rls_tenant_filtro_usuario';
+                }else{
                 $regra = 'rls_tenant';
+                }
                 $tipo_token = 'rls'; 
              }else{
                  //SÓ POSSO GERAR TOKEN 1 VEZ OU POR TENANT OU POR USUÁRIO, OU POR DEPARTAMENTO.. 
