@@ -98,7 +98,7 @@
                     <input type="text" name="corEdit" id="corEditInput" value="#727cf5" class="form-control" />
                     <span class="input-group-append">
                 <span class="input-group-text colorpicker-input-addon" data-original-title="" title="" tabindex="0"><i style="background-color: rgb(153, 191, 167); background-position: initial initial; background-repeat: initial initial;"></i></span>
-              </span>
+                </span>
                 </div>
               </div>
           </div>

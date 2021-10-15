@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Parceiros\HelpController;
 use App\Http\Controllers\Parceiros\ParceiroController;
+use App\Http\Controllers\Parceiros\ThemeController;
 use App\Http\Controllers\Users\DashboardUserController;
 use App\Http\Controllers\Users\PlaylistUsersController;
 use App\Http\Controllers\Users\RelatorioUsersController;
@@ -94,7 +95,7 @@ Route::group(['prefix' => 'parceiro', 'middleware' => 'auth:parceiro'], function
     Route::get('/admin', [ParceirosDashboardController::class, 'indexDashboard'])->name('dashboard-parceiro');
     Route::put('/admin/custom-menu-color/salvar', [ParceirosDashboardController::class, 'salvarCustomMenuColor'])->name('parceiro.custommenu.color.salvar');
     Route::put('/admin/custom-menu-contraido/salvar', [ParceirosDashboardController::class, 'salvarCustomMenuContraido'])->name('parceiro.custommenu.contraido.salvar');
-  
+    Route::get('/admin/parceiro/tema/editar', [ThemeController::class, 'index'])->name('parceiro.tema');
     
     /*ROTAS DO USUÁRIO PARCEIRO */
     Route::get('/admin/user/trocar-dados',[ParceiroController::class, 'trocarDados'])->name('parceiro.user.trocar.dados');

@@ -179,6 +179,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\RelatorioPermission::class,
         App\Providers\A2mPermission::class,
+        App\Providers\ThemeServiceProvider::class,
        
     ],
 

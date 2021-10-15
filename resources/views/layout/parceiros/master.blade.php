@@ -33,7 +33,7 @@ License: You must have a valid license purchased only from https://themeforest.n
   <!-- common css -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
   <!-- end common css -->
-
+  <!--@include('layout.custom-theme.custom-theme') -->
   @stack('style')
   
   

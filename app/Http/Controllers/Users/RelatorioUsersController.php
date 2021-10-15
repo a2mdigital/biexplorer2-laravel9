@@ -243,7 +243,7 @@ class RelatorioUsersController extends Controller
             if($tenant->utiliza_rls == 'S'){ 
                 $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant); 
                 //verifico se tem rls no tenant e filtro no usuário
-                if($user->utiliza_filtro = 'S'){
+                if($user->utiliza_filtro == 'S'){
                     $regra = 'rls_tenant_filtro_usuario';
                 }else{
                 $regra = 'rls_tenant';

@@ -8,7 +8,7 @@
       <span></span>
       <span></span>
     </div>
-  </div>
+  </div> 
   <div class="sidebar-body">
     <ul class="nav">
       <li class="nav-item nav-category">Main</li>
@@ -45,6 +45,14 @@
         </a>
       </li>
       <li class="nav-item nav-category">Personalização</li>
+      <!--
+      <li class="nav-item {{ active_class(['parceiro/admin/grupos']) }}">
+        <a href="{{ route('parceiro.tema') }}" class="nav-link">
+         <i class="link-icon" data-feather="settings"></i>
+          <span class="link-title">Configurar Tema</span>
+        </a>
+      </li>
+       -->
       <li class="nav-item">
       <div class="custom-control custom-switch nav-link">
 					<input type="checkbox" class="custom-control-input" name="customColorMenuParceiro" data-id="{{Auth::guard('parceiro')->user()->id}}" {{Auth::guard('parceiro')->user()->menu_color ? 'checked' : ''}} value="{{Auth::guard('parceiro')->user()->menu_color}}" id="customColorMenuParceiro">
