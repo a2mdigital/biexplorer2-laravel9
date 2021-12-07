@@ -11,7 +11,8 @@
 .sidebar-dark .sidebar .sidebar-body .nav .nav-item .nav-link {
 color: #cc0000 !important;
 }
-/* AO PASSAR O MOUSE NO MENU */
+
+/* AO PASSAR O MOUSE NO MENU 
 .sidebar-dark .sidebar .sidebar-body .nav .nav-item:hover .nav-link .link-title {
 color:darkgreen !important;
 }

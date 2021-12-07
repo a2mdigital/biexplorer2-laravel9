@@ -268,17 +268,20 @@ class RelatorioUsersController extends Controller
                     default: 
             
                      $resposta = GetTokenPowerBiService::getToken();  
+                    
                      $tipo_token = 'semrls'; 
                    
                  }
              }
             if($resposta['resposta'] == 'ok'){
                 $token = $resposta['token'];
+                $expires_in = $resposta['expires_in'];
             }else{
                
                 $erro = $resposta['error'];
                
                 $token = '';
+                $expires_in = 0;
                 Alert::error('Erro', 'Não foi possível abrir o relatório '.$erro);
                //Alert::error('Erro', $erro);
             }
@@ -304,7 +307,8 @@ class RelatorioUsersController extends Controller
                 ]
             );
            
-            return view('pages.users.relatorios.visualizar', compact('relatorio', 'token', 'tenant', 'user', 'departamento', 'regra', 'regra_tenant', 'relatorios_user', 'relatorios_departamento', 'tipo_token'));   
+            
+            return view('pages.users.relatorios.visualizar', compact('relatorio', 'token', 'expires_in', 'tenant', 'user', 'departamento', 'regra', 'regra_tenant', 'relatorios_user', 'relatorios_departamento', 'tipo_token'));   
         }
     
     }

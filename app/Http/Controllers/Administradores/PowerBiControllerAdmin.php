@@ -12,10 +12,13 @@ class PowerBiControllerAdmin extends Controller
 {
     public function getToken(){
         $resposta = GetTokenPowerBiService::getToken();  
+        
         if($resposta['resposta'] == 'ok'){
-            return $resposta['token'];
+            return ['resposta' => 'ok', 'token' => $resposta['token'], 'expires_in' => $resposta['expires_in']];
+           // return $resposta['token'];
         }else{
-           return $resposta['error'];
+           return ['resposta' => 'error']; 
+           //return $resposta['error'];
         }
     }
 }

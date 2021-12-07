@@ -115,7 +115,7 @@ public static function getTokenRlsTenant(Relatorio $relatorio, TenantUser $tenan
                     );
                     $bodyRLS = json_decode($responseRLS->getBody()->getContents(), true);
                     $tokenRLS = $bodyRLS['token'];
-                    return ['resposta' => 'ok', 'token' => $tokenRLS];
+                    return ['resposta' => 'ok', 'token' => $tokenRLS, 'expires_in' => 3600];
                 } catch (ClientException $e) {
                    // dd($e->getResponse()->getBody()->getContents());
                     return ['resposta' => 'erro', 'error' => $e->getMessage()];
@@ -238,7 +238,7 @@ public static function getTokenRlsRelatorioUser(Relatorio $relatorio, RelatorioU
                     );
                     $bodyRLS = json_decode($responseRLS->getBody()->getContents(), true);
                     $tokenRLS = $bodyRLS['token'];
-                    return ['resposta' => 'ok', 'token' => $tokenRLS];
+                    return ['resposta' => 'ok', 'token' => $tokenRLS, 'expires_in' => 3600];
                 } catch (ClientException $e) {
                     $response = json_decode($e->getResponse()->getBody()->getContents(),true);
                     $error = json_encode($response);
@@ -363,7 +363,7 @@ public static function getTokenRlsRelatorioDepartamento(Relatorio $relatorio, Re
                 );
                 $bodyRLS = json_decode($responseRLS->getBody()->getContents(), true);
                 $tokenRLS = $bodyRLS['token'];
-                return ['resposta' => 'ok', 'token' => $tokenRLS];
+                return ['resposta' => 'ok', 'token' => $tokenRLS, 'expires_in' => 3600];
             } catch (ClientException $e) {
                // dd($e->getResponse()->getBody()->getContents());
                 return ['resposta' => 'erro', 'error' => $e->getMessage()];
@@ -484,8 +484,9 @@ public static function getTokenRlsUser(Relatorio $relatorio, User $user){
                     ]
                 );
                 $bodyRLS = json_decode($responseRLS->getBody()->getContents(), true);
+           
                 $tokenRLS = $bodyRLS['token'];
-                return ['resposta' => 'ok', 'token' => $tokenRLS];
+                return ['resposta' => 'ok', 'token' => $tokenRLS, 'expires_in' => 3600];
             } catch (ClientException $e) {
                // dd($e->getResponse()->getBody()->getContents());
                 return ['resposta' => 'erro', 'error' => $e->getMessage()];

@@ -25,8 +25,11 @@ iframe{
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <input type="hidden" name="tipo_token" id="tipo_token" value="{{$tipo_token}}">
 <input type="hidden" name="token" id="token" value="{{$token}}">
+<input type="hidden" name="expires_in" id="expires_in" value="{{$expires_in}}">
+<input type="hidden" name="time_update_token" id="time_update_token" value="">
 <input type="hidden" name="tipo" id="tipo" value="{{$relatorio->tipo}}">
 <input type="hidden" name="report_id" id="report_id" value="{{$relatorio->report_id}}">
+<input type="hidden" name="workspace_id" id="workspace_id" value="{{$relatorio->workspace_id}}">
 <input type="hidden" name="dataset_id" id="dataset_id" value="{{$relatorio->dataset_id}}">
 <input type="hidden" name="habilita_filtro_lateral" id="habilita_filtro_lateral" value="{{$relatorio->filtro_lateral}}">
 <!-- REGRA DE FILTRO E RLS POR TENANT --> 
@@ -117,7 +120,13 @@ iframe{
                     method: "GET",
                     url:'{{route("users.tentant.powerbi.getToken")}}',
           success:function(data){
-              updateToken(data);
+              var resposta = data.resposta;
+              if(resposta == 'ok'){
+                var tokenRecebido = data.token;
+                var expires_in = data.expires_in;
+                updateToken(tokenRecebido);
+                $('#expires_in').val(expires_in);
+              }
           }
 
        });
@@ -138,19 +147,60 @@ iframe{
     
 
     $(document).ready(function() {
-        //ESCONDE A NAVBAR AO ROLAR A PAGINA
-      /*  
-      var prevScrollpos = window.pageYOffset;
-       window.onscroll = function() {
-        var currentScrollPos = window.pageYOffset;
-        if(currentScrollPos <= 0){
-        document.getElementById("navbar").style.top = "0";
-       }else{
-        document.getElementById("navbar").style.top = "-50px";   
-       }
-        prevScrollpos = currentScrollPos;
-      };
-      */
+       //hora que abriu o relatório e atualizou o token
+        $('#time_update_token').val(Date.now());
+        var token = $('#token').val();
+        var expires_in = $('#expires_in').val();
+        var report_id = $('#report_id').val(); 
+        var workspace_id = $('#workspace_id').val(); 
+        var tipo = $('#tipo').val(); 
+        /*REGRA DE FILTROS */ 
+        var regra_tenant = $('#regra_tenant').val();
+        var utiliza_rls_tenant = $('#utiliza_rls_tenant').val();
+        var regra_filtro_rls = $('#regra_filtro_rls').val(); 
+        /*FILTROS DE TENANT */
+        var utiliza_filtro_tenant = $('#utiliza_filtro_tenant').val(); 
+      
+      //UPDATE TOKEN POWER BI EMBEDDED
+      const minutes_before_expiration = 10;
+      //verificar o token a cada 30 segundos
+      const interval_time = 30000;
+      //pegar o token expirado
+     
+      
+      if(regra_filtro_rls == 'sem_filtro_rls'){
+      setInterval(()=>checkTokenAndUpdate(report_id, workspace_id), interval_time);
+      }
+
+      function checkTokenAndUpdate(report_id, workspace_id){
+        //hora que atualizou o relatório
+        var time_update_token = parseInt($('#time_update_token').val());
+        //tempo para expirar token  
+        var expires_in = $('#expires_in').val();
+        var tokenExpiration = expires_in * 1000;
+        //tempo para expirar o token
+        const timeToExpiration = time_update_token + tokenExpiration;
+        //pegar data atual
+        const currentTime = Date.now();
+       // const expiration = Date.parse(tokenExpiration);
+        //verificar o tempo até o token expirar
+        //const timeUntilExpiration = tokenExpiration - currentTime;
+        const timeUntilExpiration = timeToExpiration - currentTime;
+        const timeToUpdate = minutes_before_expiration * 60 * 1000;
+
+        //atualiza o token se estiver expirado
+        if(timeUntilExpiration <= timeToUpdate){
+          console.log("Atualizando o token");
+          $('#time_update_token').val(Date.now());
+          getToken();
+        }else{
+          console.log('não atualiza o token ainda');
+          console.log('expires_in ' + expires_in);
+          console.log('timeUntilExpiration ' + timeUntilExpiration);
+          console.log('timeToUpdate ' + timeToUpdate);
+        }
+      }
+
        
         //verica se esta habilitado o filtro lateral
         var habilita_filtro_lateral = $('#habilita_filtro_lateral').val();
@@ -160,16 +210,7 @@ iframe{
         }else{
             var filtro_lateral = false;
         }
-        var token = $('#token').val();
-        var report_id = $('#report_id').val(); 
-        var tipo = $('#tipo').val(); 
-        /*REGRA DE FILTROS */ 
-        var regra_tenant = $('#regra_tenant').val();
-        var utiliza_rls_tenant = $('#utiliza_rls_tenant').val();
-        var regra_filtro_rls = $('#regra_filtro_rls').val(); 
-        /*FILTROS DE TENANT */
-        var utiliza_filtro_tenant = $('#utiliza_filtro_tenant').val(); 
-      
+       
         if(tipo == 'relatorio'){
           //VERIFICO PRIMEIRO O RLS DO TENANT 
           if(utiliza_rls_tenant == 'S'){

@@ -50,8 +50,10 @@ class GetTokenPowerBiService{
             );
 
             $body = json_decode($response->getBody()->getContents(), true);
+            //dd($body);
             $token = $body['access_token'];
-            return ['resposta' => 'ok', 'token' => $token];
+            $expires_in = $body['expires_in'];
+            return ['resposta' => 'ok', 'token' => $token, 'expires_in' => $expires_in];
         } catch (ClientException $e) {
             $response = json_decode($e->getResponse()->getBody()->getContents(),true);
             $error = json_encode($response);
