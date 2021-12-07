@@ -194,10 +194,12 @@ iframe{
           $('#time_update_token').val(Date.now());
           getToken();
         }else{
+          /*
           console.log('não atualiza o token ainda');
           console.log('expires_in ' + expires_in);
           console.log('timeUntilExpiration ' + timeUntilExpiration);
           console.log('timeToUpdate ' + timeToUpdate);
+          */
         }
       }
 
