@@ -61,16 +61,21 @@
 </div>
 
 </body>
+
+     
+
     <script src="{{ asset('assets/js/playlist/jquery.min.js')  }}"></script>
     <script src="{{ asset('assets/js/playlist/jquery-ui-1-12.js') }}"></script>
  
     <script src="{{ asset('assets/js/playlist/playlist.js') }}"></script>
     <script src="{{ asset('assets/js/playlist/jquery.crotator.js') }}"></script>
     <script src="{{ asset('assets/js/playlist/slick.js') }}" type="text/javascript" charset="utf-8"></script>
-
+       
+           
     <script src="{{ asset('assets/js/powerbi.js') }}"></script>
     <script src="{{ asset('assets/js/powerbi-models.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.powerbi.js') }}"></script>
+    
     <script type="text/javascript">
 
 function fullscreen(){
@@ -106,6 +111,7 @@ function fullscreen(){
                   }
 }
 $(function () {
+  
     var tempo_atualizacao = $("#tempo_atualizacao").val();
     var tempo = tempo_atualizacao * 1000;
     console.log("tempo em segundos: " + tempo);
@@ -720,11 +726,12 @@ $(function () {
    //GERA TOKEN DO PRIMEIRO SLIDE 
    function tokenPrimeiroSlide(){
     $.get("/admin/tenant/powerbi/getTokenPowerBi", function (accessToken) {
+       
         var utiliza_filtro_tenant = $('#utiliza_filtro_tenant').val(); 
         if(utiliza_filtro_tenant == 'S'){
-            passarPrimeiroSlideFiltroTenant(accessToken);
+            passarPrimeiroSlideFiltroTenant(accessToken.token);
         }else{
-            passarPrimeiroSlide(accessToken);
+            passarPrimeiroSlide(accessToken.token);
         }
     });
    }
@@ -733,9 +740,9 @@ $(function () {
     $.get("/admin/tenant/powerbi/getTokenPowerBi", function (accessToken) {
         var utiliza_filtro_tenant = $('#utiliza_filtro_tenant').val(); 
         if(utiliza_filtro_tenant == 'S'){
-            passarSlidesFiltroTenant(accessToken);
+            passarSlidesFiltroTenant(accessToken.token);
         }else{
-            passarSlides(accessToken);
+            passarSlides(accessToken.token);
         }
     });
    } 
