@@ -722,20 +722,20 @@ $(function () {
     $.get("/users/tenant/user/powerbi/getTokenPowerBi", function (accessToken) {
         var utiliza_filtro_tenant = $('#utiliza_filtro_tenant').val(); 
         if(utiliza_filtro_tenant == 'S'){
-            passarPrimeiroSlideFiltroTenant(accessToken);
+            passarPrimeiroSlideFiltroTenant(accessToken.token);
         }else{
-            passarPrimeiroSlide(accessToken);
+            passarPrimeiroSlide(accessToken.token);
         }
     });
-   }
+   } 
     //PEGAR O TOKEN DO POWER BI PARA OS PRÓXIMOS SLIDES
    function getToken(){
     $.get("/users/tenant/user/powerbi/getTokenPowerBi", function (accessToken) {
         var utiliza_filtro_tenant = $('#utiliza_filtro_tenant').val(); 
         if(utiliza_filtro_tenant == 'S'){
-            passarSlidesFiltroTenant(accessToken);
+            passarSlidesFiltroTenant(accessToken.token);
         }else{
-            passarSlides(accessToken);
+            passarSlides(accessToken.token);
         }
     });
    } 
