@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-
+use Carbon\Carbon;
 class LocalizationLanguage
 {
     /**
@@ -17,7 +17,9 @@ class LocalizationLanguage
      */
     public function handle(Request $request, Closure $next)
     {
-       
+   
+       // App::setLocale('pt_PT');
+        
         $languagues = explode(',', $request->server('HTTP_ACCEPT_LANGUAGE'));
         if($languagues != null){
             if($languagues[0] == 'pt-BR' || $languagues[0] == 'pt_BR'){
@@ -30,6 +32,7 @@ class LocalizationLanguage
         }else{
             App::setLocale('en');
         }
+        
         
  
         

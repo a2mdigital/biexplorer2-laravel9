@@ -27,6 +27,7 @@ use App\Services\GetTokenPowerBiService;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\GetTokenRlsPowerBiService;
 use App\Models\RelatorioDepartamentoPermission;
+use Illuminate\Support\Facades\App;
 
 class RelatorioUsersController extends Controller
 {
@@ -113,7 +114,17 @@ class RelatorioUsersController extends Controller
         if (! Gate::allows('visualizar-relatorio-user',[$grupo, $id])) {
             abort(403);
         }else{
-          
+            /*pegar o local que está acessando o relatório 
+             * para definir o timezone
+            */
+            $locale = App::currentLocale();
+            if($locale == 'pt_BR'){
+                $now = Carbon::now('America/Sao_Paulo');
+            }else if($locale == 'pt_PT'){
+                $now = Carbon::now('Europe/Lisbon');
+            }else{
+                $now = Carbon::now('Europe/London');
+            }
             //Busca os dados do relatório
             $relatorio = Relatorio::find($id);
             //busca a empresa do Usuário
@@ -303,7 +314,7 @@ class RelatorioUsersController extends Controller
                 'departamento_id' => $user->departamento_id,
                 'relatorio_id' => $relatorio->id,
                 'qtd_acessos' => $qtd_acessos,
-                'ultima_hora_acessada' => Carbon::now('America/Sao_Paulo') 
+                'ultima_hora_acessada' => $now
                 ]
             );
            

@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\App;
 
 class LoginController extends Controller
 {
@@ -50,6 +51,8 @@ class LoginController extends Controller
     */
  
     public function showFormLogin(){
+       
+        
         $subdomain = explode('.', request()->getHost());
         $img = Parceiro::select('imagem_login', 'tamanho_imagem_login', 'fundo_imagem_login')
             ->where('subdomain', $subdomain[0])->first();
@@ -125,10 +128,18 @@ class LoginController extends Controller
             }
             //SE O USUÁRIO FOR ADMIN
             if(auth()->user()->is_admin){
+                $locale = App::currentLocale();
+                if($locale == 'pt_BR'){
+                    $now = Carbon::now('America/Sao_Paulo');
+                }else if($locale == 'pt_PT'){
+                    $now = Carbon::now('Europe/Lisbon');
+                }else{
+                    $now = Carbon::now('Europe/London');
+                }
                 //grava a data e hora do ultimo login
                 $user = Auth::guard('web')->user();
                 $user->update([
-                    'ultimo_login' => Carbon::now('America/Sao_Paulo')
+                    'ultimo_login' => $now
                 ]);
                 return redirect()->route('dashboard-admin')->with('toast_success',trans('messages.welcome'));
             }else{
@@ -146,10 +157,18 @@ class LoginController extends Controller
                 //TROCAR A SENHA INICIAL
                 $troca_senha = Auth::guard('web')->user()->troca_senha;
                 if($troca_senha != 'S'){
+                    $locale = App::currentLocale();
+                    if($locale == 'pt_BR'){
+                        $now = Carbon::now('America/Sao_Paulo');
+                    }else if($locale == 'pt_PT'){
+                        $now = Carbon::now('Europe/Lisbon');
+                    }else{
+                        $now = Carbon::now('Europe/London');
+                    }
                       //grava a data e hora do ultimo login
                     $user = Auth::guard('web')->user();
                     $user->update([
-                        'ultimo_login' => Carbon::now('America/Sao_Paulo')
+                        'ultimo_login' => $now
                     ]);
                     return redirect()->route('dashboard-users')->with('toast_success', trans('messages.welcome'));
                 }else{
