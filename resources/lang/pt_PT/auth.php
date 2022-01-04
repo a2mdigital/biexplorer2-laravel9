@@ -25,7 +25,7 @@ return [
     'text_button_forgot_password' => 'Enviar link de recuperação por e-mail',
     'message_forgot_password' => 'O Link de recuperação foi enviado para seu e-mail',
     'message_password_change' => 'Seu Password foi alterado',
-    'change_password' => 'Troque seu Password',
+    'change_password' => 'Alterar Password',
     'logout_user' => 'Sair',
     'logout' => 'Sessão Finalizada',
     'inactive' => 'Por favor entre em contato com o Administrador!'
