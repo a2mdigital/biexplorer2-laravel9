@@ -137,7 +137,7 @@
      </div>
     </div>
     <div class="card-body">
-    <center><a href={{route('parceiro.relatorios',  $subgrupo->id)}} class="btn btn-outline-light">Acessar</a></center>
+    <center><a href={{route('parceiro.relatorios',  $subgrupo->id)}} class="btn btn-outline-light">{{__('messages.open_subgroup')}}</a></center>
     </div>
  </div>   
 </div>

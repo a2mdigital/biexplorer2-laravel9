@@ -30,7 +30,7 @@
               <li class="nav-item">
                 <a href="{{route('parceiro.user.trocar.dados')}}" class="nav-link">
                   <i data-feather="edit"></i>
-                  <span>Trocar Senha</span>
+                  <span>{{__('auth.change_password')}}</span> 
                 </a>
               </li>
               <li class="nav-item">
@@ -38,7 +38,7 @@
                                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
                                       <i data-feather="log-out"></i>
-                                      <span>Log Out</span>
+                                      <span>{{__('auth.logout_user')}}</span>
                 </a>
                <form id="logout-form" action="{{ route('parceiro.logout') }}" method="POST" style="display: none;">
                                     @csrf

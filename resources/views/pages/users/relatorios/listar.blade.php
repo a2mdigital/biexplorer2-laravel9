@@ -49,14 +49,16 @@
   <script type="text/javascript">
         $(document).ready(function() {
           function getLanguage(){
-            var lang = $('html').attr('lang');
-            if(lang == 'en'){
-              var language = '{{asset("assets/lang/data-table-en.json")}}';
-            }else{
-              var language = '{{asset("assets/lang/data-table-pt.json")}}';
-            }
-            return language
-          }
+      var lang = $('html').attr('lang');
+      if(lang == 'en'){
+        var language = '{{asset("assets/lang/data-table-en.json")}}';
+      }else if(lang == 'pt_PT'){
+        var language = '{{asset("assets/lang/data-table-pt_pt.json")}}';
+      }else{
+        var language = '{{asset("assets/lang/data-table-en.json")}}';
+      }
+      return language
+    }
             var table = $('#relatoriosTable').DataTable({
               language: {
                   url: getLanguage(),
@@ -73,29 +75,9 @@
                     {data: 'nome', name: 'nome'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
-                oLanguage: {
-                sEmptyTable: "Nenhum registro encontrado",
-                sInfo: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                sInfoEmpty: "Mostrando 0 até 0 de 0 registros",
-                sInfoFiltered: "(Filtrados de _MAX_ registros)",
-                sInfoPostFix: "",
-                sInfoThousands: ".",
-                sLengthMenu: "_MENU_ Resultados por página",
-                sLoadingRecords: "Carregando...",
-                sProcessing: "Processando...",
-                sZeroRecords: "Nenhum registro encontrado",
-                sSearch: "Pesquisar",
-                oPaginate: {
-                  sNext: "Próximo",
-                  sPrevious: "Anterior",
-                  sFirst: "Primeiro",
-                  sLast: "Último"
+                language: {
+                  url: getLanguage(),
                 },
-                oAria: {
-                  sSortAscending: ": Ordenar colunas de forma ascendente",
-                  sSortDescending: ": Ordenar colunas de forma descendente"
-                }
-              }
             });
         });
       </script>

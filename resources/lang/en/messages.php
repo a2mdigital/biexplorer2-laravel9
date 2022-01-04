@@ -29,6 +29,10 @@ return [
     'password' => 'Password',
     'button_save' => 'Submit',
     'message_update_data' => 'Data Updated Successfully',
+    /*PAGINA USUÁRIOS*/ 
+    'btn_add_user' => 'Add User',
+    /*PAGINA DEPARTAMENTOS*/
+    'btn_add_departament' => 'Add Departament',
     /*PAGINA RELATÓRIOS*/
     'title_page_groups' => 'Reports',
     'open_group' => 'Open',
@@ -38,6 +42,7 @@ return [
     'report_table_actions' => 'Actions',
     'report_button_view' => 'Open Report',
     'btn_update_report' => 'Refresh Report',
+    'btn_add_report' => 'Add Report',
     /*PAGINA PERMISSOES RELATORIOS*/
     'title_link_page_reports_permission' => 'Reports',
     'title_page_reports_permission' => 'Report Permission - Users',
@@ -64,4 +69,7 @@ return [
     'table_time_playlist' => 'Time(Seconds)',
     'table_actions_playlist' => 'Actions',
     'btn_play_playlist' => 'Play',
+    'btn_add_playlist' => 'Add Playlist',
+    /* PAGINA EMPRESAS*/ 
+    'btn_add_tenant' => 'Add Tenant',
 ];

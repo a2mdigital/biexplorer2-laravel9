@@ -167,8 +167,10 @@
       var lang = $('html').attr('lang');
       if(lang == 'en'){
         var language = '{{asset("assets/lang/data-table-en.json")}}';
+      }else if(lang == 'pt_PT'){
+        var language = '{{asset("assets/lang/data-table-pt_pt.json")}}';
       }else{
-        var language = '{{asset("assets/lang/data-table-pt.json")}}';
+        var language = '{{asset("assets/lang/data-table-en.json")}}';
       }
       return language
     }

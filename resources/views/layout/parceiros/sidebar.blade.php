@@ -44,7 +44,7 @@
           <span class="link-title">Relatórios</span>
         </a>
       </li>
-      <li class="nav-item nav-category">Personalização</li>
+      <li class="nav-item nav-category">{{__('menu.customize')}}</li>
       
       <li class="nav-item {{ active_class(['parceiro/admin/grupos']) }}">
         <a href="{{ route('parceiro.tema') }}" class="nav-link">

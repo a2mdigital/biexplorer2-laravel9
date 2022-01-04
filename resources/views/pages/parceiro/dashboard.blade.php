@@ -33,7 +33,7 @@
       <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-baseline">
-              <h6 class="card-title mb-0">Total de Usuários</h6>
+              <h6 class="card-title mb-0">Total de {{__('messages.title_table_users')}}</h6>
               <div class="dropdown mb-2"><br></div>
             </div>
             <div class="row">
@@ -67,7 +67,7 @@
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h6 class="card-title">Usuários</h6>
+        <h6 class="card-title">{{__('messages.title_table_users')}}</h6>
         <p class="card-description">Informações Adicionais</p>
         <div class="table-responsive pt-3">
           <table id="auditoriaTable" class="table table-bordered">
@@ -127,6 +127,9 @@
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script type="text/javascript">
  $(document).ready(function() {
+
+    
+
       $('.contador').each(function () {
         $(this).prop('Counter',0).animate({
             Counter: $(this).text()
@@ -139,9 +142,31 @@
         });
     });
 
+    function getLanguage(){
+      var lang = $('html').attr('lang');
+      if(lang == 'en'){
+        var language = '{{asset("assets/lang/data-table-en.json")}}';
+      }else if(lang == 'pt_PT'){
+        var language = '{{asset("assets/lang/data-table-pt_pt.json")}}';
+      }else{
+        var language = '{{asset("assets/lang/data-table-en.json")}}';
+      }
+      return language
+    }
+ 
     //DATATABLE
+     //DATATABLE
+     $('#auditoriaTable').DataTable({
+      language: {
+           url: getLanguage(),
+        },
+      pageLength : 5,
+      lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+      
+    });
+    /*
     $('#auditoriaTable').DataTable({
-     
+      
       "iDisplayLength": 10,
       oLanguage: {
                 sEmptyTable: "Nenhum registro encontrado",
@@ -167,6 +192,7 @@
                 }
               }
     });
+    */
   
  });
  </script>
