@@ -3,7 +3,7 @@ return [
    'welcome' => 'Bem Vindo',
    /*PAGINA DASHBOARD USUÁRIOS*/
    'total_users' => 'Total de Utilizadores',
-   'reports_added' => 'Relatórios Cadastrados',
+   'reports_added' => 'Relatórios Registados',
    'last_report_add' => 'Últimos Relatórios Adicionados',
    'last_view_report' => 'Últimos Acedidos',
    'more_view_report' => 'Mais Acedidos',

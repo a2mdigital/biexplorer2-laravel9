@@ -48,7 +48,7 @@
         <div class="card">
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-baseline">
-                  <h6 class="card-title mb-0">Relatórios Cadastrados</h6>
+                  <h6 class="card-title mb-0">{{__('messages.reports_added')}}</h6>
                   <div class="dropdown mb-2"><br></div>
                 </div>
                 <div class="row">
