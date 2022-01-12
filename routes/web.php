@@ -74,6 +74,8 @@ Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'
 
 //LOGIN PARA AJFALAVINHA FAZER PELA PLATAFORMA DELES
 Route::post('/login/falavinha', [LoginController::class,'login']);
+//LOGIN NOSSA FARMACIA
+Route::post('/login/nossafarmacia', [LoginController::class,'login']);
 
 
 //ROTAS DE PARCEIROS

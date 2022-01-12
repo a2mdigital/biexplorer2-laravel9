@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\GruposController;
+use App\Http\Controllers\Api\ReportsController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -12,8 +16,14 @@ use Illuminate\Support\Facades\Auth;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+/*
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+*/
+/*
+Route::get('grupos', [GruposController::class, 'index']);
+Route::get('reports', [ReportsController::class, 'index']);
+*/
 
+//Route::apiResource('teste-api', 'Api\GetReports');
