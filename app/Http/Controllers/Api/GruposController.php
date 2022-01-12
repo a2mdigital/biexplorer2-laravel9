@@ -25,7 +25,7 @@ class GruposController extends Controller{
             //buscar grupos com relatórios liberados
             $grupos = SubGrupoRelatorio::whereIn('id', $subgruposTenant)->get();
             
-            return ['resposta' => 'ok', 'groups' => $grupos];
+            return ['response' => 'ok', 'groups' => $grupos];
         }else{
             //buscar relatórios do usuário e do departamento
             $relatorios_user = RelatorioUserPermission::select('relatorio_id')->get();
@@ -43,7 +43,7 @@ class GruposController extends Controller{
             //buscar grupos com relatórios liberados
             $grupos = SubGrupoRelatorio::whereIn('id', $subgruposTenant)->get();
 
-            return ['resposta' => 'ok', 'groups' => $grupos];
+            return ['response' => 'ok', 'groups' => $grupos];
         }
     }
 }
