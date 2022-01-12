@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.2",
         "realrashid/sweet-alert": "^3.2",
+        "tymon/jwt-auth": "1.0.2",
         "webpatser/laravel-uuid": "^4.0",
         "yajra/laravel-datatables-buttons": "^4.0",
         "yajra/laravel-datatables-oracle": "^9.15"

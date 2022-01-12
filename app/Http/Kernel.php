@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'checksinglesession' => \App\Http\Middleware\CheckSingleSession::class,
         'admin' => \App\Http\Middleware\isAdminMiddleware::class,
+        'apiJwt' => \App\Http\Middleware\apiProtectedRoute::class,
     ];
 
     /**

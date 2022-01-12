@@ -47,7 +47,7 @@ class RelatorioTenantController extends Controller
         $grupos = SubGrupoRelatorio::whereIn('id', $subgruposTenant)->get();
 
    
-            return view('pages.administrador.relatorios.grupos', compact('grupos'));
+        return view('pages.administrador.relatorios.grupos', compact('grupos'));
      
       
        

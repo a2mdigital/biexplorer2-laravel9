@@ -83,7 +83,7 @@ class Handler extends ExceptionHandler
             return response()->view('pages.auth.login', [], 419);
         } 
         
-
+        
         return parent::render($request, $exception);
     }
 }
