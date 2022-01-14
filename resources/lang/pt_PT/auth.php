@@ -16,7 +16,7 @@ return [
     'failed' => 'Essas credenciais não foram encontradas em nossos registros.',
     'throttle' => 'Muitas tentativas de login. Tente novamente em :seconds segundos.',
     'password' => 'Password',
-    'confirm_password' => 'Confirma sua Password',
+    'confirm_password' => 'Confirme a sua Password',
     'btn_change_password' => 'Atualizar Password',
     'login' => 'Entrar',
     'forgot_password' => 'Recuperar a password',
