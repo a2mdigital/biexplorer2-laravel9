@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Throwable;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;
@@ -60,5 +61,9 @@ class SendMailResetPassword implements ShouldQueue
             });
         }
        
+    }
+
+    public function failed(Throwable $e){
+
     }
 }
