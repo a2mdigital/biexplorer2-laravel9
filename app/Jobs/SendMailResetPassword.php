@@ -34,7 +34,7 @@ class SendMailResetPassword implements ShouldQueue
         $this->subdomain = $subdomain;
         $this->email = $email;
         $this->locale = $locale;
-    }
+    } 
 
     /**
      * Execute the job.
@@ -49,13 +49,13 @@ class SendMailResetPassword implements ShouldQueue
        
         if($this->locale == 'pt-BR' || $this->locale == 'pt_BR' || $this->locale == 'pt-PT' || $this->locale == 'pt_PT'){
             Mail::send('pages.auth.password-email', ['host' => $this->host, 'token' => $this->token, 'now' => Carbon::now()], function($message){
-                $message->from('biexplorer@'.$this->subdomain.'.com.br','Bi Explorer');
+                $message->from('biexplorer@a2mdigital.com.br','Bi Explorer');
                 $message->to($this->email);
                 $message->subject('Redefinição de Senha');
             });
         }else{
             Mail::send('pages.auth.password-email-en', ['host' => $this->host, 'token' => $this->token, 'now' => Carbon::now()], function($message){
-                $message->from('biexplorer@'.$this->subdomain.'.com','Bi Explorer');
+                $message->from('biexplorer@a2mdigital.com.br','Bi Explorer');
                 $message->to($this->email);
                 $message->subject('Password Reset');
             });
