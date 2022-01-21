@@ -1,4 +1,4 @@
-<html>
+<html lang="{{ app()->getLocale() }}">
     <head>
         <title>Alguma coisa deu errado...</title>
  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -250,8 +250,8 @@ html {
 <div class="container">
         <div class="error">
             <h1>500</h1>
-            <h2>error</h2>
-            <p>Alguma coisa deu errado :( <br>Por favor nos informe o erro se possível!</p>
+            <h2>error</h2> 
+            <p>{{__('auth.msg_error500_1')}} <br>{{__('auth.msg_error500_2')}}</p>
             <br>
             <a class="btn btn-warning" href="{{ URL::previous() }}">Voltar</a>
         </div>

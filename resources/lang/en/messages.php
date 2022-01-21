@@ -72,4 +72,7 @@ return [
     'btn_add_playlist' => 'Add Playlist',
     /* PAGINA EMPRESAS*/ 
     'btn_add_tenant' => 'Add Tenant',
+    /* PAGINA ERRO*/ 
+    'msg_error500_1' => 'Alguma coisa deu errado :(',
+    'msg_error500_2' => 'Por favor nos informe o erro se possível!',
 ];
