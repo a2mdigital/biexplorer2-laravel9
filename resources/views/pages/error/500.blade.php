@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
     <head>
         <title>Alguma coisa deu errado...</title>
@@ -246,12 +247,12 @@ html {
   }
         </style>
     </head>
-<body>
+<body> 
 <div class="container">
         <div class="error">
             <h1>500</h1>
             <h2>error</h2> 
-            <p>{{__('auth.msg_error500_1')}} <br>{{__('auth.msg_error500_2')}}</p>
+            <p>{{__('messages.msg_error500_1')}} <br>{{__('messages.msg_error500_2')}}</p>
             <br>
             <a class="btn btn-warning" href="{{ URL::previous() }}">Voltar</a>
         </div>
