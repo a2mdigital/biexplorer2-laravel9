@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GruposController;
 use App\Http\Controllers\Api\ReportsController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\FavoritosController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,5 +35,7 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::get('grupos', [GruposController::class, 'index']);
     Route::get('grupo/{id}/reports', [ReportsController::class, 'index']);
     Route::get('grupo/{id}/reports/{report_id}/view', [ReportsController::class, 'viewReport']);
+    Route::get('favoritos', [FavoritosController::class, 'index']);
+    Route::post('favoritos/save', [FavoritosController::class, 'save']);
 });
 Route::post('auth/login', [AuthController::class, 'login']);

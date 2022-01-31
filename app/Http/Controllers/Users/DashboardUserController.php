@@ -57,7 +57,7 @@ class DashboardUserController extends Controller
         }else{
                 return response()->json(["resposta" => 'erro']);
         }                     
-    }
+    } 
     
     public function trocarSenhaInicial(){
         $usuario = Auth::guard('web')->user();
