@@ -40,7 +40,8 @@ return [
     'report_table_actions' => 'Actions',
     'report_button_view' => 'Visualizar',
     'btn_update_report' => 'Atualizar',
-    'btn_add_report' => 'Cadastrar Relatório',
+    'btn_add_report' => 'Cadastrar Relatório', 
+    'msg_error_rls_user' => 'Verifique o RLS no registro do Usuário',
     /*PAGINA PERMISSOES RELATORIOS*/
     'title_link_page_reports_permission' => 'Relatórios',
     'title_page_reports_permission' => 'Permissões do Relatório - Usuários',

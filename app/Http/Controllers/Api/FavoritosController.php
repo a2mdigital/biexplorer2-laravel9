@@ -17,7 +17,6 @@ class FavoritosController extends Controller
             ->where('favorito', 'S')    
             ->orderBy('ultima_hora_acessada', 'desc')
             ->get();  
-         
           return ['response' => 'ok', 'reports' => $favoritos];
 
         }

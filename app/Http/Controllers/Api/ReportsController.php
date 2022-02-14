@@ -1,7 +1,9 @@
 <?php 
 
 namespace App\Http\Controllers\Api;
-
+use Alert;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 Use Illuminate\Http\Request;
 use App\Models\Relatorio;
 use App\Models\TenantUser;
@@ -52,20 +54,24 @@ class ReportsController extends Controller{
                     $query->where('subgrupo_relatorio_id', $grupo->id);
                 })
                 ->where(function($query) use ($relatorios_user, $relatorios_departamento){
-                    $query->orWhereIn('id', $relatorios_user);
-                    $query->orWhereIn('id', $relatorios_departamento);
-                })->get();
+                    $query->orWhereIn('relatorios.id', $relatorios_user);
+                    $query->orWhereIn('relatorios.id', $relatorios_departamento);
+                })
+                //->join('historico_relatorio_users', 'relatorios.id', '=', 'historico_relatorio_users.relatorio_id')
+                ->get();
+               // dd($RelatoriosPermissions); 
             }
         }
         
         return ['response' => 'ok', 'reports' => $RelatoriosPermissions];
     }
 
-    public function viewReport($grupo, $id){
+    public function viewReport1($grupo, $id){
 
         $user = auth()->user();
         //verifico se o usuário que está acessando é admin ou não
         if($user->is_admin == 1){
+        
             $relatorio = Relatorio::where('id', $id)->where('subgrupo_relatorio_id', $grupo)->firstOrFail();
        
             if (! Gate::allows('permissao-visualizar-relatorio-admin',$relatorio)) {
@@ -103,8 +109,808 @@ class ReportsController extends Controller{
                 }
             }
         }else{
-
+            $tenant = TenantUser::firstOrFail();
+            //VERIFICO AQUI COM OS USUÁRIOS SE O RELATÓRIO TEM FILTROS, RLS.. ETC
+            $relatorio = Relatorio::where('id', $id)->where('subgrupo_relatorio_id', $grupo)->firstOrFail();
+            return ['response' => 'ok', 'message' => 'Token Gerado',  'report' => $relatorio]; 
         }
 
+    } 
+
+    public function viewReport($grupo, $id){
+
+        //VERIFICAR SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O RELATÓRIO
+        if (! Gate::allows('visualizar-relatorio-user',[$grupo, $id])) {
+            return ['status' => 'error', 'msg' => 'Acesso Negado'];
+         }else{
+             //USUÁRIO TEM ACESSO AO RELATÓRIO
+              /*pegar o local que está acessando o relatório 
+             * para definir o timezone
+            */
+            $locale = App::currentLocale();
+            if($locale == 'pt_BR'){
+                $now = Carbon::now('America/Sao_Paulo');
+            }else if($locale == 'pt_PT'){
+                $now = Carbon::now('Europe/Lisbon');
+            }else{
+                $now = Carbon::now('Europe/London');
+            }
+             //Busca os dados do relatório
+             $relatorio = Relatorio::find($id);
+             //busca a empresa do Usuário
+             $tenant = TenantUser::firstOrFail();
+             //verifica se o relatório estár permitido para o usuário
+             $relatorios_user = RelatorioUserPermission::where('relatorio_id', $id)->first();
+             //verifica se o relatório está permitido por departamento
+             $relatorios_departamento = RelatorioDepartamentoPermission::where('relatorio_id', $id)->first();
+             //pega o usuário logado
+             $user = auth()->user();
+             //pega o departamento do usuário
+             $departamento = $user->departamento()->first();
+             //VERIFICA REGRA DE FILTRO DO RELATÓRIO
+             $verifica_regra_relatorio = $this->getRegraRelatorio($id);
+                /*RETORNOS*/
+                /*
+                filtro_relatorio_departamento => Pegar filtros do relatório da permissão de departamento
+                filtro_relatorio_usuario => Pegar filtros do relatório da permissão por usuário
+                filtro_usuario => Pegar Filtros do cadastro do Usuário
+                filtro_departamento => Pegar Filtros do cadastro do departamento
+                sem_filtro_rls => Não tem nenhum filtro
+
+                rls_relatorio_usuario => Pegar Regra RLS do relatório da permissão por usuário
+                rls_relatorio_departamento => Pegar Regra RLS do relatório da permissao por departamento
+                rls_usuario => Pegar Regra RLS do cadastro do usuário
+                */
+
+             //CHAMAR A FUNÇÃO PARA GERAR O TOKEN PASSANDO O ID DO RELATÓRIO
+            // $gerarToken = $this->gerarToken($id);
+            $verifica_regra_tenant = $this->getRegraTenant();
+               /*RETORNOS */
+               /*
+               sem_filtro => Tenant não utiliza filtro
+               filtro_empresa => Tenant utiliza filtro
+               rls_tenant => Tenant utiliza RLS
+               */
+            if($verifica_regra_tenant['response'] == 'ok'){
+                $regra_tenant = $verifica_regra_tenant['regra_tenant'];
+            }else{
+                return ['response' => 'error', 'msg' => $verifica_regra_tenant['msg']];
+            }
+            if($verifica_regra_relatorio['response'] == 'ok'){
+                $regra_relatorio = $verifica_regra_relatorio['regra_relatorio'];
+              
+                //SE O RETORNO FOI OK É PORQUE ESTÁ TUDO CERTO COM OS FILTROS
+            }else{
+                return ['response' => 'error', 'msg' => $verifica_regra_relatorio['msg']];
+            }
+
+            //CONTINUAR AQUI...
+
+         }//FIM ELSE USUÁRIO TEM ACESSO AO RELATÓRIO
+
     }
+
+    public function getRegraRelatorio($id){
+        $relatorio = Relatorio::find($id);
+        $relatorios_user = RelatorioUserPermission::where('relatorio_id', $id)->first();
+        //verifica se o relatório está permitido por departamento
+        $relatorios_departamento = RelatorioDepartamentoPermission::where('relatorio_id', $id)->first();
+        //pega o usuário logado
+        $user = auth()->user();
+        //pega o departamento do usuário
+        $departamento = $user->departamento()->first();
+        $regra = 'sem_filtro_rls';
+     
+        if($relatorio->utiliza_filtro_rls == 'S'){
+ 
+            //RELATÓRIO UTILIZA FILTRO OU RLS
+           switch($relatorio->nivel_filtro_rls){
+               case "rls_relatorio":
+                    if($relatorios_user != null){
+                       
+                        if($relatorios_user->utiliza_rls == 'S'){
+                            if($relatorios_user->regra_rls == ''){
+                                return ['response' => 'error', 'msg' => 'Verifique o RLS do Usuário no cadastro do Relatório', 'regra_relatorio' => ''];
+                            }
+                            $regra = 'rls_relatorio_usuario'; 
+                        }else{
+                            return ['response' => 'error', 'msg' => 'Verifique o RLS do Usuário no cadastro do Relatório', 'regra_relatorio' => ''];
+                        }
+                     break;
+                    }else if($relatorios_departamento != null){
+                            //VERIFICO SE O RELATÓRIO FOI DEFINIDO POR DEPARTAMENTO
+                            if($relatorios_departamento->utiliza_rls == 'S'){
+                                if($relatorios_departamento->regra_rls == ''){
+                                 return ['response' => 'error', 'msg' => 'Verifique o RLS do Departamento no cadastro do Relatório', 'regra_relatorio' => ''];
+                                 }
+                                $regra = 'rls_relatorio_departamento'; 
+                            }else{
+                                return ['response' => 'error', 'msg' => 'Verifique o RLS do Departamento no cadastro do Relatório', 'regra_relatorio' => ''];
+                            }
+                     break;       
+                    }
+                    break;
+                case "rls_usuario":
+                    if($user->regra_rls == ''){
+                        return ['response' => 'error', 'msg' => 'Verifique o RLS no cadastro do Usuário', 'regra_relatorio' => ''];
+                }
+                $regra = 'rls_usuario';
+                break;
+                case "filtro_relatorio":
+                 
+                    if($relatorios_user != null){
+                        //VERIFICO SE O RELATÓRIO FOI DEFINIDO POR USUÁRIO
+                      if($relatorios_user->utiliza_filtro == 'S'){
+                            //VERIFICA SE TEM FILTRO NO RELATÓRIO PARA O USUÁRIO
+                            if($relatorios_user->filtro_tabela == '' || $relatorios_user->filtro_coluna == '' || $relatorios_user->filtro_valor == ''){
+                               return ['response' => 'error', 'msg' => 'Ative os filtros do Usuário no cadastro do Relatório', 'regra_relatorio' => ''];
+                            }
+                            $regra = 'filtro_relatorio_usuario';
+                       
+                        }else{
+                            return ['response' => 'error', 'msg' => 'Ative os filtros do Usuário no cadastro do Relatório', 'regra_relatorio' => ''];
+                      
+                        } 
+                     break;   
+                    }else if($relatorios_departamento != null){
+                        //VERIFICO SE O RELATÓRIO FOI DEFINIDO POR DEPARTAMENTO
+                        //VERIFICA SE TEM FILTRO NO RELATÓRIO PARA O DEPARTAMENTO DO USUÁRIO
+                        if($relatorios_departamento->utiliza_filtro == 'S'){
+                            if($relatorios_departamento->filtro_tabela == '' || $relatorios_departamento->filtro_coluna == '' || $relatorios_departamento->filtro_valor == ''){
+                                return ['response' => 'error', 'msg' => 'Ative os filtros do Departamento no cadastro do Relatório', 'regra_relatorio' => ''];
+                            }else{
+                                $regra = 'filtro_relatorio_departamento';
+                            }
+                           
+                        }else{
+                            return ['response' => 'error', 'msg' => 'Ative os filtros do Departamento no cadastro do Relatório', 'regra_relatorio' => ''];
+                      
+                        } 
+                     break;   
+                    }
+                    break;
+                case "filtro_usuario":
+                    if($user->filtro_tabela == '' || $user->filtro_coluna == '' || $user->filtro_valor == ''){
+
+                        return ['response' => 'error', 'msg' => 'Verifique os filtros no cadastro do Usuário', 'regra_relatorio' => ''];
+                     }
+                    $regra = 'filtro_usuario';
+                    break;
+                case "filtro_departamento":
+                    if($departamento->filtro_tabela == '' || $departamento->filtro_coluna == '' || $departamento->filtro_valor == ''){
+                       return ['response' => 'error', 'msg' => 'Verifique os filtros no cadastro do departamento', 'regra_relatorio' => ''];
+                     }
+                    $regra = 'filtro_departamento';
+                    break;    
+           }
+           }else{
+            $regra = 'sem_filtro_rls';
+           }
+
+           return ['response' => 'ok', 'msg' => '', 'regra_relatorio' => $regra];    
+    }
+
+    public function getRegraTenant(){
+        $tenant = TenantUser::firstOrFail();
+        if($tenant->utiliza_rls == 'S'){
+            //VERIFICO SE O TENANT UTILIZA O RLS
+            if($tenant->regra_rls == ''){
+                return ['response' => 'error', 'msg' => 'Verifique o RLS no cadastro da Empresa', 'regra_tenant' => ''];
+            }
+            $regra_tenant = 'rls_tenant';
+          
+        }else if($tenant->utiliza_filtro == 'S'){
+                 /* VERIFICO SE TEM FILTRO POR TENANT
+                 */
+              if($tenant->filtro_tabela == '' || $tenant->filtro_coluna == '' || $tenant->filtro_valor == ''){
+                return ['response' => 'error', 'msg' => 'Verifique os filtros no cadastro da empresa', 'regra_tenant' => ''];
+              }
+              $regra_tenant = 'filtro_empresa';
+        }else{
+             $regra_tenant = 'sem_filtro';
+        }
+        return ['response' => 'ok', 'msg' => '', 'regra_tenant' => $regra_tenant];        
+    }
+
+    public function gerarToken($id){
+        $relatorio = Relatorio::find($id);
+        $tenant = TenantUser::firstOrFail();
+        //verifica se o relatório estár permitido para o usuário
+        $relatorios_user = RelatorioUserPermission::where('relatorio_id', $id)->first();
+        //verifica se o relatório está permitido por departamento
+        $relatorios_departamento = RelatorioDepartamentoPermission::where('relatorio_id', $id)->first();
+        //pega o usuário logado
+        $user = auth()->user();
+        //pega o departamento do usuário
+        $departamento = $user->departamento()->first();
+
+        //VERIFICAR SE TENANT UTILIZA OU NAO RLS
+        if($tenant->utiliza_rls == 'S'){
+            $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant); 
+        //ver daqui pra baixo
+        }else{
+                         //SÓ POSSO GERAR TOKEN 1 VEZ OU POR TENANT OU POR USUÁRIO, OU POR DEPARTAMENTO.. 
+                         //ENTÃO CASO O TENANT JA USA O RLS NÃO PODERÁ GERAR OUTRO TOKEN RLS PARA O USUÁRIO POR EXEMPLO..
+                         switch($regra){
+                            case "rls_relatorio_usuario":
+                                $resposta = GetTokenRlsPowerBiService::getTokenRlsRelatorioUser($relatorio, $relatorios_user);
+                                $tipo_token = 'rls'; 
+                                break;
+                            case "rls_relatorio_departamento":
+                                $resposta = GetTokenRlsPowerBiService::getTokenRlsRelatorioDepartamento($relatorio, $relatorios_departamento);
+                                $tipo_token = 'rls'; 
+                                break;
+                            case "rls_usuario":
+                                $resposta = GetTokenRlsPowerBiService::getTokenRlsUser($relatorio, $user);
+                                $tipo_token = 'rls'; 
+                                break;
+                            default: 
+                    
+                             $resposta = GetTokenPowerBiService::getToken();  
+                            
+                             $tipo_token = 'semrls'; 
+                           
+                         }
+                     }
+                    if($resposta['resposta'] == 'ok'){
+                        $token = $resposta['token'];
+                        $expires_in = $resposta['expires_in'];
+                    }else{
+                       
+                        $erro = $resposta['error'];
+                       
+                        $token = '';
+                        $expires_in = 0;
+                        return [
+                            'response' => 'error', 
+                            'msg' => 'Não foi possível obter o token', 
+                            'filtros' => '', 
+                            'token' => '', 
+                            'expires_in' => 0
+                        ];
+                    
+                    }
+    }
+
+    //VISUALIZAR RELATORIO
+    public function viewReportFilter($grupo, $id){ 
+
+        if (! Gate::allows('visualizar-relatorio-user',[$grupo, $id])) {
+           return ['status' => 'error', 'msg' => 'Acesso Negado'];
+        }else{
+            /*pegar o local que está acessando o relatório 
+             * para definir o timezone
+            */
+            $locale = App::currentLocale();
+            if($locale == 'pt_BR'){
+                $now = Carbon::now('America/Sao_Paulo');
+            }else if($locale == 'pt_PT'){
+                $now = Carbon::now('Europe/Lisbon');
+            }else{
+                $now = Carbon::now('Europe/London');
+            }
+            //Busca os dados do relatório
+            $relatorio = Relatorio::find($id);
+            //busca a empresa do Usuário
+            $tenant = TenantUser::firstOrFail();
+            //verifica se o relatório estár permitido para o usuário
+            $relatorios_user = RelatorioUserPermission::where('relatorio_id', $id)->first();
+            //verifica se o relatório está permitido por departamento
+            $relatorios_departamento = RelatorioDepartamentoPermission::where('relatorio_id', $id)->first();
+            //pega o usuário logado
+            $user = auth()->user();
+            //pega o departamento do usuário
+            $departamento = $user->departamento()->first();
+            //VERIFICA REGRA DE FILTRO DO RELATÓRIO
+            $regra = 'sem_filtro_rls';
+            if($relatorio->utiliza_filtro_rls == 'S'){
+               
+                //RELATÓRIO UTILIZA FILTRO OU RLS
+               switch($relatorio->nivel_filtro_rls){
+                   case "rls_relatorio":
+                        if($relatorios_user != null){
+                           
+                            if($relatorios_user->utiliza_rls == 'S'){
+                                if($relatorios_user->regra_rls == ''){
+                                 //   Alert::error('Erro', 'Verifique o RLS do Usuário no cadastro do Relatório');
+                                 //   return redirect()->back();
+                                }
+                                $regra = 'rls_relatorio_usuario'; 
+                            }else{
+                             //   Alert::error('Erro', 'Ative o RLS do Usuário no cadastro do Relatório');
+                             //   return redirect()->back();
+                            }
+                         break;
+                        }else if($relatorios_departamento != null){
+                                //VERIFICO SE O RELATÓRIO FOI DEFINIDO POR DEPARTAMENTO
+                                if($relatorios_departamento->utiliza_rls == 'S'){
+                                    if($relatorios_departamento->regra_rls == ''){
+                                     //   Alert::error('Erro', 'Verifique o RLS do Departamento no cadastro do Relatório');
+                                     //   return redirect()->back();
+                                     }
+                                    $regra = 'rls_relatorio_departamento'; 
+                                }else{
+                                  //  Alert::error('Erro', 'Ative o RLS do Departamento no cadastro do Relatório');
+                                  //   return redirect()->back();
+                                }
+                         break;       
+                        }
+                        break;
+                    case "rls_usuario":
+                        if($user->regra_rls == ''){
+                         //   Alert::error('Erro', 'Verifique os RLS no cadastro do Usuário');
+                         //   return redirect()->back();
+                        }
+                        $regra = 'rls_usuario';
+                        break;
+                    case "filtro_relatorio":
+                     
+                        if($relatorios_user != null){
+                            //VERIFICO SE O RELATÓRIO FOI DEFINIDO POR USUÁRIO
+                          if($relatorios_user->utiliza_filtro == 'S'){
+                                //VERIFICA SE TEM FILTRO NO RELATÓRIO PARA O USUÁRIO
+                                if($relatorios_user->filtro_tabela == '' || $relatorios_user->filtro_coluna == '' || $relatorios_user->filtro_valor == ''){
+                                  //  Alert::error('Erro', 'Verifique os filtros do Usuário no cadastro do Relatório');
+                                  //  return redirect()->back();
+                                }
+                                $regra = 'filtro_relatorio_usuario';
+                           
+                            }else{
+                                return ['response' => 'error', 'msg' => 'Ative os filtros do Usuário no cadastro do Relatório'];
+                          
+                            } 
+                         break;   
+                        }else if($relatorios_departamento != null){
+                            //VERIFICO SE O RELATÓRIO FOI DEFINIDO POR DEPARTAMENTO
+                            //VERIFICA SE TEM FILTRO NO RELATÓRIO PARA O DEPARTAMENTO DO USUÁRIO
+                            if($relatorios_departamento->utiliza_filtro == 'S'){
+                                if($relatorios_departamento->filtro_tabela == '' || $relatorios_departamento->filtro_coluna == '' || $relatorios_departamento->filtro_valor == ''){
+                                    return ['response' => 'error', 'msg' => 'Ative os filtros do Departamento no cadastro do Relatório'];
+                                }else{
+                                    $regra = 'filtro_relatorio_departamento';
+                                }
+                               
+                            }
+                         break;   
+                        }
+                        break;
+                    case "filtro_usuario":
+                        if($user->filtro_tabela == '' || $user->filtro_coluna == '' || $user->filtro_valor == ''){
+
+                            return ['response' => 'error', 'msg' => 'Verifique os filtros no cadastro do Usuário'];
+                         }
+                        $regra = 'filtro_usuario';
+                        break;
+                    case "filtro_departamento":
+                        if($departamento->filtro_tabela == '' || $departamento->filtro_coluna == '' || $departamento->filtro_valor == ''){
+                           return ['response' => 'error', 'msg' => 'Verifique os filtros no cadastro do departamento'];
+                         }
+                        $regra = 'filtro_departamento';
+                        break;    
+               }
+
+            }else{
+                $regra = 'sem_filtro_rls';
+            }
+            if($tenant->utiliza_rls == 'S'){
+                //VERIFICO SE O TENANT UTILIZA O RLS
+                if($tenant->regra_rls == ''){
+                    return ['response' => 'error', 'msg' => 'Verifique o RLS no cadastro da Empresa'];
+                }
+
+                    $regra_tenant = 'rls_tenant';
+              
+            }else if($tenant->utiliza_filtro == 'S'){
+                     /* VERIFICO SE TEM FILTRO POR TENANT
+                     */
+                  if($tenant->filtro_tabela == '' || $tenant->filtro_coluna == '' || $tenant->filtro_valor == ''){
+                    return ['response' => 'error', 'msg' => 'Verifique os filtros no cadastro da empresa'];
+                  }
+                  $regra_tenant = 'filtro_empresa';
+            }else{
+                 $regra_tenant = 'sem_filtro';
+            }
+
+              //GERAR TOKEN RLS OU TOKEM SEM RLS
+            if($tenant->utiliza_rls == 'S'){ 
+                $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant); 
+                //verifico se tem rls no tenant e filtro no usuário
+                if($relatorios_user->utiliza_filtro == 'S'){
+                    $regra = 'rls_tenant_filtro_relatorio_user';
+                  }else{
+                    if($user->utiliza_filtro == 'S'){
+                        $regra = 'rls_tenant_filtro_usuario';
+                    }else{
+                        //não tem filtro no relatório para o usuário e nem no cadastro do usuário
+                        //ver se existe filtro no departamento na permissão do relatório
+                        if($relatorios_departamento != null){
+                            if($relatorios_departamento->utiliza_filtro == 'S'){
+                         
+                                $regra = 'rls_tenant_filtro_relatorio_departamento';
+                               
+                              }
+                         }else{
+                           
+                              //TEM FILTRO PARA O DEPARTAMENTO NA PERMISSÃO DO RELATÓRIO
+                              if($departamento->utiliza_filtro == 'S'){
+                                $regra = 'rls_tenant_filtro_departamento';
+                              }else{
+                                  $regra = 'rls_tenant';
+                              }
+
+                          }
+                    //$regra = 'rls_tenant';
+                    }
+                    
+                  }
+               
+                $tipo_token = 'rls'; 
+             }else{
+                 //SÓ POSSO GERAR TOKEN 1 VEZ OU POR TENANT OU POR USUÁRIO, OU POR DEPARTAMENTO.. 
+                 //ENTÃO CASO O TENANT JA USA O RLS NÃO PODERÁ GERAR OUTRO TOKEN RLS PARA O USUÁRIO POR EXEMPLO..
+                 switch($regra){
+                    case "rls_relatorio_usuario":
+                        $resposta = GetTokenRlsPowerBiService::getTokenRlsRelatorioUser($relatorio, $relatorios_user);
+                        $tipo_token = 'rls'; 
+                        break;
+                    case "rls_relatorio_departamento":
+                        $resposta = GetTokenRlsPowerBiService::getTokenRlsRelatorioDepartamento($relatorio, $relatorios_departamento);
+                        $tipo_token = 'rls'; 
+                        break;
+                    case "rls_usuario":
+                        $resposta = GetTokenRlsPowerBiService::getTokenRlsUser($relatorio, $user);
+                        $tipo_token = 'rls'; 
+                        break;
+                    default: 
+            
+                     $resposta = GetTokenPowerBiService::getToken();  
+                    
+                     $tipo_token = 'semrls'; 
+                   
+                 }
+             }
+            if($resposta['resposta'] == 'ok'){
+                $token = $resposta['token'];
+                $expires_in = $resposta['expires_in'];
+            }else{
+               
+                $erro = $resposta['error'];
+               
+                $token = '';
+                $expires_in = 0;
+                return [
+                    'response' => 'error', 
+                    'msg' => 'Não foi possível obter o token', 
+                    'filtros' => '', 
+                    'token' => '', 
+                    'expires_in' => 0
+                ];
+            
+            }
+            //FILTRO HABILITADO NA EMPRESA
+            if($regra_tenant == 'filtro_empresa'){
+                //MONTO O FILTRO POR EMPRESA
+                $filtro_tabela_tenant = $tenant->filtro_tabela;
+                $filtro_coluna_tenant = $tenant->filtro_coluna;
+                $filtro_valor_tenant = $tenant->filtro_valor;
+                $array_filtros_tenant = explode(',', $filtro_valor_tenant);
+                $json_filtros_tenant = [
+                    '$schema' => 'http://powerbi.com/product/schema#basic',
+                    'target' => [
+                        'table' => $filtro_tabela_tenant,
+                        'column' => $filtro_coluna_tenant
+                    ],
+                    'operator' => 'In',
+                    'values' => $array_filtros_tenant,
+                    'displaySettings' => [
+                        'isLockedInViewMode' => true
+                    ]
+                ];
+                //filtros do tenant
+                //$filtros_tenant = json_encode($json_filtros_tenant);
+            
+                switch($regra){
+                    case 'filtro_relatorio_usuario':
+                     //MONTAR O ARRAY DE FILTROS PARA FILTROS DO USUÁRIO NO RELATÓRIO
+                     $filtro_tabela_relatorio_user = $relatorios_user->filtro_tabela;
+                     $filtro_coluna_relatorio_user = $relatorios_user->filtro_coluna;
+                     $filtro_valor_relatorio_user = $relatorios_user->filtro_valor;
+                     $array_filtros_relatorio_user = explode(',', $filtro_valor_relatorio_user);
+                     $json_filtros_relatorio_user = [
+                         '$schema' => 'http://powerbi.com/product/schema#basic',
+                         'target' => [
+                             'table' => $filtro_tabela_relatorio_user,
+                             'column' => $filtro_coluna_relatorio_user
+                         ],
+                         'operator' => 'In',
+                         'values' => $array_filtros_relatorio_user,
+                         'displaySettings' => [
+                             'isLockedInViewMode' => true
+                         ]
+                     ];
+                     $filtros_tenant_relatorio_user = [$json_filtros_tenant,  $json_filtros_relatorio_user];
+                     $filtros = json_encode($filtros_tenant_relatorio_user);
+                     break;
+                     case 'filtro_relatorio_departamento':
+                      //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO NO RELATÓRIO
+                      $filtro_tabela_relatorio_departamento = $relatorios_departamento->filtro_tabela;
+                      $filtro_coluna_relatorio_departamento = $relatorios_departamento->filtro_coluna;
+                      $filtro_valor_relatorio_departamento = $relatorios_departamento->filtro_valor;
+                      $array_filtros_relatorio_departamento = explode(',', $filtro_valor_relatorio_departamento);
+                      $json_filtros_relatorio_departamento = [
+                          '$schema' => 'http://powerbi.com/product/schema#basic',
+                          'target' => [
+                              'table' => $filtro_tabela_relatorio_departamento,
+                              'column' => $filtro_coluna_relatorio_departamento
+                          ],
+                          'operator' => 'In',
+                          'values' => $array_filtros_relatorio_departamento,
+                          'displaySettings' => [
+                              'isLockedInViewMode' => true
+                          ]
+                      ];
+                      $filtros_tenant_relatorio_departamento = [$json_filtros_tenant,  $json_filtros_relatorio_departamento];
+                      $filtros = json_encode($filtros_tenant_relatorio_departamento);   
+                     break;
+                     case 'filtro_usuario':
+                      //MONTAR O ARRAY DE FILTROS PARA FILTROS DO USUÁRIO
+                      $filtro_tabela_user = $user->filtro_tabela;
+                      $filtro_coluna_user = $user->filtro_coluna;
+                      $filtro_valor_user = $user->filtro_valor;
+                      $array_filtros_user = explode(',', $filtro_valor_user);
+                      $json_filtros_user = [
+                          '$schema' => 'http://powerbi.com/product/schema#basic',
+                          'target' => [
+                              'table' => $filtro_tabela_user,
+                              'column' => $filtro_coluna_user
+                          ],
+                          'operator' => 'In',
+                          'values' => $array_filtros_user,
+                          'displaySettings' => [
+                              'isLockedInViewMode' => true
+                          ]
+                      ];
+                      $filtros_tenant_user = [$json_filtros_tenant,  $json_filtros_user];
+                      $filtros = json_encode($filtros_tenant_user);   
+                     break;   
+                     case 'filtro_departamento':
+                      //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO
+                      $filtro_tabela_departamento = $departamento->filtro_tabela;
+                      $filtro_coluna_departamento = $departamento->filtro_coluna;
+                      $filtro_valor_departamento = $departamento->filtro_valor;
+                      $array_filtros_departamento = explode(',', $filtro_valor_departamento);
+                      $json_filtros_departamento = [
+                          '$schema' => 'http://powerbi.com/product/schema#basic',
+                          'target' => [
+                              'table' => $filtro_tabela_departamento,
+                              'column' => $filtro_coluna_departamento
+                          ],
+                          'operator' => 'In',
+                          'values' => $array_filtros_departamento,
+                          'displaySettings' => [
+                              'isLockedInViewMode' => true
+                          ]
+                      ];
+                      $filtros_tenant_departamento = [$json_filtros_tenant,  $json_filtros_departamento];
+                      $filtros = json_encode($filtros_tenant_departamento);      
+                     break;
+                     default:
+                     $filtros = json_encode($json_filtros_tenant);
+                     break;
+                }
+                //RETORNO OS FILTROS E O TOKEN
+                return [
+                    'response' => 'ok', 
+                    'msg' => '', 
+                    'filtros' => $filtros, 
+                    'token' => $token, 
+                    'expires_in' => $expires_in
+                ];
+           
+                //AQUI MONTO O ARRAY DE FILTROS DO TENANT + DO USUÁRIO, RELATORIO OU DEPARTAMENTO
+
+            }else if($regra_tenant == 'rls_tenant'){
+             
+                //AQUI MONTAR O ARRAY DE RLS DO TENANT + FILTROS DO USUÁRIO, RELATORIO OU DEPARTAMENTO
+                switch($regra){
+                    case 'rls_tenant_filtro_relatorio_user':
+                     //MONTAR O ARRAY DE FILTROS PARA FILTROS DO USUÁRIO NO RELATÓRIO
+                     $filtro_tabela_relatorio_user = $relatorios_user->filtro_tabela;
+                     $filtro_coluna_relatorio_user = $relatorios_user->filtro_coluna;
+                     $filtro_valor_relatorio_user = $relatorios_user->filtro_valor;
+                     $array_filtros_relatorio_user = explode(',', $filtro_valor_relatorio_user);
+                     $json_filtros_relatorio_user = [
+                         '$schema' => 'http://powerbi.com/product/schema#basic',
+                         'target' => [
+                             'table' => $filtro_tabela_relatorio_user,
+                             'column' => $filtro_coluna_relatorio_user
+                         ],
+                         'operator' => 'In',
+                         'values' => $array_filtros_relatorio_user,
+                         'displaySettings' => [
+                             'isLockedInViewMode' => true
+                         ]
+                     ];
+                     $filtros = json_encode($json_filtros_relatorio_user);
+                     break;
+                     case 'rls_tenant_filtro_relatorio_departamento':
+                      //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO NO RELATÓRIO
+                      $filtro_tabela_relatorio_departamento = $relatorios_departamento->filtro_tabela;
+                      $filtro_coluna_relatorio_departamento = $relatorios_departamento->filtro_coluna;
+                      $filtro_valor_relatorio_departamento = $relatorios_departamento->filtro_valor;
+                      $array_filtros_relatorio_departamento = explode(',', $filtro_valor_relatorio_departamento);
+                      $json_filtros_relatorio_departamento = [
+                          '$schema' => 'http://powerbi.com/product/schema#basic',
+                          'target' => [
+                              'table' => $filtro_tabela_relatorio_departamento,
+                              'column' => $filtro_coluna_relatorio_departamento
+                          ],
+                          'operator' => 'In',
+                          'values' => $array_filtros_relatorio_departamento,
+                          'displaySettings' => [
+                              'isLockedInViewMode' => true
+                          ]
+                      ];
+                      $filtros = json_encode($json_filtros_relatorio_departamento);   
+                     break;
+                     case 'rls_tenant_filtro_usuario':
+                      //MONTAR O ARRAY DE FILTROS PARA FILTROS DO USUÁRIO
+                      $filtro_tabela_user = $user->filtro_tabela;
+                      $filtro_coluna_user = $user->filtro_coluna;
+                      $filtro_valor_user = $user->filtro_valor;
+                      $array_filtros_user = explode(',', $filtro_valor_user);
+                      $json_filtros_user = [
+                          '$schema' => 'http://powerbi.com/product/schema#basic',
+                          'target' => [
+                              'table' => $filtro_tabela_user,
+                              'column' => $filtro_coluna_user
+                          ],
+                          'operator' => 'In',
+                          'values' => $array_filtros_user,
+                          'displaySettings' => [
+                              'isLockedInViewMode' => true
+                          ]
+                      ];
+                      $filtros = json_encode($json_filtros_user);   
+                     break;   
+                     case 'rls_tenant_filtro_departamento':
+                      //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO
+                      $filtro_tabela_departamento = $departamento->filtro_tabela;
+                      $filtro_coluna_departamento = $departamento->filtro_coluna;
+                      $filtro_valor_departamento = $departamento->filtro_valor;
+                      $array_filtros_departamento = explode(',', $filtro_valor_departamento);
+                      $json_filtros_departamento = [
+                          '$schema' => 'http://powerbi.com/product/schema#basic',
+                          'target' => [
+                              'table' => $filtro_tabela_departamento,
+                              'column' => $filtro_coluna_departamento
+                          ],
+                          'operator' => 'In',
+                          'values' => $array_filtros_departamento,
+                          'displaySettings' => [
+                              'isLockedInViewMode' => true
+                          ]
+                      ];
+                      $filtros = json_encode($json_filtros_departamento);      
+                     break;
+                     default:
+                     //relatório não tem filtro e nem tenant tem filtro
+                     $filtros = json_encode([]);
+                     break;
+                }
+                //RETORNO OS FILTROS E O TOKEN
+                return [
+                    'response' => 'ok', 
+                    'msg' => '', 
+                    'filtros' => $filtros, 
+                    'token' => $token, 
+                    'expires_in' => $expires_in
+                ];
+            }else if($regra_tenant == 'sem_filtro'){
+               
+                //AQUI MONTAR ARRAY DE FILTROS CASO O TENANT NÃO TIVER FILTROS
+                switch($regra){
+                    case 'filtro_relatorio_usuario':
+                     //MONTAR O ARRAY DE FILTROS PARA FILTROS DO USUÁRIO NO RELATÓRIO
+                     $filtro_tabela_relatorio_user = $relatorios_user->filtro_tabela;
+                     $filtro_coluna_relatorio_user = $relatorios_user->filtro_coluna;
+                     $filtro_valor_relatorio_user = $relatorios_user->filtro_valor;
+                     $array_filtros_relatorio_user = explode(',', $filtro_valor_relatorio_user);
+                     $json_filtros_relatorio_user = [
+                         '$schema' => 'http://powerbi.com/product/schema#basic',
+                         'target' => [
+                             'table' => $filtro_tabela_relatorio_user,
+                             'column' => $filtro_coluna_relatorio_user
+                         ],
+                         'operator' => 'In',
+                         'values' => $array_filtros_relatorio_user,
+                         'displaySettings' => [
+                             'isLockedInViewMode' => true
+                         ]
+                     ];
+                     $filtros = json_encode($json_filtros_relatorio_user);
+                     break;
+                     case 'filtro_relatorio_departamento':
+                      //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO NO RELATÓRIO
+                      $filtro_tabela_relatorio_departamento = $relatorios_departamento->filtro_tabela;
+                      $filtro_coluna_relatorio_departamento = $relatorios_departamento->filtro_coluna;
+                      $filtro_valor_relatorio_departamento = $relatorios_departamento->filtro_valor;
+                      $array_filtros_relatorio_departamento = explode(',', $filtro_valor_relatorio_departamento);
+                      $json_filtros_relatorio_departamento = [
+                          '$schema' => 'http://powerbi.com/product/schema#basic',
+                          'target' => [
+                              'table' => $filtro_tabela_relatorio_departamento,
+                              'column' => $filtro_coluna_relatorio_departamento
+                          ],
+                          'operator' => 'In',
+                          'values' => $array_filtros_relatorio_departamento,
+                          'displaySettings' => [
+                              'isLockedInViewMode' => true
+                          ]
+                      ];
+                      $filtros = json_encode($json_filtros_relatorio_departamento);   
+                     break;
+                     case 'filtro_usuario':
+                      //MONTAR O ARRAY DE FILTROS PARA FILTROS DO USUÁRIO
+                      $filtro_tabela_user = $user->filtro_tabela;
+                      $filtro_coluna_user = $user->filtro_coluna;
+                      $filtro_valor_user = $user->filtro_valor;
+                      $array_filtros_user = explode(',', $filtro_valor_user);
+                      $json_filtros_user = [
+                          '$schema' => 'http://powerbi.com/product/schema#basic',
+                          'target' => [
+                              'table' => $filtro_tabela_user,
+                              'column' => $filtro_coluna_user
+                          ],
+                          'operator' => 'In',
+                          'values' => $array_filtros_user,
+                          'displaySettings' => [
+                              'isLockedInViewMode' => true
+                          ]
+                      ];
+                      $filtros = json_encode($json_filtros_user);   
+                     break;   
+                     case 'filtro_departamento':
+                      //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO
+                      $filtro_tabela_departamento = $departamento->filtro_tabela;
+                      $filtro_coluna_departamento = $departamento->filtro_coluna;
+                      $filtro_valor_departamento = $departamento->filtro_valor;
+                      $array_filtros_departamento = explode(',', $filtro_valor_departamento);
+                      $json_filtros_departamento = [
+                          '$schema' => 'http://powerbi.com/product/schema#basic',
+                          'target' => [
+                              'table' => $filtro_tabela_departamento,
+                              'column' => $filtro_coluna_departamento
+                          ],
+                          'operator' => 'In',
+                          'values' => $array_filtros_departamento,
+                          'displaySettings' => [
+                              'isLockedInViewMode' => true
+                          ]
+                      ];
+                      $filtros = json_encode($json_filtros_departamento);      
+                     break;
+                     default:
+                     //relatório não tem filtro e nem tenant tem filtro
+                     $filtros = json_encode([]);
+                     break;
+                }
+                //RETORNO OS FILTROS E O TOKEN
+                return [
+                    'response' => 'ok', 
+                    'msg' => '', 
+                    'filtros' => $filtros, 
+                    'token' => $token, 
+                    'expires_in' => $expires_in
+                ];
+            }//fim else regra_tenant tem filtros
+       
+          
+           //return ['regra' => $regra];
+            
+           // return view('pages.users.relatorios.visualizar', compact('relatorio', 'token', 'expires_in', 'tenant', 'user', 'departamento', 'regra', 'regra_tenant', 'relatorios_user', 'relatorios_departamento', 'tipo_token'));   
+        }
+    
+    }
+    //FIM VISUALIZAR RELATORIO
 }

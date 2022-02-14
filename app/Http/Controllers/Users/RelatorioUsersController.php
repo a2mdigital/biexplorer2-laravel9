@@ -17,9 +17,11 @@ use App\Models\SubGrupoRelatorio;
 use App\Models\DepartamentoTenant;
 use Illuminate\Support\Facades\DB;
 use App\Models\RelatorioUserTenant;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Lang;
 use App\Models\RelatorioDepartamento;
 use App\Models\HistoricoRelatoriosUser;
 use App\Models\RelatorioUserPermission;
@@ -27,8 +29,6 @@ use App\Services\GetTokenPowerBiService;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\GetTokenRlsPowerBiService;
 use App\Models\RelatorioDepartamentoPermission;
-use Illuminate\Support\Facades\App;
-
 class RelatorioUsersController extends Controller
 {
     public function listarGrupos(){
@@ -109,7 +109,7 @@ class RelatorioUsersController extends Controller
       
     }
 
-    public function visualizarRelatorio($grupo, $id){
+    public function visualizarRelatorio($grupo, $id){ 
 
         if (! Gate::allows('visualizar-relatorio-user',[$grupo, $id])) {
             abort(403);
@@ -173,7 +173,9 @@ class RelatorioUsersController extends Controller
                         break;
                     case "rls_usuario":
                         if($user->regra_rls == ''){
-                            Alert::error('Erro', 'Verifique os RLS no cadastro do Usuário');
+                            $msg_error_rls_usuario = __('messages.msg_error_rls_user');
+                            Alert::error('Erro', $msg_error_rls_usuario);
+                           // Alert::error('Erro', 'Verifique os RLS no cadastro do Usuário');
                             return redirect()->back();
                         }
                         $regra = 'rls_usuario';

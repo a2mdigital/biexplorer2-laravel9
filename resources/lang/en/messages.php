@@ -43,6 +43,7 @@ return [
     'report_button_view' => 'Open Report',
     'btn_update_report' => 'Refresh Report',
     'btn_add_report' => 'Add Report',
+    'msg_error_rls_user' => 'Check the RLS at User Register',
     /*PAGINA PERMISSOES RELATORIOS*/
     'title_link_page_reports_permission' => 'Reports',
     'title_page_reports_permission' => 'Report Permission - Users',

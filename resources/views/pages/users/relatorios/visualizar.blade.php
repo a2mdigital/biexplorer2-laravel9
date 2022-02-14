@@ -213,7 +213,7 @@ iframe{
             var filtro_lateral = false;
         }
        
-        if(tipo == 'relatorio'){
+        if(tipo == 'relatorio'){ 
           //VERIFICO PRIMEIRO O RLS DO TENANT 
           if(utiliza_rls_tenant == 'S'){
             //ABRIR RLS POR TENANT

@@ -41,6 +41,7 @@ return [
     'report_button_view' => 'Visualizar',
     'btn_update_report' => 'Atualizar',
     'btn_add_report' => 'Adicionar Relatório',
+    'msg_error_rls_user' => 'Verifique o RLS no registo do Utilizador',
     /*PAGINA PERMISSOES RELATORIOS*/
     'title_link_page_reports_permission' => 'Relatórios',
     'title_page_reports_permission' => 'Permissões do Relatório - Utilizadores',

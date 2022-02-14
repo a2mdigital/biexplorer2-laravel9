@@ -39,3 +39,4 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::post('favoritos/save', [FavoritosController::class, 'save']);
 });
 Route::post('auth/login', [AuthController::class, 'login']);
+ 
