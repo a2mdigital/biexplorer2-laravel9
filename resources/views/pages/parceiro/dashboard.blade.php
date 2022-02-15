@@ -2,6 +2,7 @@
 @section('titulo-pagina', 'Dashboard')
 @push('plugin-styles')
 <link href="{{ asset('assets/plugins/datatables-net/dataTables.bootstrap4.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/datatables-net/buttons.dataTables.min.css') }}" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -117,10 +118,17 @@
 
 
 @endsection
-
+ 
 @push('plugin-scripts')
 <script src="{{ asset('assets/plugins/datatables-net/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables-net-bs4/dataTables.bootstrap4.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-net/dataTables.buttons.min.js') }}"></script>
+
+<script src="{{ asset('assets/plugins/datatables-net/jszip.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-net/pdfmake.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-net/vfs_fonts.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-net/buttons.html5.min.js') }}"></script>
+
 @endpush
 
 @push('custom-scripts')
@@ -160,6 +168,17 @@
       language: {
            url: getLanguage(),
         },
+        dom: 'Bfrtip',
+        buttons: [
+            {
+              extend:'excelHtml5',
+              title: 'Users'
+            },
+            {
+              extend:'pdfHtml5',
+              title: 'Users'
+              }
+        ], 
       pageLength : 5,
       lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
       
