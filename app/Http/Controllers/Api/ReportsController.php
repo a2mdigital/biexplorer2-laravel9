@@ -65,7 +65,7 @@ class ReportsController extends Controller{
         
         return ['response' => 'ok', 'reports' => $RelatoriosPermissions];
     }
-
+/*
     public function viewReport1($grupo, $id){
 
         $user = auth()->user();
@@ -116,15 +116,9 @@ class ReportsController extends Controller{
         }
 
     } 
-
+ */
     public function viewReport($grupo, $id){
-
-        //VERIFICAR SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O RELATÓRIO
-        if (! Gate::allows('visualizar-relatorio-user',[$grupo, $id])) {
-            return ['status' => 'error', 'msg' => 'Acesso Negado'];
-         }else{
-             //USUÁRIO TEM ACESSO AO RELATÓRIO
-              /*pegar o local que está acessando o relatório 
+         /*pegar o local que está acessando o relatório 
              * para definir o timezone
             */
             $locale = App::currentLocale();
@@ -135,76 +129,196 @@ class ReportsController extends Controller{
             }else{
                 $now = Carbon::now('Europe/London');
             }
-             //Busca os dados do relatório
-             $relatorio = Relatorio::find($id);
-             //busca a empresa do Usuário
-             $tenant = TenantUser::firstOrFail();
-             //verifica se o relatório estár permitido para o usuário
-             $relatorios_user = RelatorioUserPermission::where('relatorio_id', $id)->first();
-             //verifica se o relatório está permitido por departamento
-             $relatorios_departamento = RelatorioDepartamentoPermission::where('relatorio_id', $id)->first();
-             //pega o usuário logado
-             $user = auth()->user();
-             //pega o departamento do usuário
-             $departamento = $user->departamento()->first();
-             //VERIFICA REGRA DE FILTRO DO RELATÓRIO
-             $verifica_regra_relatorio = $this->getRegraRelatorio($id);
-                /*RETORNOS*/
-                /*
-                filtro_relatorio_departamento => Pegar filtros do relatório da permissão de departamento
-                filtro_relatorio_usuario => Pegar filtros do relatório da permissão por usuário
-                filtro_usuario => Pegar Filtros do cadastro do Usuário
-                filtro_departamento => Pegar Filtros do cadastro do departamento
-                sem_filtro_rls => Não tem nenhum filtro
+        //pega os dados do relatório        
+        $relatorio = Relatorio::find($id);      
+        //busca a empresa do Usuário
+        $tenant = TenantUser::firstOrFail();  
+        $user = auth()->user();
+        //verifico se o usuário que está acessando é admin ou não
+        if($user->is_admin == 1){
+           $viewReport = $this->viewReportAdmin($tenant, $relatorio);
+        }else{
+           $viewReport =  $this->viewReportUser($grupo, $id);
+        }    
 
-                rls_relatorio_usuario => Pegar Regra RLS do relatório da permissão por usuário
-                rls_relatorio_departamento => Pegar Regra RLS do relatório da permissao por departamento
-                rls_usuario => Pegar Regra RLS do cadastro do usuário
-                */
+       return $viewReport;
 
-             //CHAMAR A FUNÇÃO PARA GERAR O TOKEN PASSANDO O ID DO RELATÓRIO
-            // $gerarToken = $this->gerarToken($id);
-            $verifica_regra_tenant = $this->getRegraTenant();
-               /*RETORNOS */
-               /*
-               sem_filtro => Tenant não utiliza filtro
-               filtro_empresa => Tenant utiliza filtro
-               rls_tenant => Tenant utiliza RLS
-               */
-            if($verifica_regra_tenant['response'] == 'ok'){
-                //se o filtro com tenant está tudo certo
-                $regra_tenant = $verifica_regra_tenant['regra_tenant'];
-            }else{
-                //caso tenha alguma regra inválida mostra o erro
-                return ['response' => 'error', 'msg' => $verifica_regra_tenant['msg']];
-            }
-            if($verifica_regra_relatorio['response'] == 'ok'){
-                $regra_relatorio = $verifica_regra_relatorio['regra_relatorio'];
-              
-                //SE O RETORNO FOI OK É PORQUE ESTÁ TUDO CERTO COM OS FILTROS
-            }else{
-                //mostra o erro se tiver alguma regra de filtro inválida
-                return ['response' => 'error', 'msg' => $verifica_regra_relatorio['msg']];
-            }
-            $pegar_token = $this->gerarToken($regra_tenant, $regra_relatorio, $id);
-            if($pegar_token['response'] == 'ok'){
-                $token = $pegar_token['token'];
-                $expires_in = $pegar_token['expires_in'];
-            }else{
-                return ['response' => 'error', 'msg' => $pegar_token['msg']];
-            }
+    }
 
-            $pegar_filtros = $this->getReportFilter($regra_tenant, $regra_relatorio, $id);
-            $filtros = $pegar_filtros['filtros'];
-            return [
-                'response' => 'ok',
-                'regra_tenant' => $regra_tenant, 
-                'regra_relatorio' => $regra_relatorio,
-                'filtros' => $filtros,
-                'token' => $token
-            ];
-         }//FIM ELSE USUÁRIO TEM ACESSO AO RELATÓRIO
+    public function viewReportAdmin($tenant, $relatorio){
+       
+                //verificar permissão se o relatório está disponível para a empresa
+        if (! Gate::allows('permissao-visualizar-relatorio-admin',$relatorio)) {
+                    return ['response' => 'error', 'msg' => 'Acesso Negado'];
+        }else{
+          
+                   //empresa tem acesso ao relatório
+                   $verifica_regra_tenant = $this->getRegraTenant();
+                   /*RETORNOS */
+                   /*
+                   sem_filtro => Tenant não utiliza filtro
+                   filtro_empresa => Tenant utiliza filtro
+                   rls_tenant => Tenant utiliza RLS
+                   */
+                if($verifica_regra_tenant['response'] == 'ok'){
+                    //se o filtro com tenant está tudo certo
+                    $regra_tenant = $verifica_regra_tenant['regra_tenant'];
+                }else{
+                    //caso tenha alguma regra inválida mostra o erro
+                    return ['response' => 'error', 'msg' => $verifica_regra_tenant['msg']];
+                } 
+                
+                
+                if($regra_tenant == 'rls_tenant'){
+                    $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant); 
+                    $filtros = [];
+                //ver daqui pra baixo
+                }else  if($regra_tenant == 'filtro_empresa'){
+                    //MONTO O FILTRO POR EMPRESA
+                    $filtro_tabela_tenant = $tenant->filtro_tabela;
+                    $filtro_coluna_tenant = $tenant->filtro_coluna;
+                    $filtro_valor_tenant = $tenant->filtro_valor;
+                    $array_filtros_tenant = explode(',', $filtro_valor_tenant);
+                    $json_filtros_tenant = [
+                        '$schema' => 'http://powerbi.com/product/schema#basic',
+                        'target' => [
+                            'table' => $filtro_tabela_tenant,
+                            'column' => $filtro_coluna_tenant
+                        ],
+                        'operator' => 'In',
+                        'values' => $array_filtros_tenant,
+                        'displaySettings' => [
+                            'isLockedInViewMode' => true
+                        ]
+                    ];
+                  
+                    $resposta = GetTokenPowerBiService::getToken();  
+                    $filtros = json_encode($json_filtros_tenant);
+                }else{
+                    $resposta = GetTokenPowerBiService::getToken();  
+                    $filtros = [];
+                }
+                //verificar se existe filtro ou não
+                if(empty($filtros)){
+                    $existe_filtros = 'n';
+                }else{
+                    $existe_filtros = 's';
+                }
+                //pegar o token do relatório para o admin
+                if($resposta['resposta'] == 'ok'){
+                   
+                    $token = $resposta['token'];
+                    $expires_in = $resposta['expires_in'];
+                    return [
+                        'response' => 'ok',
+                        'regra_tenant' => $regra_tenant, 
+                        'regra_relatorio' => '',
+                        'existe_filtros' => $existe_filtros,
+                        'filtros' => $filtros,
+                        'token' => $token
+                    ];        
+                }else{
+                  
+                    $erro = $resposta['error'];
+                    $token = '';
+                    $expires_in = 0;
+                    return [
+                        'response' => 'error', 
+                        'msg' => 'Não foi possível obter o token', 
+                        'existe_filtros' => $existe_filtros,
+                        'filtros' =>  $filtros, 
+                        'token' => '', 
+                        'expires_in' => 0
+                    ];
+                
+                }
+               
+        
+        }//fim else empresa tem acesso ao relatório 
+    }
 
+    public function viewReportuser($grupo, $id){
+                //VERIFICAR SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O RELATÓRIO
+                if (! Gate::allows('visualizar-relatorio-user',[$grupo, $id])) {
+                    return ['response' => 'error', 'msg' => 'Acesso Negado'];
+                 }else{
+                     //USUÁRIO TEM ACESSO AO RELATÓRIO
+                     
+                     //Busca os dados do relatório
+                    
+                    
+                     //verifica se o relatório estár permitido para o usuário
+                     $relatorios_user = RelatorioUserPermission::where('relatorio_id', $id)->first();
+                     //verifica se o relatório está permitido por departamento
+                     $relatorios_departamento = RelatorioDepartamentoPermission::where('relatorio_id', $id)->first();
+                     //pega o usuário logado
+                     $user = auth()->user();
+                     //pega o departamento do usuário
+                     $departamento = $user->departamento()->first();
+                     //VERIFICA REGRA DE FILTRO DO RELATÓRIO
+                     $verifica_regra_relatorio = $this->getRegraRelatorio($id);
+                        /*RETORNOS*/
+                        /*
+                        filtro_relatorio_departamento => Pegar filtros do relatório da permissão de departamento
+                        filtro_relatorio_usuario => Pegar filtros do relatório da permissão por usuário
+                        filtro_usuario => Pegar Filtros do cadastro do Usuário
+                        filtro_departamento => Pegar Filtros do cadastro do departamento
+                        sem_filtro_rls => Não tem nenhum filtro
+        
+                        rls_relatorio_usuario => Pegar Regra RLS do relatório da permissão por usuário
+                        rls_relatorio_departamento => Pegar Regra RLS do relatório da permissao por departamento
+                        rls_usuario => Pegar Regra RLS do cadastro do usuário
+                        */
+        
+                     //CHAMAR A FUNÇÃO PARA GERAR O TOKEN PASSANDO O ID DO RELATÓRIO
+                    // $gerarToken = $this->gerarToken($id);
+                    $verifica_regra_tenant = $this->getRegraTenant();
+                       /*RETORNOS */
+                       /*
+                       sem_filtro => Tenant não utiliza filtro
+                       filtro_empresa => Tenant utiliza filtro
+                       rls_tenant => Tenant utiliza RLS
+                       */
+                    if($verifica_regra_tenant['response'] == 'ok'){
+                        //se o filtro com tenant está tudo certo
+                        $regra_tenant = $verifica_regra_tenant['regra_tenant'];
+                    }else{
+                        //caso tenha alguma regra inválida mostra o erro
+                        return ['response' => 'error', 'msg' => $verifica_regra_tenant['msg']];
+                    }
+                    if($verifica_regra_relatorio['response'] == 'ok'){
+                        $regra_relatorio = $verifica_regra_relatorio['regra_relatorio'];
+                      
+                        //SE O RETORNO FOI OK É PORQUE ESTÁ TUDO CERTO COM OS FILTROS
+                    }else{
+                        //mostra o erro se tiver alguma regra de filtro inválida
+                        return ['response' => 'error', 'msg' => $verifica_regra_relatorio['msg']];
+                    }
+                    $pegar_token = $this->gerarToken($regra_tenant, $regra_relatorio, $id);
+                    if($pegar_token['response'] == 'ok'){
+                        $token = $pegar_token['token'];
+                        $expires_in = $pegar_token['expires_in'];
+                    }else{
+                        return ['response' => 'error', 'msg' => $pegar_token['msg']];
+                    }
+        
+                    $pegar_filtros = $this->getReportFilter($regra_tenant, $regra_relatorio, $id);
+                    $filtros = $pegar_filtros['filtros'];
+                    //verificar se existe filtro ou não
+                    if(empty($filtros)){
+                        $existe_filtros = 'n';
+                    }else{
+                        $existe_filtros = 's';
+                    }
+                    return [
+                        'response' => 'ok',
+                        'regra_tenant' => $regra_tenant, 
+                        'regra_relatorio' => $regra_relatorio,
+                        'existe_filtros' => $existe_filtros,
+                        'filtros' => $filtros,
+                        'token' => $token
+                    ];
+                 }//FIM ELSE USUÁRIO TEM ACESSO AO RELATÓRIO
     }
 
     public function getRegraRelatorio($id){
@@ -639,7 +753,7 @@ class ReportsController extends Controller{
                              break;
                              default:
                              //relatório não tem filtro e nem tenant tem filtro
-                             $filtros = json_encode([]);
+                             $filtros = [];
                              break;
                         }
                         //RETORNO OS FILTROS E O TOKEN
@@ -733,7 +847,7 @@ class ReportsController extends Controller{
                              break;
                              default:
                              //relatório não tem filtro e nem tenant tem filtro
-                             $filtros = json_encode([]);
+                             $filtros = [];
                              break;
                         }
                         //RETORNO OS FILTROS E O TOKEN
@@ -749,7 +863,7 @@ class ReportsController extends Controller{
     public function viewReportFilter($grupo, $id){ 
 
         if (! Gate::allows('visualizar-relatorio-user',[$grupo, $id])) {
-           return ['status' => 'error', 'msg' => 'Acesso Negado'];
+           return ['response' => 'error', 'msg' => 'Acesso Negado'];
         }else{
             /*pegar o local que está acessando o relatório 
              * para definir o timezone
@@ -1168,7 +1282,7 @@ class ReportsController extends Controller{
                      break;
                      default:
                      //relatório não tem filtro e nem tenant tem filtro
-                     $filtros = json_encode([]);
+                     $filtros = [];
                      break;
                 }
                 //RETORNO OS FILTROS E O TOKEN
@@ -1265,7 +1379,7 @@ class ReportsController extends Controller{
                      break;
                      default:
                      //relatório não tem filtro e nem tenant tem filtro
-                     $filtros = json_encode([]);
+                     $filtros = [];
                      break;
                 }
                 //RETORNO OS FILTROS E O TOKEN
