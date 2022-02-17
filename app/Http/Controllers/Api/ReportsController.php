@@ -65,58 +65,7 @@ class ReportsController extends Controller{
         
         return ['response' => 'ok', 'reports' => $RelatoriosPermissions];
     }
-/*
-    public function viewReport1($grupo, $id){
 
-        $user = auth()->user();
-        //verifico se o usuário que está acessando é admin ou não
-        if($user->is_admin == 1){
-        
-            $relatorio = Relatorio::where('id', $id)->where('subgrupo_relatorio_id', $grupo)->firstOrFail();
-       
-            if (! Gate::allows('permissao-visualizar-relatorio-admin',$relatorio)) {
-                return ['response' => 'forbidden', 'message' => 'Não Autorizado', 'token' => '' ];
-            }else{
-                //VERIFICAR OS ACESSOS E RETORNAR O TOKEN PARA O APLICATIVO
-                $tenant = TenantUser::firstOrFail();
-       
-                if($tenant->utiliza_rls == 'S'){
-                   if($tenant->regra_rls == ''){
-                      return ['response' => 'error', 'message' => 'Verifique o RLS no cadastro da Empresa', 'token' => '' ];
-                   }
-                 }
-                if($tenant->utiliza_filtro == 'S'){
-                  if($tenant->filtro_tabela == '' || $tenant->filtro_coluna == '' || $tenant->filtro_valor == ''){
-                    return ['response' => 'error', 'message' => 'Verifique os filtros no cadastro da Empresa', 'token' => '' ]; 
-                  }
-                  
-                }
-                //GERAR TOKEN RLS OU TOKEM SEM RLS
-                if($tenant->utiliza_rls == 'S'){
-                   $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant);  
-            
-                }else{
-                   $resposta = GetTokenPowerBiService::getToken();  
-               
-                }
-                if($resposta['resposta'] == 'ok'){
-                    $token = $resposta['token'];
-                    return ['response' => 'ok', 'message' => 'Token Gerado', 'tenant' => $tenant, 'report' => $relatorio, 'token' => $token ]; 
-                }else{
-                    $erro = $resposta['error'];
-                    return ['response' => 'ok', 'message' => $erro, 'token' => ''];
-                    
-                }
-            }
-        }else{
-            $tenant = TenantUser::firstOrFail();
-            //VERIFICO AQUI COM OS USUÁRIOS SE O RELATÓRIO TEM FILTROS, RLS.. ETC
-            $relatorio = Relatorio::where('id', $id)->where('subgrupo_relatorio_id', $grupo)->firstOrFail();
-            return ['response' => 'ok', 'message' => 'Token Gerado',  'report' => $relatorio]; 
-        }
-
-    } 
- */
     public function viewReport($grupo, $id){
          /*pegar o local que está acessando o relatório 
              * para definir o timezone
@@ -129,8 +78,12 @@ class ReportsController extends Controller{
             }else{
                 $now = Carbon::now('Europe/London');
             }
-        //pega os dados do relatório        
-        $relatorio = Relatorio::find($id);      
+        //pega os dados do relatório   
+        try{     
+        $relatorio = Relatorio::findOrFail($id);   
+        }catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+            return ['response' => 'error', 'msg' => 'Relatório não existe'];
+        }   
         //busca a empresa do Usuário
         $tenant = TenantUser::firstOrFail();  
         $user = auth()->user();
@@ -211,6 +164,7 @@ class ReportsController extends Controller{
                     $expires_in = $resposta['expires_in'];
                     return [
                         'response' => 'ok',
+                        'report' => $relatorio,
                         'regra_tenant' => $regra_tenant, 
                         'regra_relatorio' => '',
                         'existe_filtros' => $existe_filtros,
@@ -245,7 +199,7 @@ class ReportsController extends Controller{
                      //USUÁRIO TEM ACESSO AO RELATÓRIO
                      
                      //Busca os dados do relatório
-                    
+                     $relatorio = Relatorio::find($id);
                     
                      //verifica se o relatório estár permitido para o usuário
                      $relatorios_user = RelatorioUserPermission::where('relatorio_id', $id)->first();
@@ -312,6 +266,7 @@ class ReportsController extends Controller{
                     }
                     return [
                         'response' => 'ok',
+                        'report' => $relatorio,
                         'regra_tenant' => $regra_tenant, 
                         'regra_relatorio' => $regra_relatorio,
                         'existe_filtros' => $existe_filtros,
