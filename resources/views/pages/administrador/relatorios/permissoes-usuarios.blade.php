@@ -233,8 +233,8 @@
                
                 ajax: "{{ route('tenant.relatorio.permissao.usuarios', request()->route('id'))}}",
                columns: [
-                  
-                    {data: 'name', name: 'name'},
+                   
+                    {data: 'name', name: 'users.name'},
                     {data: 'filtro_tabela', name: 'filtro_tabela'},
                     {data: 'filtro_coluna', name: 'filtro_coluna'},
                     {data: 'filtro_valor', name: 'filtro_valor'},

@@ -156,7 +156,7 @@ class RelatorioTenantController extends Controller
         }else{
             abort(404);
         }
-        if ($request->ajax()) {
+        if ($request->ajax()) { 
             return Datatables::of(RelatorioUser::query()->join('users', 'relatorio_user.user_id', '=', 'users.id')
             ->join('relatorios', 'relatorio_user.relatorio_id', '=', 'relatorios.id')
             ->select('users.name', 'users.id as user_id', 'relatorios.id as relatorio_id', 'relatorio_user.filtro_tabela', 'relatorio_user.filtro_coluna', 'relatorio_user.filtro_valor', 'relatorio_user.regra_rls', 'relatorio_user.username_rls')
