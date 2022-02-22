@@ -652,7 +652,7 @@ iframe{
 
             //FIM VERIFICAR SE TEM FILTROS TBM
             
-        }
+        } 
         //FUNÇÕES DE ABRIR OS RELATÓRIOS
         //ABRIR RELATÓRIOS COM FILTRO DE TENANT + OUTROS FILTROS JUNTOS COMO DEPARTAMENTO, USUÁRIO,ETC..
         function abrirRelatorioFiltroTenant(token, report_id, filtro_lateral, filtros){
@@ -715,7 +715,7 @@ iframe{
                     navContentPaneEnabled: true
                   }
                 };
-
+            console.log("Filtros" + filtros);
             var embedContainer = $('#powerBI')[0];
             var report = powerbi.embed(embedContainer, config);
         } // FIM FUNCAO ABRIR RELATORIO COM FILTRO
