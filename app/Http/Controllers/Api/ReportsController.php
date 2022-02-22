@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Api;
 use Alert;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\App;
-Use Illuminate\Http\Request;
 use App\Models\Relatorio;
+Use Illuminate\Http\Request;
 use App\Models\TenantUser;
 use App\Tenant\ManagerTenant;
 use App\Models\SubGrupoRelatorio;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
+use App\Models\HistoricoRelatoriosUser;
 use App\Models\RelatorioUserPermission;
 use App\Services\GetTokenPowerBiService;
 use App\Services\GetTokenRlsPowerBiService;
@@ -47,7 +48,7 @@ class ReportsController extends Controller{
             if (! Gate::allows('listar-grupo-relatorio-user',$grupo)) {
                 return ['response' => 'forbidden', 'reports' => ''];
             }else{
-               
+             
                 $relatorios_user = RelatorioUserPermission::select('relatorio_id')->get();
                 $relatorios_departamento = RelatorioDepartamentoPermission::select('relatorio_id')->get();
                 $RelatoriosPermissions = Relatorio::where(function($query) use ($grupo){
@@ -57,7 +58,7 @@ class ReportsController extends Controller{
                     $query->orWhereIn('relatorios.id', $relatorios_user);
                     $query->orWhereIn('relatorios.id', $relatorios_departamento);
                 })
-                //->join('historico_relatorio_users', 'relatorios.id', '=', 'historico_relatorio_users.relatorio_id')
+                ->leftjoin('historico_relatorio_users', 'relatorios.id', '=', 'historico_relatorio_users.relatorio_id')
                 ->get();
                // dd($RelatoriosPermissions); 
             }
@@ -169,7 +170,7 @@ class ReportsController extends Controller{
                         'regra_tenant' => $regra_tenant, 
                         'regra_relatorio' => '',
                         'existe_filtros' => $existe_filtros,
-                        'filtros' => $filtros,
+                        'filtros' => [$filtros],
                         'token' => $token
                     ];        
                 }else{
@@ -182,7 +183,7 @@ class ReportsController extends Controller{
                         'msg' => 'Não foi possível obter o token', 
                         'tenant' => $tenant,
                         'existe_filtros' => $existe_filtros,
-                        'filtros' =>  $filtros, 
+                        'filtros' =>  [$filtros], 
                         'token' => '', 
                         'expires_in' => 0
                     ];
@@ -214,7 +215,7 @@ class ReportsController extends Controller{
                      //pega o departamento do usuário
                      $departamento = $user->departamento()->first();
                      //VERIFICA REGRA DE FILTRO DO RELATÓRIO
-                     $verifica_regra_relatorio = $this->getRegraRelatorio($id);
+                      $verifica_regra_relatorio = $this->getRegraRelatorio($id);
                         /*RETORNOS*/
                         /*
                         filtro_relatorio_departamento => Pegar filtros do relatório da permissão de departamento
@@ -275,7 +276,7 @@ class ReportsController extends Controller{
                         'regra_tenant' => $regra_tenant, 
                         'regra_relatorio' => $regra_relatorio,
                         'existe_filtros' => $existe_filtros,
-                        'filtros' => $filtros,
+                        'filtros' => [$filtros],
                         'token' => $token
                     ];
                  }//FIM ELSE USUÁRIO TEM ACESSO AO RELATÓRIO
