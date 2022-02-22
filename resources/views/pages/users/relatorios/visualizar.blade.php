@@ -715,7 +715,7 @@ iframe{
                     navContentPaneEnabled: true
                   }
                 };
-            console.log("Filtros" + filtros);
+            console.log("Filtros" + config);
             var embedContainer = $('#powerBI')[0];
             var report = powerbi.embed(embedContainer, config);
         } // FIM FUNCAO ABRIR RELATORIO COM FILTRO
