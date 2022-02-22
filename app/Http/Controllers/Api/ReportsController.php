@@ -164,6 +164,7 @@ class ReportsController extends Controller{
                     $expires_in = $resposta['expires_in'];
                     return [
                         'response' => 'ok',
+                        'tenant' => $tenant,
                         'report' => $relatorio,
                         'regra_tenant' => $regra_tenant, 
                         'regra_relatorio' => '',
@@ -179,6 +180,7 @@ class ReportsController extends Controller{
                     return [
                         'response' => 'error', 
                         'msg' => 'Não foi possível obter o token', 
+                        'tenant' => $tenant,
                         'existe_filtros' => $existe_filtros,
                         'filtros' =>  $filtros, 
                         'token' => '', 
@@ -192,6 +194,8 @@ class ReportsController extends Controller{
     }
 
     public function viewReportuser($grupo, $id){
+                //busca a empresa do Usuário
+                $tenant = TenantUser::firstOrFail();  
                 //VERIFICAR SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O RELATÓRIO
                 if (! Gate::allows('visualizar-relatorio-user',[$grupo, $id])) {
                     return ['response' => 'error', 'msg' => 'Acesso Negado'];
@@ -266,6 +270,7 @@ class ReportsController extends Controller{
                     }
                     return [
                         'response' => 'ok',
+                        'tenant' => $tenant,
                         'report' => $relatorio,
                         'regra_tenant' => $regra_tenant, 
                         'regra_relatorio' => $regra_relatorio,
