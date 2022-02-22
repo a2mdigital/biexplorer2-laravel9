@@ -170,7 +170,7 @@ class ReportsController extends Controller{
                         'regra_tenant' => $regra_tenant, 
                         'regra_relatorio' => '',
                         'existe_filtros' => $existe_filtros,
-                        'filtros' => [$filtros],
+                        'filtros' => $filtros,
                         'token' => $token
                     ];        
                 }else{
@@ -183,7 +183,7 @@ class ReportsController extends Controller{
                         'msg' => 'Não foi possível obter o token', 
                         'tenant' => $tenant,
                         'existe_filtros' => $existe_filtros,
-                        'filtros' =>  [$filtros], 
+                        'filtros' =>  $filtros, 
                         'token' => '', 
                         'expires_in' => 0
                     ];
@@ -276,7 +276,7 @@ class ReportsController extends Controller{
                         'regra_tenant' => $regra_tenant, 
                         'regra_relatorio' => $regra_relatorio,
                         'existe_filtros' => $existe_filtros,
-                        'filtros' => [$filtros],
+                        'filtros' => $filtros,
                         'token' => $token
                     ];
                  }//FIM ELSE USUÁRIO TEM ACESSO AO RELATÓRIO
