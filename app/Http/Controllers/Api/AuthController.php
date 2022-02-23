@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 class AuthController extends Controller
 {
     public function login(Request $request)
@@ -37,10 +37,11 @@ class AuthController extends Controller
 
     protected function respondWithToken($token)
     {
+        //$expires_in = Carbon::now()->addDays(720)->timestamp;
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
+            'expires_in' => auth('api')->factory()->getTTL() * 1051920
         ]);
     }
 }

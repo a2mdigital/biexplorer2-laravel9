@@ -20,6 +20,10 @@ class apiProtectedRoute extends BaseMiddleware
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
+            //se o usuário não existe mais retorna erro 403
+            if(!$user){
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
         } catch (\Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
                 return response()->json(['status' => 'Token is Invalid']);
