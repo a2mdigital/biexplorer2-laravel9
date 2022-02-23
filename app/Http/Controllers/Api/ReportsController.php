@@ -622,7 +622,8 @@ class ReportsController extends Controller{
                              $filtros =  $filtros_tenant_departamento;
                              break;
                              default:
-                             $filtros = json_encode($json_filtros_tenant);
+                             //$filtros = json_encode($json_filtros_tenant);
+                             $filtros = $json_filtros_tenant;
                              break;
                         }
                         //RETORNO OS FILTROS E O TOKEN
