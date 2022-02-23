@@ -147,7 +147,8 @@ class ReportsController extends Controller{
                     ];
                   
                     $resposta = GetTokenPowerBiService::getToken();  
-                    $filtros = json_encode($json_filtros_tenant);
+                   // $filtros = json_encode($json_filtros_tenant);
+                   $filtros = $json_filtros_tenant;
                 }else{
                     $resposta = GetTokenPowerBiService::getToken();  
                     $filtros = [];
@@ -551,7 +552,8 @@ class ReportsController extends Controller{
                                  ]
                              ];
                              $filtros_tenant_relatorio_user = [$json_filtros_tenant,  $json_filtros_relatorio_user];
-                             $filtros = json_encode($filtros_tenant_relatorio_user);
+                             //$filtros = json_encode($filtros_tenant_relatorio_user);
+                             $filtros = $filtros_tenant_relatorio_user;
                              break;
                              case 'filtro_relatorio_departamento':
                               //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO NO RELATÓRIO
@@ -572,7 +574,8 @@ class ReportsController extends Controller{
                                   ]
                               ];
                               $filtros_tenant_relatorio_departamento = [$json_filtros_tenant,  $json_filtros_relatorio_departamento];
-                              $filtros = json_encode($filtros_tenant_relatorio_departamento);   
+                              //$filtros = json_encode($filtros_tenant_relatorio_departamento);   
+                              $filtros = $filtros_tenant_relatorio_departamento;
                              break;
                              case 'filtro_usuario':
                               //MONTAR O ARRAY DE FILTROS PARA FILTROS DO USUÁRIO
@@ -593,7 +596,8 @@ class ReportsController extends Controller{
                                   ]
                               ];
                               $filtros_tenant_user = [$json_filtros_tenant,  $json_filtros_user];
-                              $filtros = json_encode($filtros_tenant_user);   
+                              //$filtros = json_encode($filtros_tenant_user);   
+                              $filtros = $filtros_tenant_user;
                              break;   
                              case 'filtro_departamento':
                               //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO
@@ -614,7 +618,8 @@ class ReportsController extends Controller{
                                   ]
                               ];
                               $filtros_tenant_departamento = [$json_filtros_tenant,  $json_filtros_departamento];
-                              $filtros = json_encode($filtros_tenant_departamento);      
+                             // $filtros = json_encode($filtros_tenant_departamento);  
+                             $filtros =  $filtros_tenant_departamento;
                              break;
                              default:
                              $filtros = json_encode($json_filtros_tenant);
@@ -650,7 +655,8 @@ class ReportsController extends Controller{
                                      'isLockedInViewMode' => true
                                  ]
                              ];
-                             $filtros = json_encode($json_filtros_relatorio_user);
+                             //$filtros = json_encode($json_filtros_relatorio_user);
+                             $filtros = $json_filtros_relatorio_user;
                              break;
                              case 'filtro_relatorio_departamento':
                               //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO NO RELATÓRIO
@@ -670,7 +676,8 @@ class ReportsController extends Controller{
                                       'isLockedInViewMode' => true
                                   ]
                               ];
-                              $filtros = json_encode($json_filtros_relatorio_departamento);   
+                             // $filtros = json_encode($json_filtros_relatorio_departamento);   
+                             $filtros = $json_filtros_relatorio_departamento;
                              break;
                              case 'filtro_usuario':
                               //MONTAR O ARRAY DE FILTROS PARA FILTROS DO USUÁRIO
@@ -690,7 +697,8 @@ class ReportsController extends Controller{
                                       'isLockedInViewMode' => true
                                   ]
                               ];
-                              $filtros = json_encode($json_filtros_user);   
+                             // $filtros = json_encode($json_filtros_user);   
+                             $filtros = $json_filtros_user;
                              break;   
                              case 'filtro_departamento':
                               //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO
@@ -710,7 +718,8 @@ class ReportsController extends Controller{
                                       'isLockedInViewMode' => true
                                   ]
                               ];
-                              $filtros = json_encode($json_filtros_departamento);      
+                              //$filtros = json_encode($json_filtros_departamento);    
+                              $filtros =  $json_filtros_departamento;
                              break;
                              default:
                              //relatório não tem filtro e nem tenant tem filtro
@@ -744,7 +753,8 @@ class ReportsController extends Controller{
                                      'isLockedInViewMode' => true
                                  ]
                              ];
-                             $filtros = json_encode($json_filtros_relatorio_user);
+                            // $filtros = json_encode($json_filtros_relatorio_user);
+                            $filtros = $json_filtros_relatorio_user;
                              break;
                              case 'filtro_relatorio_departamento':
                               //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO NO RELATÓRIO
@@ -764,7 +774,8 @@ class ReportsController extends Controller{
                                       'isLockedInViewMode' => true
                                   ]
                               ];
-                              $filtros = json_encode($json_filtros_relatorio_departamento);   
+                              //$filtros = json_encode($json_filtros_relatorio_departamento);   
+                              $filtros = $json_filtros_relatorio_departamento;
                              break;
                              case 'filtro_usuario':
                               //MONTAR O ARRAY DE FILTROS PARA FILTROS DO USUÁRIO
@@ -784,7 +795,8 @@ class ReportsController extends Controller{
                                       'isLockedInViewMode' => true
                                   ]
                               ];
-                              $filtros = json_encode($json_filtros_user);   
+                              //$filtros = json_encode($json_filtros_user);   
+                              $filtros = $json_filtros_user;
                              break;   
                              case 'filtro_departamento':
                               //MONTAR O ARRAY DE FILTROS PARA FILTROS DO DEPARTAMENTO
@@ -804,7 +816,8 @@ class ReportsController extends Controller{
                                       'isLockedInViewMode' => true
                                   ]
                               ];
-                              $filtros = json_encode($json_filtros_departamento);      
+                              //$filtros = json_encode($json_filtros_departamento);      
+                              $filtros = $json_filtros_departamento;
                              break;
                              default:
                              //relatório não tem filtro e nem tenant tem filtro
@@ -821,14 +834,15 @@ class ReportsController extends Controller{
     }
 
     //VISUALIZAR RELATORIO
+    /*
     public function viewReportFilter($grupo, $id){ 
 
         if (! Gate::allows('visualizar-relatorio-user',[$grupo, $id])) {
            return ['response' => 'error', 'msg' => 'Acesso Negado'];
         }else{
-            /*pegar o local que está acessando o relatório 
-             * para definir o timezone
-            */
+            //pegar o local que está acessando o relatório 
+             // para definir o timezone
+            
             $locale = App::currentLocale();
             if($locale == 'pt_BR'){
                 $now = Carbon::now('America/Sao_Paulo');
@@ -949,8 +963,8 @@ class ReportsController extends Controller{
                     $regra_tenant = 'rls_tenant';
               
             }else if($tenant->utiliza_filtro == 'S'){
-                     /* VERIFICO SE TEM FILTRO POR TENANT
-                     */
+                     // VERIFICO SE TEM FILTRO POR TENANT
+                     
                   if($tenant->filtro_tabela == '' || $tenant->filtro_coluna == '' || $tenant->filtro_valor == ''){
                     return ['response' => 'error', 'msg' => 'Verifique os filtros no cadastro da empresa'];
                   }
@@ -1360,5 +1374,6 @@ class ReportsController extends Controller{
         }
     
     }
+    */
     //FIM VISUALIZAR RELATORIO
 }
