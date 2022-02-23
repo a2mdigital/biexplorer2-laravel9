@@ -133,6 +133,15 @@ class ReportsController extends Controller{
                     $filtro_coluna_tenant = $tenant->filtro_coluna;
                     $filtro_valor_tenant = $tenant->filtro_valor;
                     $array_filtros_tenant = explode(',', $filtro_valor_tenant);
+                    $array_formatado_filtros_tenant = [];
+                    foreach($array_filtros_tenant as $val_format){
+                        if(is_numeric($val_format)){
+                            $transforma_int = (int)$val_format;
+                            array_push($array_formatado_filtros_tenant,$transforma_int);
+                        }else{
+                            array_push($array_formatado_filtros_tenant,$val_format);
+                        }
+                    }
                     $json_filtros_tenant = [
                         '$schema' => 'http://powerbi.com/product/schema#basic',
                         'target' => [
@@ -140,7 +149,7 @@ class ReportsController extends Controller{
                             'column' => $filtro_coluna_tenant
                         ],
                         'operator' => 'In',
-                        'values' => $array_filtros_tenant,
+                        'values' => $array_formatado_filtros_tenant,
                         'displaySettings' => [
                             'isLockedInViewMode' => true
                         ]
@@ -513,11 +522,23 @@ class ReportsController extends Controller{
         $departamento = $user->departamento()->first();
                     //FILTRO HABILITADO NA EMPRESA
             if($regra_tenant == 'filtro_empresa'){
+               
                         //MONTO O FILTRO POR EMPRESA
                         $filtro_tabela_tenant = $tenant->filtro_tabela;
                         $filtro_coluna_tenant = $tenant->filtro_coluna;
                         $filtro_valor_tenant = $tenant->filtro_valor;
                         $array_filtros_tenant = explode(',', $filtro_valor_tenant);
+                        $array_formatado_filtros_tenant = [];
+                        foreach($array_filtros_tenant as $val_format){
+                          
+                            if(is_numeric($val_format)){
+                                $transforma_int = (int)$val_format;
+                                array_push($array_formatado_filtros_tenant,$transforma_int);
+                            }else{
+                                array_push($array_formatado_filtros_tenant,$val_format);
+                            }
+                        }
+                      
                         $json_filtros_tenant = [
                             '$schema' => 'http://powerbi.com/product/schema#basic',
                             'target' => [
@@ -525,7 +546,7 @@ class ReportsController extends Controller{
                                 'column' => $filtro_coluna_tenant
                             ],
                             'operator' => 'In',
-                            'values' => $array_filtros_tenant,
+                            'values' =>  $array_formatado_filtros_tenant,
                             'displaySettings' => [
                                 'isLockedInViewMode' => true
                             ]
@@ -539,6 +560,15 @@ class ReportsController extends Controller{
                              $filtro_coluna_relatorio_user = $relatorios_user->filtro_coluna;
                              $filtro_valor_relatorio_user = $relatorios_user->filtro_valor;
                              $array_filtros_relatorio_user = explode(',', $filtro_valor_relatorio_user);
+                             $array_formatado_filtros_relatorio_user = [];
+                             foreach($array_filtros_relatorio_user as $val_format){
+                                 if(is_numeric($val_format)){
+                                     $transforma_int = (int)$val_format;
+                                     array_push($array_formatado_filtros_relatorio_user,$transforma_int);
+                                 }else{
+                                     array_push($array_formatado_filtros_relatorio_user,$val_format);
+                                 }
+                             }
                              $json_filtros_relatorio_user = [
                                  '$schema' => 'http://powerbi.com/product/schema#basic',
                                  'target' => [
@@ -546,7 +576,7 @@ class ReportsController extends Controller{
                                      'column' => $filtro_coluna_relatorio_user
                                  ],
                                  'operator' => 'In',
-                                 'values' => $array_filtros_relatorio_user,
+                                 'values' => $array_formatado_filtros_relatorio_user,
                                  'displaySettings' => [
                                      'isLockedInViewMode' => true
                                  ]
@@ -561,6 +591,15 @@ class ReportsController extends Controller{
                               $filtro_coluna_relatorio_departamento = $relatorios_departamento->filtro_coluna;
                               $filtro_valor_relatorio_departamento = $relatorios_departamento->filtro_valor;
                               $array_filtros_relatorio_departamento = explode(',', $filtro_valor_relatorio_departamento);
+                              $array_formatado_filtros_relatorio_departamento = [];
+                              foreach($array_filtros_relatorio_departamento as $val_format){
+                                  if(is_numeric($val_format)){
+                                      $transforma_int = (int)$val_format;
+                                      array_push($array_formatado_filtros_relatorio_departamento,$transforma_int);
+                                  }else{
+                                      array_push($array_formatado_filtros_relatorio_departamento,$val_format);
+                                  }
+                              }
                               $json_filtros_relatorio_departamento = [
                                   '$schema' => 'http://powerbi.com/product/schema#basic',
                                   'target' => [
@@ -568,7 +607,7 @@ class ReportsController extends Controller{
                                       'column' => $filtro_coluna_relatorio_departamento
                                   ],
                                   'operator' => 'In',
-                                  'values' => $array_filtros_relatorio_departamento,
+                                  'values' => $array_formatado_filtros_relatorio_departamento,
                                   'displaySettings' => [
                                       'isLockedInViewMode' => true
                                   ]
@@ -583,6 +622,15 @@ class ReportsController extends Controller{
                               $filtro_coluna_user = $user->filtro_coluna;
                               $filtro_valor_user = $user->filtro_valor;
                               $array_filtros_user = explode(',', $filtro_valor_user);
+                              $array_formatado_filtros_user = [];
+                              foreach($array_filtros_user as $val_format){
+                                  if(is_numeric($val_format)){
+                                      $transforma_int = (int)$val_format;
+                                      array_push($array_formatado_filtros_user,$transforma_int);
+                                  }else{
+                                      array_push($array_formatado_filtros_user,$val_format);
+                                  }
+                              }
                               $json_filtros_user = [
                                   '$schema' => 'http://powerbi.com/product/schema#basic',
                                   'target' => [
@@ -590,7 +638,7 @@ class ReportsController extends Controller{
                                       'column' => $filtro_coluna_user
                                   ],
                                   'operator' => 'In',
-                                  'values' => $array_filtros_user,
+                                  'values' => $array_formatado_filtros_user,
                                   'displaySettings' => [
                                       'isLockedInViewMode' => true
                                   ]
@@ -605,6 +653,15 @@ class ReportsController extends Controller{
                               $filtro_coluna_departamento = $departamento->filtro_coluna;
                               $filtro_valor_departamento = $departamento->filtro_valor;
                               $array_filtros_departamento = explode(',', $filtro_valor_departamento);
+                              $array_formatado_filtros_departamento = [];
+                              foreach($array_filtros_departamento as $val_format){
+                                  if(is_numeric($val_format)){
+                                      $transforma_int = (int)$val_format;
+                                      array_push($array_formatado_filtros_departamento,$transforma_int);
+                                  }else{
+                                      array_push($array_formatado_filtros_departamento,$val_format);
+                                  }
+                              }
                               $json_filtros_departamento = [
                                   '$schema' => 'http://powerbi.com/product/schema#basic',
                                   'target' => [
@@ -612,7 +669,7 @@ class ReportsController extends Controller{
                                       'column' => $filtro_coluna_departamento
                                   ],
                                   'operator' => 'In',
-                                  'values' => $array_filtros_departamento,
+                                  'values' => $array_formatado_filtros_departamento,
                                   'displaySettings' => [
                                       'isLockedInViewMode' => true
                                   ]
@@ -644,6 +701,15 @@ class ReportsController extends Controller{
                              $filtro_coluna_relatorio_user = $relatorios_user->filtro_coluna;
                              $filtro_valor_relatorio_user = $relatorios_user->filtro_valor;
                              $array_filtros_relatorio_user = explode(',', $filtro_valor_relatorio_user);
+                             $array_formatado_filtros_relatorio_user = [];
+                              foreach($array_filtros_relatorio_user as $val_format){
+                                  if(is_numeric($val_format)){
+                                      $transforma_int = (int)$val_format;
+                                      array_push($array_formatado_filtros_relatorio_user,$transforma_int);
+                                  }else{
+                                      array_push($array_formatado_filtros_relatorio_user,$val_format);
+                                  }
+                              }
                              $json_filtros_relatorio_user = [
                                  '$schema' => 'http://powerbi.com/product/schema#basic',
                                  'target' => [
@@ -651,7 +717,7 @@ class ReportsController extends Controller{
                                      'column' => $filtro_coluna_relatorio_user
                                  ],
                                  'operator' => 'In',
-                                 'values' => $array_filtros_relatorio_user,
+                                 'values' => $array_formatado_filtros_relatorio_user,
                                  'displaySettings' => [
                                      'isLockedInViewMode' => true
                                  ]
@@ -665,6 +731,15 @@ class ReportsController extends Controller{
                               $filtro_coluna_relatorio_departamento = $relatorios_departamento->filtro_coluna;
                               $filtro_valor_relatorio_departamento = $relatorios_departamento->filtro_valor;
                               $array_filtros_relatorio_departamento = explode(',', $filtro_valor_relatorio_departamento);
+                              $array_formatado_filtros_relatorio_departamento = [];
+                              foreach($array_filtros_relatorio_departamento as $val_format){
+                                  if(is_numeric($val_format)){
+                                      $transforma_int = (int)$val_format;
+                                      array_push($array_formatado_filtros_relatorio_departamento,$transforma_int);
+                                  }else{
+                                      array_push($array_formatado_filtros_relatorio_departamento,$val_format);
+                                  }
+                              }
                               $json_filtros_relatorio_departamento = [
                                   '$schema' => 'http://powerbi.com/product/schema#basic',
                                   'target' => [
@@ -672,7 +747,7 @@ class ReportsController extends Controller{
                                       'column' => $filtro_coluna_relatorio_departamento
                                   ],
                                   'operator' => 'In',
-                                  'values' => $array_filtros_relatorio_departamento,
+                                  'values' => $array_formatado_filtros_relatorio_departamento,
                                   'displaySettings' => [
                                       'isLockedInViewMode' => true
                                   ]
@@ -686,6 +761,15 @@ class ReportsController extends Controller{
                               $filtro_coluna_user = $user->filtro_coluna;
                               $filtro_valor_user = $user->filtro_valor;
                               $array_filtros_user = explode(',', $filtro_valor_user);
+                              $array_formatado_filtros_user = [];
+                              foreach($array_filtros_user as $val_format){
+                                  if(is_numeric($val_format)){
+                                      $transforma_int = (int)$val_format;
+                                      array_push($array_formatado_filtros_user,$transforma_int);
+                                  }else{
+                                      array_push($array_formatado_filtros_user,$val_format);
+                                  }
+                              }
                               $json_filtros_user = [
                                   '$schema' => 'http://powerbi.com/product/schema#basic',
                                   'target' => [
@@ -693,7 +777,7 @@ class ReportsController extends Controller{
                                       'column' => $filtro_coluna_user
                                   ],
                                   'operator' => 'In',
-                                  'values' => $array_filtros_user,
+                                  'values' => $array_formatado_filtros_user,
                                   'displaySettings' => [
                                       'isLockedInViewMode' => true
                                   ]
@@ -707,6 +791,15 @@ class ReportsController extends Controller{
                               $filtro_coluna_departamento = $departamento->filtro_coluna;
                               $filtro_valor_departamento = $departamento->filtro_valor;
                               $array_filtros_departamento = explode(',', $filtro_valor_departamento);
+                              $array_formatado_filtros_departamento = [];
+                              foreach($array_filtros_departamento as $val_format){
+                                  if(is_numeric($val_format)){
+                                      $transforma_int = (int)$val_format;
+                                      array_push($array_formatado_filtros_departamento,$transforma_int);
+                                  }else{
+                                      array_push($array_formatado_filtros_departamento,$val_format);
+                                  }
+                              }
                               $json_filtros_departamento = [
                                   '$schema' => 'http://powerbi.com/product/schema#basic',
                                   'target' => [
@@ -714,7 +807,7 @@ class ReportsController extends Controller{
                                       'column' => $filtro_coluna_departamento
                                   ],
                                   'operator' => 'In',
-                                  'values' => $array_filtros_departamento,
+                                  'values' => $array_formatado_filtros_departamento,
                                   'displaySettings' => [
                                       'isLockedInViewMode' => true
                                   ]
@@ -742,6 +835,15 @@ class ReportsController extends Controller{
                              $filtro_coluna_relatorio_user = $relatorios_user->filtro_coluna;
                              $filtro_valor_relatorio_user = $relatorios_user->filtro_valor;
                              $array_filtros_relatorio_user = explode(',', $filtro_valor_relatorio_user);
+                             $array_formatado_filtros_relatorio_user= [];
+                             foreach($array_filtros_relatorio_user as $val_format){
+                                 if(is_numeric($val_format)){
+                                     $transforma_int = (int)$val_format;
+                                     array_push($array_formatado_filtros_relatorio_user,$transforma_int);
+                                 }else{
+                                     array_push($array_formatado_filtros_relatorio_user,$val_format);
+                                 }
+                             }
                              $json_filtros_relatorio_user = [
                                  '$schema' => 'http://powerbi.com/product/schema#basic',
                                  'target' => [
@@ -749,7 +851,7 @@ class ReportsController extends Controller{
                                      'column' => $filtro_coluna_relatorio_user
                                  ],
                                  'operator' => 'In',
-                                 'values' => $array_filtros_relatorio_user,
+                                 'values' => $array_formatado_filtros_relatorio_user,
                                  'displaySettings' => [
                                      'isLockedInViewMode' => true
                                  ]
@@ -763,6 +865,15 @@ class ReportsController extends Controller{
                               $filtro_coluna_relatorio_departamento = $relatorios_departamento->filtro_coluna;
                               $filtro_valor_relatorio_departamento = $relatorios_departamento->filtro_valor;
                               $array_filtros_relatorio_departamento = explode(',', $filtro_valor_relatorio_departamento);
+                              $array_formatado_filtros_relatorio_departamento = [];
+                              foreach($array_filtros_relatorio_departamento as $val_format){
+                                  if(is_numeric($val_format)){
+                                      $transforma_int = (int)$val_format;
+                                      array_push($array_formatado_filtros_relatorio_departamento,$transforma_int);
+                                  }else{
+                                      array_push($array_formatado_filtros_relatorio_departamento,$val_format);
+                                  }
+                              }
                               $json_filtros_relatorio_departamento = [
                                   '$schema' => 'http://powerbi.com/product/schema#basic',
                                   'target' => [
@@ -770,7 +881,7 @@ class ReportsController extends Controller{
                                       'column' => $filtro_coluna_relatorio_departamento
                                   ],
                                   'operator' => 'In',
-                                  'values' => $array_filtros_relatorio_departamento,
+                                  'values' => $array_formatado_filtros_relatorio_departamento,
                                   'displaySettings' => [
                                       'isLockedInViewMode' => true
                                   ]
@@ -784,6 +895,15 @@ class ReportsController extends Controller{
                               $filtro_coluna_user = $user->filtro_coluna;
                               $filtro_valor_user = $user->filtro_valor;
                               $array_filtros_user = explode(',', $filtro_valor_user);
+                              $array_formatado_filtros_user = [];
+                              foreach($array_filtros_user as $val_format){
+                                  if(is_numeric($val_format)){
+                                      $transforma_int = (int)$val_format;
+                                      array_push($array_formatado_filtros_user,$transforma_int);
+                                  }else{
+                                      array_push($array_formatado_filtros_user,$val_format);
+                                  }
+                              }
                               $json_filtros_user = [
                                   '$schema' => 'http://powerbi.com/product/schema#basic',
                                   'target' => [
@@ -791,7 +911,7 @@ class ReportsController extends Controller{
                                       'column' => $filtro_coluna_user
                                   ],
                                   'operator' => 'In',
-                                  'values' => $array_filtros_user,
+                                  'values' => $array_formatado_filtros_user,
                                   'displaySettings' => [
                                       'isLockedInViewMode' => true
                                   ]
@@ -805,6 +925,15 @@ class ReportsController extends Controller{
                               $filtro_coluna_departamento = $departamento->filtro_coluna;
                               $filtro_valor_departamento = $departamento->filtro_valor;
                               $array_filtros_departamento = explode(',', $filtro_valor_departamento);
+                              $array_formatado_filtros_departamento = [];
+                              foreach($array_filtros_departamento as $val_format){
+                                  if(is_numeric($val_format)){
+                                      $transforma_int = (int)$val_format;
+                                      array_push($array_formatado_filtros_departamento,$transforma_int);
+                                  }else{
+                                      array_push($array_formatado_filtros_departamento,$val_format);
+                                  }
+                              }
                               $json_filtros_departamento = [
                                   '$schema' => 'http://powerbi.com/product/schema#basic',
                                   'target' => [
@@ -812,7 +941,7 @@ class ReportsController extends Controller{
                                       'column' => $filtro_coluna_departamento
                                   ],
                                   'operator' => 'In',
-                                  'values' => $array_filtros_departamento,
+                                  'values' => $array_formatado_filtros_departamento,
                                   'displaySettings' => [
                                       'isLockedInViewMode' => true
                                   ]
