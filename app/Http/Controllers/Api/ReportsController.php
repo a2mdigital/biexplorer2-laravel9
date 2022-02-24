@@ -17,6 +17,7 @@ use App\Models\RelatorioUserPermission;
 use App\Services\GetTokenPowerBiService;
 use App\Services\GetTokenRlsPowerBiService;
 use App\Models\RelatorioDepartamentoPermission;
+use App\Models\RelatorioTenant;
 
 class ReportsController extends Controller{
     public function index(Request $request, $grupo){
@@ -34,12 +35,41 @@ class ReportsController extends Controller{
                 return ['response' => 'forbidden', 'reports' => ''];
             }else{
                 //leio todos os relatórios deste grupo
+                $relatorios_tenant = RelatorioTenant::select('relatorio_id')->get();
+                $RelatoriosPermissions = Relatorio::where(function($query) use ($grupo){
+                    $query->where('relatorios.subgrupo_relatorio_id', '=', $grupo->id);
+                })
+                ->where(function($query) use ($relatorios_tenant){
+                    $query->orWhereIn('relatorios.id', $relatorios_tenant);
+                })->leftJoin('historico_relatorio_users as hru', function($join) use($user){
+                    $join->on('relatorios.id', '=', 'hru.relatorio_id');
+                    $join->where('hru.user_id', '=', $user->id);
+                })
+                ->select(
+                        'relatorios.id as relatorio_id', 
+                        'relatorios.subgrupo_relatorio_id as subgrupo_relatorio_id',
+                        'relatorios.nome as nome',
+                        'relatorios.descricao as descricao',
+                        'relatorios.tipo as tipo',
+                        'relatorios.report_id as report_id',
+                        'relatorios.workspace_id as workspace_id',
+                        'relatorios.dataset_id as dataset_id',
+                        'relatorios.parceiro_id as parceiro_id',
+                        'hru.user_id as user_id',
+                        'hru.tenant_id as tenant_id',
+                        'hru.departamento_id as departamento_id',
+                        'hru.favorito as favorito',
+                        'hru.qtd_acessos as qtd_acessos'
+                        )
+                ->get();
+                /*
                 $RelatoriosPermissions = DB::table('relatorio_tenant')
                 ->join('tenants', 'relatorio_tenant.tenant_id', '=', 'tenants.id')
                 ->join('relatorios', 'relatorio_tenant.relatorio_id', '=', 'relatorios.id')
                 ->select('relatorios.id as id', 'relatorios.nome as nome', 'relatorios.subgrupo_relatorio_id as subgrupo_relatorio_id')
                 ->where('tenants.id', '=', $tenant)
                 ->where('relatorios.subgrupo_relatorio_id', '=', $grupo->id)->get();
+                */
                 
             }
         }else{
@@ -58,9 +88,25 @@ class ReportsController extends Controller{
                     $query->orWhereIn('relatorios.id', $relatorios_user);
                     $query->orWhereIn('relatorios.id', $relatorios_departamento);
                 })
-                ->leftjoin('historico_relatorio_users', 'relatorios.id', '=', 'historico_relatorio_users.relatorio_id')
+                ->leftjoin('historico_relatorio_users as hru', 'relatorios.id', '=', 'hru.relatorio_id')
+                ->select(
+                    'relatorios.id as relatorio_id', 
+                    'relatorios.subgrupo_relatorio_id as subgrupo_relatorio_id',
+                    'relatorios.nome as nome',
+                    'relatorios.descricao as descricao',
+                    'relatorios.tipo as tipo',
+                    'relatorios.report_id as report_id',
+                    'relatorios.workspace_id as workspace_id',
+                    'relatorios.dataset_id as dataset_id',
+                    'relatorios.parceiro_id as parceiro_id',
+                    'hru.user_id as user_id',
+                    'hru.tenant_id as tenant_id',
+                    'hru.departamento_id as departamento_id',
+                    'hru.favorito as favorito',
+                    'hru.qtd_acessos as qtd_acessos'
+                    )
                 ->get();
-               // dd($RelatoriosPermissions); 
+             
             }
         }
         
