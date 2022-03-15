@@ -110,6 +110,14 @@
 										</div>
 									</div>
               </div><!-- Col -->
+              <div class="col-sm-4">
+              <div class="form-group">
+										<div class="custom-control custom-switch">
+											<input type="checkbox" class="custom-control-input" value="on" name="ignora_filtro_rls" id="ignoraRlsToggle">
+											<label class="custom-control-label" for="ignoraRlsToggle">Ignora Rls da Empresa</label>
+										</div>
+									</div>
+              </div><!-- Col -->
             </div><!-- Row -->
             <div class="row" id="linhaFiltros">
               <div class="col-sm-2">

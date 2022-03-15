@@ -253,7 +253,8 @@ class RelatorioUsersController extends Controller
             }
 
               //GERAR TOKEN RLS OU TOKEM SEM RLS
-            if($tenant->utiliza_rls == 'S'){ 
+            if($tenant->utiliza_rls == 'S' && $relatorio->ignora_filtro_rls != 'S'){ 
+            
                 $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant); 
                 //verifico se tem rls no tenant e filtro no usuário
                 if($user->utiliza_filtro == 'S'){
@@ -263,6 +264,7 @@ class RelatorioUsersController extends Controller
                 }
                 $tipo_token = 'rls'; 
              }else{
+                
                  //SÓ POSSO GERAR TOKEN 1 VEZ OU POR TENANT OU POR USUÁRIO, OU POR DEPARTAMENTO.. 
                  //ENTÃO CASO O TENANT JA USA O RLS NÃO PODERÁ GERAR OUTRO TOKEN RLS PARA O USUÁRIO POR EXEMPLO..
                  switch($regra){

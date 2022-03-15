@@ -18,6 +18,7 @@ class Relatorio extends Model
         'descricao',
         'tipo',
         'utiliza_filtro_rls',
+        'ignora_filtro_rls',
         'nivel_filtro_rls',
         'filtro_lateral',
         'report_id',

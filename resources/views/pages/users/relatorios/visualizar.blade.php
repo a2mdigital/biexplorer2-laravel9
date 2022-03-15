@@ -32,6 +32,7 @@ iframe{
 <input type="hidden" name="workspace_id" id="workspace_id" value="{{$relatorio->workspace_id}}">
 <input type="hidden" name="dataset_id" id="dataset_id" value="{{$relatorio->dataset_id}}">
 <input type="hidden" name="habilita_filtro_lateral" id="habilita_filtro_lateral" value="{{$relatorio->filtro_lateral}}">
+<input type="hidden" name="ignora_filtro_rls" id="ignora_filtro_rls" value="{{$relatorio->ignora_filtro_rls}}">
 <!-- REGRA DE FILTRO E RLS POR TENANT --> 
 <input type="hidden" name="utiliza_rls_tenant" id="utiliza_rls_tenant" value="{{$tenant->utiliza_rls}}">
 <!-- FILTROS EMPRESA -->
@@ -158,6 +159,7 @@ iframe{
         var regra_tenant = $('#regra_tenant').val();
         var utiliza_rls_tenant = $('#utiliza_rls_tenant').val();
         var regra_filtro_rls = $('#regra_filtro_rls').val(); 
+        var ignora_rls_empresa =  $('#ignora_filtro_rls').val(); 
         /*FILTROS DE TENANT */
         var utiliza_filtro_tenant = $('#utiliza_filtro_tenant').val(); 
       
@@ -215,11 +217,13 @@ iframe{
        
         if(tipo == 'relatorio'){ 
           //VERIFICO PRIMEIRO O RLS DO TENANT 
-          if(utiliza_rls_tenant == 'S'){
+          if(utiliza_rls_tenant == 'S' && ignora_rls_empresa != 'S'){
+          
             //ABRIR RLS POR TENANT
             
             abrirRelatorioRLS(token, report_id, filtro_lateral);
           }else if(utiliza_filtro_tenant == 'S'){
+          
           //ABRIR RELATÓRIO COM FILTRO DE EMPRESA
             var filtro_tabela_tenant = $('#filtro_tabela_tenant').val(); 
             var filtro_coluna_tenant = $('#filtro_coluna_tenant').val(); 

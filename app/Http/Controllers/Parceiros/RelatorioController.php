@@ -69,7 +69,7 @@ class RelatorioController extends Controller
 
         return redirect()->route('parceiro.gruposrelatorio')->with('success', 'Grupo Criado com Sucesso!');
     }
-
+ 
     public function listarSubGrupos($grupo){
         $grupo = GrupoRelatorioParceiro::findOrFail($grupo);
         $subgrupos = SubGrupoRelatorio::where('grp_rel_parceiro_id', '=', $grupo->id)->get();
@@ -276,7 +276,7 @@ class RelatorioController extends Controller
             $utiliza_filtro_rls = 'S';
             $nivel_filtro_rls = $dados['nivel_rls'];
        }
-    
+       $ignora_rls_empresa = (isset($dados['ignora_filtro_rls']) == 'on' ? 'S' : 'N');  
       Relatorio::create([
         'nome' => $dados['nome'],
         'descricao' => $dados['nome_relatorio'],
@@ -287,7 +287,8 @@ class RelatorioController extends Controller
         'report_id' => $report_id,
         'workspace_id' => $dados['workspace_id'],
         'dataset_id' => $dados['dataset_id'],
-        'subgrupo_relatorio_id' => $dados['subgrupo_relatorio_id']
+        'subgrupo_relatorio_id' => $dados['subgrupo_relatorio_id'],
+        'ignora_filtro_rls' => $ignora_rls_empresa
       ]);
 
       return redirect()->route('parceiro.relatorios', $dados['subgrupo_relatorio_id'])->with('success', 'Relatório cadastrado com sucesso!');
@@ -349,7 +350,7 @@ class RelatorioController extends Controller
              $utiliza_filtro_rls = 'S';
              $nivel_filtro_rls = $dados['nivel_rls'];
         }
-      
+        $ignora_rls_empresa = (isset($dados['ignora_filtro_rls']) == 'on' ? 'S' : 'N');
 
         if($verifica_subgrupo > 0){
             //CASO ENCONTRE O SUBGRUPO DO PARCEIRO
@@ -359,7 +360,8 @@ class RelatorioController extends Controller
                 'subgrupo_relatorio_id' => $dados['subgrupo_relatorio_id'],
                 'filtro_lateral' => $filtro_lateral,
                 'utiliza_filtro_rls' => $utiliza_filtro_rls,
-                'nivel_filtro_rls' =>  $nivel_filtro_rls
+                'nivel_filtro_rls' =>  $nivel_filtro_rls,
+                'ignora_filtro_rls' => $ignora_rls_empresa
             ]);
           $subgrupo_relatorio =  $dados['subgrupo_relatorio_id'];   
          }else{
@@ -375,7 +377,8 @@ class RelatorioController extends Controller
                 'subgrupo_relatorio_id' => $subgrupo->id,
                 'filtro_lateral' => $filtro_lateral,
                 'utiliza_filtro_rls' => $utiliza_filtro_rls,
-                'nivel_filtro_rls' =>  $nivel_filtro_rls
+                'nivel_filtro_rls' =>  $nivel_filtro_rls,
+                'ignora_filtro_rls' => $ignora_rls_empresa
             ]);
             $subgrupo_relatorio =  $subgrupo->id;        
          }    

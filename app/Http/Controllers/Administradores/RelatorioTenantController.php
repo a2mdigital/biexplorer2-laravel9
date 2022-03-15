@@ -98,7 +98,7 @@ class RelatorioTenantController extends Controller
       public function visualizarRelatorio($grupo, $relatorio){
 
         $relatorio = Relatorio::where('id', $relatorio)->where('subgrupo_relatorio_id', $grupo)->firstOrFail();
-       
+        $ignorar_rls_tenant = $relatorio->ignora_filtro_rls;
         if (! Gate::allows('permissao-visualizar-relatorio-admin',$relatorio)) {
             abort(403);
         }else{
@@ -119,13 +119,20 @@ class RelatorioTenantController extends Controller
            
          }
          //GERAR TOKEN RLS OU TOKEM SEM RLS
-         if($tenant->utiliza_rls == 'S'){
-            $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant);  
-     
-         }else{
+         //CASO O RELATÓRIO IGNORE O RLS PEGAR O TOKEN NORMAL
+         if($ignorar_rls_tenant =='S'){
+             
             $resposta = GetTokenPowerBiService::getToken();  
-        
-         }
+           
+         }else{
+            if($tenant->utiliza_rls == 'S'){
+                $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant);  
+         
+            }else{
+                $resposta = GetTokenPowerBiService::getToken();  
+               
+            }
+        }
        
         
          if($resposta['resposta'] == 'ok'){

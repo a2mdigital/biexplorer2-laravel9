@@ -27,6 +27,7 @@ iframe{
 <input type="hidden" name="report_id" id="report_id" value="{{$relatorio->report_id}}">
 <input type="hidden" name="dataset_id" id="dataset_id" value="{{$relatorio->dataset_id}}">
 <input type="hidden" name="habilita_filtro_lateral" id="habilita_filtro_lateral" value="{{$relatorio->filtro_lateral}}">
+<input type="hidden" name="ignora_filtro_rls" id="ignora_filtro_rls" value="{{$relatorio->ignora_filtro_rls}}">
 <!-- FILTROS EMPRESA -->
 <input type="hidden" name="utiliza_filtro_tenant" id="utiliza_filtro_tenant" value="{{$tenant->utiliza_filtro}}">
 <input type="hidden" name="filtro_tabela_tenant" id="filtro_tabela_tenant" value="{{$tenant->filtro_tabela}}">
@@ -74,7 +75,8 @@ iframe{
         var tipo = $('#tipo').val(); 
         /*RLS DE TENANT */
         var utiliza_rls = $('#utiliza_rls_tenant').val(); 
-       
+        //verificar se o relatório ignora o filtro de rls
+        var ignora_filtro_rls = $('#ignora_filtro_rls').val(); 
         /*FILTROS DE TENANT */
         var utiliza_filtro_tenant = $('#utiliza_filtro_tenant').val(); 
         var filtro_tabela_tenant = $('#filtro_tabela_tenant').val(); 
@@ -91,9 +93,13 @@ iframe{
                 }
         });
         //valida se existe campos em branco nos filtros
-        if(utiliza_rls == 'S' && tipo == 'relatorio'){
+        if(utiliza_rls == 'S' && tipo == 'relatorio' && ignora_filtro_rls != 'S'){
             //TENANT UTILIZA O RLS
            abrirRelatorioRls(token, report_id, filtro_lateral);
+        }    
+        if(utiliza_rls == 'S' && tipo == 'relatorio' && ignora_filtro_rls == 'S'){
+            //TENANT UTILIZA O RLS
+            abrirRelatorioSemFiltros(token, report_id, filtro_lateral)
         }    
         if(utiliza_rls !='S' && utiliza_filtro_tenant == 'N' && tipo == 'relatorio'){
           
