@@ -39,7 +39,7 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::post('favoritos/save', [FavoritosController::class, 'save']);
 
     //VISUALIZAR RELATÓRIOS
-    Route::get('/tenant/grupo/{grupo}/relatorio/{id}/visualizar',[RelatorioTenantController::class, 'visualizarRelatorio'])->name('tenant.relatorios.visualizar');
+    Route::get('/tenant/grupo/{grupo}/relatorio/{id}/visualizar',[RelatorioTenantController::class, 'visualizarRelatorio']);
 });
 Route::post('auth/login', [AuthController::class, 'login']);
  
