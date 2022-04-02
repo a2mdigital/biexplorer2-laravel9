@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\GruposController;
 use App\Http\Controllers\Api\ReportsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FavoritosController;
-
+use App\Http\Controllers\Administradores\RelatorioTenantController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,6 +37,9 @@ Route::group(['middleware' => ['apiJwt']], function(){
     Route::get('grupo/{id}/reports/{report_id}/view', [ReportsController::class, 'viewReport']);
     Route::get('favoritos', [FavoritosController::class, 'index']);
     Route::post('favoritos/save', [FavoritosController::class, 'save']);
+
+    //VISUALIZAR RELATÓRIOS
+    Route::get('/tenant/grupo/{grupo}/relatorio/{id}/visualizar',[RelatorioTenantController::class, 'visualizarRelatorio'])->name('tenant.relatorios.visualizar');
 });
 Route::post('auth/login', [AuthController::class, 'login']);
  
