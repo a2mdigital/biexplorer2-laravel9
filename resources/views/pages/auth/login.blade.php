@@ -9,6 +9,9 @@ body {
     background-repeat:no-repeat; /* Do not repeat the image */
     background-size:cover; /* Resize the background image to cover the entire container*/
  }
+ .card-login {
+   border: 1px solid #fff !important;
+ }
  </style>
   <link href="{{ asset('assets/css/auth-personalizado/auth-personalizado.css') }}" rel="stylesheet" />
 @endpush
@@ -17,7 +20,7 @@ body {
 
   <div class="row w-100 mx-0 auth-page">
     <div class="col-md-6 col-xl-4 mx-auto">
-      <div class="card">
+      <div class="card card-login">
         <div class="row">
           <div class="col-md-11 pl-md-0 form-login">
             <div class="auth-form-wrapper px-4 py-5">
