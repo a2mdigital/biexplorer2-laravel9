@@ -97,7 +97,12 @@ Route::group(['prefix' => 'parceiro', 'middleware' => 'auth:parceiro'], function
     Route::get('/admin', [ParceirosDashboardController::class, 'indexDashboard'])->name('dashboard-parceiro');
     Route::put('/admin/custom-menu-color/salvar', [ParceirosDashboardController::class, 'salvarCustomMenuColor'])->name('parceiro.custommenu.color.salvar');
     Route::put('/admin/custom-menu-contraido/salvar', [ParceirosDashboardController::class, 'salvarCustomMenuContraido'])->name('parceiro.custommenu.contraido.salvar');
-    Route::get('/admin/parceiro/tema/editar', [ThemeController::class, 'index'])->name('parceiro.tema');
+    
+    /*ROTAS CUSTOMIZAÇÃO PARCEIRO*/
+    Route::get('/admin/parceiro/tema/customize', [ThemeController::class, 'index'])->name('parceiro.customize');
+    Route::get('/admin/parceiro/tema/customize-image', [ThemeController::class, 'trocarImagens'])->name('parceiro.customize.images');
+    Route::get('/admin/parceiro/tema/editar', [ThemeController::class, 'indexCustomTema'])->name('parceiro.tema');
+    
     
     /*ROTAS DO USUÁRIO PARCEIRO */
     Route::get('/admin/user/trocar-dados',[ParceiroController::class, 'trocarDados'])->name('parceiro.user.trocar.dados');

@@ -13,7 +13,7 @@
 @section('content')
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="">Temas</a></li>
+    <li class="breadcrumb-item"><a href="{{route('parceiro.customize')}}">Customizar</a></li>
     <li class="breadcrumb-item active" aria-current="page">Editar Tema</li>
   </ol>
 </nav> 

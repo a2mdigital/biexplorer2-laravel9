@@ -47,9 +47,9 @@
       <li class="nav-item nav-category">{{__('menu.customize')}}</li>
       <!--
       <li class="nav-item {{ active_class(['parceiro/admin/grupos']) }}">
-        <a href="{{ route('parceiro.tema') }}" class="nav-link">
+        <a href="{{ route('parceiro.customize') }}" class="nav-link">
          <i class="link-icon" data-feather="settings"></i>
-          <span class="link-title">Configurar Tema</span>
+          <span class="link-title">Personalizar</span>
         </a>
       </li>
       -->
