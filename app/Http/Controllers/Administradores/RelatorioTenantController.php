@@ -133,7 +133,7 @@ class RelatorioTenantController extends Controller
                
             }
         }
-       
+        //
         
          if($resposta['resposta'] == 'ok'){
              $token = $resposta['token'];
