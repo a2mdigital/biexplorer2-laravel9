@@ -56,8 +56,9 @@ class GetTokenPowerBiService{
             return ['resposta' => 'ok', 'token' => $token, 'expires_in' => $expires_in];
         } catch (ClientException $e) {
             $response = json_decode($e->getResponse()->getBody()->getContents(),true);
-            $error = json_encode($response);
-            return ['resposta' => 'erro', 'error' => $error];
+            $error = json_decode($e->getResponse()->getBody()->getContents(), true);
+            return ['resposta' => 'erro', 'error' => $error['error_description']];
+          
             //    dd($e->getResponse()->getBody()->getContents());
             //return ['resposta' => 'erro', 'error' => $e->getMessage()];
             //return response()->json(["resposta" => $e->getMessage()]);
@@ -65,7 +66,7 @@ class GetTokenPowerBiService{
            
             return ['resposta' => 'erro', 'error' => $e->getMessage()];
             //return response()->json(["resposta" => $e->getMessage()]);
-        }
+        } 
 
 //
     }

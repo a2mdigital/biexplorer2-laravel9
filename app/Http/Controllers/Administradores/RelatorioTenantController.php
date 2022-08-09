@@ -140,9 +140,10 @@ class RelatorioTenantController extends Controller
          }else{
              $erro = $resposta['error'];
              $token = '';
-             Alert::error('Erro', 'Não foi possível abrir o relatório');
-
-         }
+             Alert::error('Erro', $erro);
+           //  Alert::error('Erro', 'Não foi possível abrir o relatório');
+ 
+         } 
         return view('pages.administrador.relatorios.visualizar', compact('relatorio', 'token', 'tenant'));
         }
         
