@@ -55,13 +55,13 @@ class GetTokenPowerBiService{
             $expires_in = $body['expires_in'];
             return ['resposta' => 'ok', 'token' => $token, 'expires_in' => $expires_in];
         } catch (ClientException $e) {
+         
             $response = json_decode($e->getResponse()->getBody()->getContents(),true);
+            dd($response);
             $error = json_decode($e->getResponse()->getBody()->getContents(), true);
-           // return ['resposta' => 'erro', 'msg' => $error['error_description']];
+         
             return ['resposta' => 'erro', 'error' => $error];
-            //    dd($e->getResponse()->getBody()->getContents());
-            //return ['resposta' => 'erro', 'error' => $e->getMessage()];
-            //return response()->json(["resposta" => $e->getMessage()]);
+        
         }catch (ConnectException $e) {
            
             return ['resposta' => 'erro', 'error' => $e->getMessage()];
