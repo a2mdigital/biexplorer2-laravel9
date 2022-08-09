@@ -141,7 +141,7 @@ class PowerBiController extends Controller
             );
 
         $body = json_decode($response->getBody()->getContents(), true);
-            
+        dd($body);    
         return ['resposta' => 'ok'];
         } catch (ClientException $e) {
             $error = json_decode($e->getResponse()->getBody()->getContents(), true);
