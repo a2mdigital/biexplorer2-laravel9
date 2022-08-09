@@ -84,6 +84,7 @@
                                 'Conexão testada com sucesso',
                                 'success'
                               );
+                              $('#error').text(data.msg);
                                }else{
                                 Swal.fire(
                                 'Erro',
