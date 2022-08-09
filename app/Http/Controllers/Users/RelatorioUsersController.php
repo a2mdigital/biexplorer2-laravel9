@@ -292,7 +292,7 @@ class RelatorioUsersController extends Controller
                 $token = $resposta['token'];
                 $expires_in = $resposta['expires_in'];
             }else{
-               dd($resposta);
+              
                 $erro = $resposta['error'];
                
                 $token = '';
