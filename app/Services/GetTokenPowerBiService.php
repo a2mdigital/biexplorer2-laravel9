@@ -57,10 +57,10 @@ class GetTokenPowerBiService{
         } catch (ClientException $e) {
          
             $response = json_decode($e->getResponse()->getBody()->getContents(),true);
-            dd($response);
-            $error = json_decode($e->getResponse()->getBody()->getContents(), true);
+           
+            return ['resposta' => 'erro', 'error' => $response['error_description']];
          
-            return ['resposta' => 'erro', 'error' => $error];
+    
         
         }catch (ConnectException $e) {
            
