@@ -226,6 +226,79 @@ class PowerBiController extends Controller
 
 
     }  
+    //PEGAR RELATÓRIOS PAGINA DE EDIÇÃO
+        /*PEGAR RELATÓRIOS DO POWER BI */ 
+        public function buscarRelatoriosEditar($workspace_id){
+  
+            $dados_powerBiAzure = PowerBiParceiro::get();
+            foreach ($dados_powerBiAzure as $dadosPBA) {
+                $userPowerBI = $dadosPBA['user_powerbi'];
+                $passPowerBI = Crypt::decryptString($dadosPBA['password_powerbi']);
+                $clientIdAzure = $dadosPBA['client_id'];
+                $clientSecretAzure = $dadosPBA['client_secret'];
+                $diretorioIdAzure = $dadosPBA['diretorio_id'];
+            }
+    
+            $client = new \GuzzleHttp\Client();
+            $url_autenticacao = 'https://login.windows.net/' . $diretorioIdAzure . '/oauth2/token';
+            try {
+                /** @var GuzzleHttp\Client $client **/
+                $response = $client->post(
+                    //'https://login.windows.net/896fc9ac-5684-488b-9f0c-58b7f50b46ee/oauth2/token',
+                    $url_autenticacao,
+                    [
+                        "headers" => [
+                            "Accept" => "application/json"
+                        ],
+                        'form_params' => [
+                            'resource'      => 'https://analysis.windows.net/powerbi/api',
+                            'client_id'     => $clientIdAzure,
+                            'client_secret' => $clientSecretAzure,
+                            'grant_type'    => 'password',
+                            'username'      => $userPowerBI,
+                            'password'      => $passPowerBI,
+                            'scope'         => 'openid',
+                        ]
+                    ]
+                );
+    
+                $body = json_decode($response->getBody()->getContents(), true);
+    
+                $token = $body['access_token'];
+    
+                $client2 = new \GuzzleHttp\Client();
+                $res = $client2->request(
+                    'GET',
+                    'https://api.powerbi.com/v1.0/myorg/groups/'.$workspace_id. '/reports',
+                    [
+                        'headers' =>
+                        [
+                            'Authorization' => 'Bearer ' . $token,
+                            'Accept' => 'application/json',
+                            'Content-type' => 'application/json'
+                        ]
+                    ]
+                );
+    
+                $relatorios = json_decode($res->getBody()->getContents(), true);
+                return $relatorios["value"];
+                /*
+                foreach ($workspace["value"] as $work) {
+                    echo $work['name'];
+                    echo '<br>';
+                }
+                */
+            } catch (ClientException $e) {
+                return redirect()->back()->with('toast_error', 'Não foi possível se conectar com o Power BI, verifique as configurações!');
+                /*
+                return ['error' => $e->getMessage()];
+                return response()->json(["resposta" => $e->getMessage()]);
+                */
+            }
+          
+    
+    
+        }  
    /*FIM PEGAR RELATÓRIOS DO POWER BI */
 
    /*BUSCAR DASHBOARDS */
@@ -284,6 +357,78 @@ class PowerBiController extends Controller
 
            $dashboards = json_decode($res->getBody()->getContents(), true);
            return response()->json($dashboards["value"]);
+           /*
+           foreach ($workspace["value"] as $work) {
+               echo $work['name'];
+               echo '<br>';
+           }
+           */
+       } catch (ClientException $e) {
+           return redirect()->back()->with('toast_error', 'Não foi possível se conectar com o Power BI, verifique as configurações!');
+           /*
+           return ['error' => $e->getMessage()];
+           return response()->json(["resposta" => $e->getMessage()]);
+           */
+       }
+       //$workspace = Relatorio::orderBy('desc_relatorio', 'asc')->get();
+
+
+   }
+
+   public function buscarDashboardsEditar($workspace_id)
+   {
+        $dados_powerBiAzure = PowerBiParceiro::get();
+        foreach ($dados_powerBiAzure as $dadosPBA) {
+            $userPowerBI = $dadosPBA['user_powerbi'];
+            $passPowerBI = Crypt::decryptString($dadosPBA['password_powerbi']);
+            $clientIdAzure = $dadosPBA['client_id'];
+            $clientSecretAzure = $dadosPBA['client_secret'];
+            $diretorioIdAzure = $dadosPBA['diretorio_id'];
+        }
+
+       $client = new \GuzzleHttp\Client();
+       $url_autenticacao = 'https://login.windows.net/' . $diretorioIdAzure . '/oauth2/token';
+       try {
+           /** @var GuzzleHttp\Client $client **/
+           $response = $client->post(
+               //'https://login.windows.net/896fc9ac-5684-488b-9f0c-58b7f50b46ee/oauth2/token',
+               $url_autenticacao,
+               [
+                   "headers" => [
+                       "Accept" => "application/json"
+                   ],
+                   'form_params' => [
+                       'resource'      => 'https://analysis.windows.net/powerbi/api',
+                       'client_id'     => $clientIdAzure,
+                       'client_secret' => $clientSecretAzure,
+                       'grant_type'    => 'password',
+                       'username'      => $userPowerBI,
+                       'password'      => $passPowerBI,
+                       'scope'         => 'openid',
+                   ]
+               ]
+           );
+
+           $body = json_decode($response->getBody()->getContents(), true);
+
+           $token = $body['access_token'];
+
+           $client2 = new \GuzzleHttp\Client();
+           $res = $client2->request(
+               'GET',
+               'https://api.powerbi.com/v1.0/myorg/groups/' . $workspace_id . '/dashboards',
+               [
+                   'headers' =>
+                   [
+                       'Authorization' => 'Bearer ' . $token,
+                       'Accept' => 'application/json',
+                       'Content-type' => 'application/json'
+                   ]
+               ]
+           );
+
+           $dashboards = json_decode($res->getBody()->getContents(), true);
+           return $dashboards["value"];
            /*
            foreach ($workspace["value"] as $work) {
                echo $work['name'];

@@ -11,7 +11,7 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
 
-        if (!$token = auth('api')->attempt($credentials)) {
+        if (!$token = auth('api')->setTTL(Carbon::now()->addDays(365)->timestamp)->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -35,13 +35,56 @@ class AuthController extends Controller
         return response()->json(['response' => 'ok', 'message' => 'Successfully logged out']);
     }
 
+    //LOGIN PARCEIRO API
+    public function loginParceiro(Request $request)
+    {
+        $credentials = $request->only(['email', 'password']);
+        
+        if (!$token = auth('apiParceiro')->setTTL(Carbon::now()->addDays(365)->timestamp)->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->respondWithTokenParceiro($token);
+    }
+
+    public function meParceiro()
+    {
+        return response()->json(auth('apiParceiro')->user());
+    }
+
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logoutPArceiro()
+    {
+        auth('apiParceiro')->logout();
+
+        return response()->json(['response' => 'ok', 'message' => 'Successfully logged out']);
+    }
+
     protected function respondWithToken($token)
     {
-        //$expires_in = Carbon::now()->addDays(720)->timestamp;
+        $date = Carbon::createFromTimestamp(auth('api')->factory()->getTTL())->format("Y-m-d H:m");
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 1051920
+            'expires_in' =>  $date
+  
+        ]);
+    }
+    protected function respondWithTokenParceiro($token)
+    {
+        $user = auth('apiParceiro')->user();
+        return $user;
+        //pego a data que foi setada para mostrar quando o token irá expirar
+        $date = Carbon::createFromTimestamp(auth('apiParceiro')->factory()->getTTL())->format("Y-m-d H:m");
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' =>  $date
+  
         ]);
     }
 }

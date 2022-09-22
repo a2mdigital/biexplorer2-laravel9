@@ -16,7 +16,7 @@ class ParceirosDashboardController extends Controller
 
 
     public function indexDashboard(){
-
+        
             $total_empresas = Tenant::count();
             $total_relatorios = Relatorio::count();
             $tenants = Tenant::get();
@@ -28,7 +28,7 @@ class ParceirosDashboardController extends Controller
                 array_push($tenants_id, $tenant->id);
             }
             $usuarios = User::whereIn('tenant_id', $tenants_id)->orderBy('ultimo_login', 'desc')->get();
-           
+      
       return view('pages.parceiro.dashboard', compact('total_empresas', 'total_users', 'total_relatorios', 'usuarios'));
     }
 

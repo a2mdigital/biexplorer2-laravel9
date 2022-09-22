@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\ReportsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FavoritosController;
 use App\Http\Controllers\Administradores\RelatorioTenantController;
+use App\Http\Controllers\Api\ControleUsuariosParceiro;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,11 +29,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
-
-//Route::apiResource('teste-api', 'Api\GetReports');
 Route::group(['middleware' => ['apiJwt']], function(){
+    //login usuários
     Route::get('auth/me', [AuthController::class, 'me']);
     Route::post('auth/logout', [AuthController::class, 'logout']);
+    //login parceiros
+    Route::get('auth/parceiro/me', [AuthController::class, 'meParceiro']);
+    Route::post('auth/parceiro/logout', [AuthController::class, 'logoutParceiro']);
+    //rotas internas app
     Route::get('grupos', [GruposController::class, 'index']);
     Route::get('grupo/{id}/reports', [ReportsController::class, 'index']);
     Route::get('grupo/{id}/reports/{report_id}/view', [ReportsController::class, 'viewReport']);
@@ -40,6 +45,11 @@ Route::group(['middleware' => ['apiJwt']], function(){
 
     //VISUALIZAR RELATÓRIOS
     Route::get('/grupo/{grupo}/relatorio/{id}/visualizar',[RelatorioTenantController::class, 'visualizarRelatorio']);
+
+    //ROTAS DE PARCEIROS
+    Route::get('parceiro/usuarios/listar', [ControleUsuariosParceiro::class, 'getUsuariosParceiro']);
+
 });
 Route::post('auth/login', [AuthController::class, 'login']);
+Route::post('auth/parceiro/login', [AuthController::class, 'loginParceiro']);
  

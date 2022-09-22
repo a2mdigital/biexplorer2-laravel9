@@ -204,12 +204,7 @@ class RelatorioController extends Controller
 
             $workspaces = json_decode($res->getBody()->getContents(), true);
 
-            /*
-            foreach ($workspace["value"] as $work) {
-                echo $work['name'];
-                echo '<br>';
-            }
-            */
+      
         } catch (ClientException $e) {
 
             //dd($e->getMessage());
@@ -314,11 +309,98 @@ class RelatorioController extends Controller
         }else{
             $nivel_filtro_rls = '';  
         }
+
+        //CONECTAR NA CONTA DA MICROSOFT PARA BUSCAR OS WORKSPACES E RELATÓRIOS
+        $dados_powerBiAzure = PowerBiParceiro::get()->first();
+        
+        if(!$dados_powerBiAzure){
+            Alert::error('Erro', 'Cadastre as informações do Power BI');
+            return redirect()->back();
+           // return redirect()->back()->with('error', 'Cadastre as informações do Power BI');
+        }
+       
+            $userPowerBI = $dados_powerBiAzure->user_powerbi;
+            $passPowerBI = Crypt::decryptString($dados_powerBiAzure->password_powerbi);
+            $clientIdAzure = $dados_powerBiAzure->client_id;
+            $clientSecretAzure = $dados_powerBiAzure->client_secret;
+            $diretorioIdAzure = $dados_powerBiAzure->diretorio_id;
+       
+          
+
+        $client = new \GuzzleHttp\Client();
+        // $url_autenticacao = 'https://login.windows.net/' . $diretorioIdAzure . '/oauth2/token';
+        $url_autenticacao = 'https://login.windows.net/' . $diretorioIdAzure . '/oauth2/token';
+        try {
+            /** @var GuzzleHttp\Client $client **/
+            $response = $client->post(
+                //'https://login.windows.net/896fc9ac-5684-488b-9f0c-58b7f50b46ee/oauth2/token',
+                $url_autenticacao,
+                [
+                    "headers" => [
+                        "Accept" => "application/json"
+                    ],
+                    'form_params' => [
+                        'resource'      => 'https://analysis.windows.net/powerbi/api',
+                        'client_id'     => $clientIdAzure,
+                        'client_secret' => $clientSecretAzure,
+                        'grant_type'    => 'password',
+                        //'grant_type' => 'client_credentials',
+                        'username'      => $userPowerBI,
+                        'password'      => $passPowerBI,
+                        //'scope'         => 'https://analysis.windows.net/powerbi/api/.default',
+                    ]
+                   // 'query' => ['amr_values' => 'mfa']
+                ]
+            );
+
+            $body = json_decode($response->getBody()->getContents(), true);
+
+            $token = $body['access_token'];
+
+            $client2 = new \GuzzleHttp\Client();
+            $res = $client2->request(
+                'GET',
+                'https://api.powerbi.com/v1.0/myorg/groups',
+                [
+                    'headers' =>
+                    [
+                        'Authorization' => 'Bearer ' . $token,
+                        'Accept' => 'application/json',
+                        'Content-type' => 'application/json'
+                    ]
+                ]
+            );
+
+            $workspaces = json_decode($res->getBody()->getContents(), true);
+            $powerbiController = new PowerBiController();
+            
+            if($relatorio->tipo == 'relatorio'){
+                $todosRelatorios = $powerbiController->buscarRelatoriosEditar($relatorio->workspace_id);
+            }else{
+                $todosRelatorios = $powerbiController->buscarDashboardsEditar($relatorio->workspace_id);
+            }
+           
+       
+      
+        } catch (ClientException $e) {
+
+            //dd($e->getMessage());
+            Alert::error('Erro', 'Não foi possível se conectar com o Power BI, verifique as configurações!');
+            return redirect()->back();
+            //return redirect()->back()->with('error', 'Não foi possível se conectar com o Power BI, verifique as configurações!');
+
+            // return ['error' => $e->getMessage()];
+            //return response()->json(["resposta" => $e->getMessage()]);
+        }
+
+        //FIM CONEXÃO COM CONTA MICROSOFT
      
-        return view('pages.parceiro.relatorios.editar', compact('relatorio', 'utiliza_filtro_rls', 'nivel_filtro_rls', 'subgrupos', 'grupo_relatorio_id'));
+        return view('pages.parceiro.relatorios.editar', compact('relatorio', 'utiliza_filtro_rls', 'nivel_filtro_rls', 'subgrupos', 'grupo_relatorio_id','workspaces', 'todosRelatorios'));
     }
 
     public function atualizarRelatorio(Request $request, $id){
+
+       
         //valida o formulario
         $this->validate($request, [
             'nome' => 'required',
@@ -331,6 +413,14 @@ class RelatorioController extends Controller
         $relatorio = Relatorio::find($id);   
         $dados = $request->all();
        
+         //TIPO DE RELATORIO
+       $tipo = $dados['tipo'];
+       if($tipo == 'relatorio'){
+           $report_id = $dados['report_id'];
+       }else{
+           $report_id = $dados['dashboard_id'];
+       }    
+
         $nome_subgrupo = Str::ucfirst($dados['subgrupo_relatorio_id']);    
         $verifica_subgrupo = SubGrupoRelatorio::where('nome', '=', $nome_subgrupo)
         ->orWhere('id', '=', $dados['subgrupo_relatorio_id'])
@@ -357,6 +447,10 @@ class RelatorioController extends Controller
             //COLOCO O RELATÓRIO NELE
             $relatorio->update([
                 'nome' => $dados['nome'],
+                'descricao' => $dados['nome_relatorio'],
+                'report_id' => $report_id,
+                'workspace_id' => $dados['workspace_id'],
+                'dataset_id' => $dados['dataset_id'],
                 'subgrupo_relatorio_id' => $dados['subgrupo_relatorio_id'],
                 'filtro_lateral' => $filtro_lateral,
                 'utiliza_filtro_rls' => $utiliza_filtro_rls,
@@ -374,6 +468,10 @@ class RelatorioController extends Controller
              
              $relatorio->update([
                 'nome' => $dados['nome'],
+                'descricao' => $dados['nome_relatorio'],
+                'report_id' => $report_id,
+                'workspace_id' => $dados['workspace_id'],
+                'dataset_id' => $dados['dataset_id'],
                 'subgrupo_relatorio_id' => $subgrupo->id,
                 'filtro_lateral' => $filtro_lateral,
                 'utiliza_filtro_rls' => $utiliza_filtro_rls,

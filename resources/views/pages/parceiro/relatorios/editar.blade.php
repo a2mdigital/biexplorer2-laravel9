@@ -38,14 +38,85 @@
               <div class="col-sm-2">
                 <div class="form-group">
                   <label class="control-label">Tipo</label>
+                  <select class=" w-100 form-control" name="tipo" id="tipo">
                   @if($relatorio->tipo == 'relatorio')
-                  <input type="text" class="form-control" readonly value="Relatório">
+                  <option value="relatorio" selected="selected">Relatório</option>
                   @else
-                  <input type="text" class="form-control" readonly value="Dashboard">
+                  <option value="dashboard" selected="selected">Dashboard</option>
                   @endif
-                </div>
+                  </select>
+                </div> 
               </div><!-- Col -->
             </div><!-- Row -->
+            <div class="row">
+            <div class="col-sm-5">
+                <div class="form-group {{$errors->has('workspace_id') ? 'has-danger' : ''}}">
+                <label>Workspace</label>
+                    <select class="workspaces w-100 form-control {{$errors->has('workspace_id') ? 'form-control-danger' : ''}}" name="workspace_id" id="workspace_id">
+                    <option value="">Selecione um Workspace </option>
+                    @foreach($workspaces["value"] as $work)
+         
+                        @if($work['id'] == $relatorio->workspace_id)
+                                <option value="{{$work['id']}}" selected="selected">{{$work['name']}}</option>
+                          @else 
+                          <option value="{{$work['id']}}">{{$work['name']}}</option>
+                          @endif      
+                             
+                    @endforeach
+                    </select>
+                    @if($errors->has('workspace_id'))
+                    <label id="name-error" class="error mt-2 text-danger" for="workspace_id">
+                      {{$errors->first('workspace_id')}}
+                    </label>
+                  @endif
+               </div>
+              </div><!-- Col -->
+
+              <div class="col-sm-5">
+              @if($relatorio->tipo == 'relatorio')
+                <div class="form-group {{$errors->has('report_id') ? 'has-danger' : ''}}" id="MostrarRelatorio">
+                  <label>Relatório</label>
+                      <select class="relatorios w-100 form-control {{$errors->has('report_id') ? 'form-control-danger' : ''}}" name="report_id" id="report_id">
+                          <option value="">Selecione um Workspace</option>
+                          @foreach($todosRelatorios as $todos)
+                            @if($todos['id'] == $relatorio->report_id)
+                                    <option value="{{$todos['id']}}" dataset="{{$todos['datasetId']}}" selected="selected">{{$todos['name']}}</option>
+                              @else 
+                              <option value="{{$todos['id']}}" dataset="{{$todos['datasetId']}}">{{$todos['name']}}</option>
+                            @endif      
+                              
+                       @endforeach
+                      </select>
+                      @if($errors->has('report_id'))
+                      <label id="name-error" class="error mt-2 text-danger" for="report_id">
+                        {{$errors->first('report_id')}}
+                      </label>
+                    @endif   
+                </div>
+               @else
+                <div class="form-group {{$errors->has('dashboard_id') ? 'has-danger' : ''}}" id="MostrarDashboard">
+                  <label>Dashboard</label>
+                      <select class="dashboards w-100 form-control {{$errors->has('dashboard_id') ? 'form-control-danger' : ''}}" name="dashboard_id" id="dashboard_id">
+                          <option value="">Selecione um Workspace</option>
+                          @foreach($todosRelatorios as $todos)
+                            @if($todos['id'] == $relatorio->report_id)
+                                    <option value="{{$todos['id']}}" selected="selected">{{$todos['displayName']}}</option>
+                              @else 
+                              <option value="{{$todos['id']}}">{{$todos['displayName']}}</option>
+                            @endif      
+                              
+                         @endforeach
+                      </select>
+                      @if($errors->has('dashboard_id'))
+                      <label id="name-error" class="error mt-2 text-danger" for="dashboard_id">
+                        {{$errors->first('dashboard_id')}}
+                      </label>
+                    @endif   
+                </div>
+               @endif
+              </div><!-- Col -->
+              
+            </div>
             <div class="row">
               <div class="col-sm-4">
               <div class="form-group">
@@ -145,6 +216,68 @@
       tags:true
     });
     } 
+
+    if ($(".workspaces").length) {
+    $(".workspaces").select2();
+    } 
+    if ($(".relatorios").length) {
+    $(".relatorios").select2();
+    } 
+    if ($(".dashboards").length) {
+    $(".dashboards").select2();
+    }
+  
+  /* SELECIONAR WORKSPACE */
+  $('select[name=workspace_id]').change(function () {
+            var workspace_id = $(this).val();
+            var tipoSelecionado = $("#tipo option:selected").val();
+           
+            if(tipoSelecionado == 'relatorio'){
+            $('#report_id').html('<option>Carregando...</option>');
+            //$.get('/admin/admin/powerbi/buscarRelatorios/' + workspace_id, function (relatorios) {
+              $.get("{{route('parceiro.powerbi.buscarelatorios', '')}}"+"/"+workspace_id,  function (relatorios) {
+                $('select[name=report_id]').empty();
+                $('#report_id').html('<option value="">Selecione um Relatorio</option>');
+                $.each(relatorios, function (key, value) {
+                    $('select[name=report_id]').append('<option value=' + value['id'] + ' dataset='+ value['datasetId'] +' >' + value['name'] + '</option>');
+                });
+            });
+           }else{
+            $('#dashboard_id').html('<option>Carregando...</option');
+            //$.get('/admin/admin/powerbi/buscarDashboards/' + workspace_id, function (dashboards) {
+              $.get("{{route('parceiro.powerbi.buscarDashboards', '')}}"+"/"+workspace_id, function (dashboards) {
+                $('select[name=dashboard_id]').empty();
+                $('#dashboard_id').html('<option value="">Selecione um Dashboard</option');
+                $.each(dashboards, function (key, value) {
+                    $('select[name=dashboard_id]').append('<option value=' + value['id'] + '>' + value['displayName'] + '</option>');
+                });
+            });
+           }
+    });
+
+          var tipoSelecionado = $("#tipo option:selected").val();
+           
+           if(tipoSelecionado == 'relatorio'){
+             var selected = $("#report_id option:selected").text();
+             var dataset_id = $("#report_id option:selected").attr("dataset");
+             $("#dataset_id").val(dataset_id);
+             $("#nome_relatorio").val(selected);
+           }else{
+             var selected = $("#dashboard_id option:selected").text();
+             $("#nome_relatorio").val(selected);
+           } 
+
+    $('select[name=report_id]').change(function () {
+             var selected = $(this).find("option:selected").text();
+             var dataset_id = $(this).find("option:selected").attr("dataset");
+             $("#dataset_id").val(dataset_id);
+             $("#nome_relatorio").val(selected);
+    });
+
+    $('select[name=dashboard_id]').change(function () {
+             var selected = $(this).find("option:selected").text();
+             $("#nome_relatorio").val(selected);
+    });
       //esconde os filtros ao carregar a pagina
    $("#linhaFiltros").hide();
    $("#linhaRls").hide();   

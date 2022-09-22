@@ -19,6 +19,7 @@ iframe{
      border-style: none; 
    /* border: 1px solid;*/
 }
+
 </style>
 @endpush
 @section('content')
@@ -38,6 +39,7 @@ iframe{
 <input type="hidden" name="regra_rls_tenant" id="regra_rls_tenant" value="{{$tenant->regra_rls}}">
 <input type="hidden" name="username_rls_tenant" id="username_rls_tenant" value="{{$tenant->username_rls}}">
 <!-- DIV PARA MOSTRAR RELATÓRIO DO POWER BI -->
+
 <div id="powerBI" class="powerBIRelatorio"></div>
 <!-- FIM DIV POWER BI -->
 @endsection

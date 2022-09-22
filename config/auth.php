@@ -50,6 +50,11 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+        'apiParceiro' => [
+            'driver' => 'jwt',
+            'provider' => 'parceiros',
+            'hash' => false,
+        ],
     ],
 
     /*

@@ -50,6 +50,11 @@ class Tenant extends Model
         return $this->hasMany(User::class);
     }
 
+    public function usersTenant()
+    {
+        return $this->hasMany(UserTenant::class);
+    }
+
     public function powerBiEmpresas()
     {
         return $this->hasMany(PowerBiEmpresa::class);

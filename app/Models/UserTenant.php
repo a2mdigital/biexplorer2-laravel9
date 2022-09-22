@@ -35,4 +35,14 @@ class UserTenant extends Model
     {
         return $this->belongsTo(Departamento::class);
     }
+
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
+    public function tenantParceiro()
+    {
+        return $this->belongsTo(TenantParceiro::class);
+    }
 }

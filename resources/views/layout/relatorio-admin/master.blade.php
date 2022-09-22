@@ -20,8 +20,11 @@
   <!-- end plugin css -->
 
   @stack('plugin-styles')
-
-
+  <style>
+    @media print {
+      .no-print {display: none;}
+    }
+  </style>
   <!-- common css -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
   <!-- end common css -->
