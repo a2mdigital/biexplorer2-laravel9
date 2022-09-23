@@ -73,11 +73,11 @@ class Handler extends ExceptionHandler
         }
 
         // ERRO 500
-        /*
+        
         if ($exception instanceof \ErrorException) {
             return response()->view('pages.error.500', [], 500);
         } 
-        */
+        
 
         // ERRO 419
         if ($exception instanceof TokenMismatchException) {
