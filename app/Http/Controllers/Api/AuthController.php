@@ -39,7 +39,7 @@ class AuthController extends Controller
     public function loginParceiro(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
-        return $credentials;
+       
         if (!$token = auth('apiParceiro')->setTTL(Carbon::now()->addDays(365)->timestamp)->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -77,7 +77,6 @@ class AuthController extends Controller
     protected function respondWithTokenParceiro($token)
     {
         $user = auth('apiParceiro')->user();
-        return $user;
         //pego a data que foi setada para mostrar quando o token irá expirar
         $date = Carbon::createFromTimestamp(auth('apiParceiro')->factory()->getTTL())->format("Y-m-d H:m");
         return response()->json([
