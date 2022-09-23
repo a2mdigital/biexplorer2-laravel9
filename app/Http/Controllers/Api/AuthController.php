@@ -40,8 +40,10 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
        
-        if (!$token = auth('apiParceiro')->attempt($credentials)) {
+        if (!$token = auth('apiParceiro')->setTTL(Carbon::now()->addDays(365)->timestamp)->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
+        }else{
+            return 'tste';
         }
 
         return $this->respondWithTokenParceiro($token);
