@@ -39,7 +39,7 @@ class AuthController extends Controller
     public function loginParceiro(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
-        
+        return $credentials;
         if (!$token = auth('apiParceiro')->setTTL(Carbon::now()->addDays(365)->timestamp)->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
