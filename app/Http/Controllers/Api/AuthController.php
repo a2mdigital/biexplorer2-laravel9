@@ -76,9 +76,10 @@ class AuthController extends Controller
     }
     protected function respondWithTokenParceiro($token)
     {
-        $user = auth('apiParceiro')->user();
-        //pego a data que foi setada para mostrar quando o token irá expirar
         $date = Carbon::createFromTimestamp(auth('apiParceiro')->factory()->getTTL())->format("Y-m-d H:m");
+        
+        //pego a data que foi setada para mostrar quando o token irá expirar
+       
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',

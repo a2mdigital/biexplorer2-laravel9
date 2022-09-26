@@ -21,6 +21,8 @@ class PowerBiParceiro extends Model
         'client_secret',
         'diretorio_id',
         'parceiro_id',
+        'bearer_token_api_a2m',
+        'data_expira_token'
     ];
 
     protected $searchableFields = ['*'];

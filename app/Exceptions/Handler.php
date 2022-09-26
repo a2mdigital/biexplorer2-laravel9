@@ -78,6 +78,7 @@ class Handler extends ExceptionHandler
             return response()->view('pages.error.500', [], 500);
         } 
         
+        
 
         // ERRO 419
         if ($exception instanceof TokenMismatchException) {

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Services\GetTokenPowerBiService;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
+use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class PowerBiController extends Controller
@@ -18,8 +19,10 @@ class PowerBiController extends Controller
     public function listarPowerBi(){
 
         $powerbi = PowerBiParceiro::get();
-      
-        return view('pages.parceiro.powerbi-parceiro.listar', compact('powerbi'));
+        $user = Auth::guard('parceiro')->user();
+     
+        
+        return view('pages.parceiro.powerbi-parceiro.listar', compact('powerbi', 'user'));
     }
 
     public function cadastrarPowerBi(){
@@ -60,6 +63,7 @@ class PowerBiController extends Controller
 
     public function editarPowerBi($id){
         $powerbi = PowerBiParceiro::findOrFail($id);
+      
      
         return view('pages.parceiro.powerbi-parceiro.editar', compact('powerbi'));
     }
@@ -151,6 +155,50 @@ class PowerBiController extends Controller
             return ['resposta' => 'erro', 'msg' => $e->getMessage()];
         }
        
+    }
+
+    public function gerarTokenApiA2m(Request $request){
+
+
+        $dados = $request->all();
+        $email = $dados['email'];
+        $password = $dados['password'];
+        $parceiro_id = $dados['parceiro_id'];
+        $powerbi = PowerBiParceiro::find($parceiro_id);
+
+        $client = new \GuzzleHttp\Client();
+        $url_autenticacao = 'https://dados.app.br/api/auth/parceiro/login';
+        try {
+            $response = $client->post(
+                $url_autenticacao,
+                [
+                    'form_params' => [
+                        'email'      => $email,
+                        'password'   => $password,
+                      
+                    ]
+                ]
+            );
+
+         $dados = json_decode($response->getBody()->getContents(), true);
+         $token = $dados['access_token'];
+         $expira_em = date("y-m-d", strtotime($dados['expires_in']));
+         $expira_em_formatado = date("d-m-Y", strtotime($dados['expires_in']));
+         $powerbi = PowerBiParceiro::find($parceiro_id);
+         $atualizar['bearer_token_api_a2m'] = $token;
+         $atualizar['data_expira_token'] = $expira_em;
+        
+         $powerbi->update($atualizar);    
+         return ['resposta' => 'ok', 'token' => $token, 'expira_em' => $expira_em_formatado];
+
+
+
+        }catch (ClientException $e) {
+            return ['resposta' => 'erro', 'msg' => $e->getMessage()];
+            //return ['resposta' => 'erro', 'dados' => 'Não foi possível gerar o Token'];
+        
+        }
+        
     }
 
 

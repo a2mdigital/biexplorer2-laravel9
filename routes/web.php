@@ -123,6 +123,7 @@ Route::group(['prefix' => 'parceiro', 'middleware' => 'auth:parceiro'], function
     Route::get('/admin/parceiro/powerbi/editar/{id}', [PowerBiController::class, 'editarPowerBi'])->name('parceiro.powerbi.editar');
     Route::put('/admin/parceiro/powerbi/atualizar/{id}', [PowerBiController::class, 'atualizarPowerBi'])->name('parceiro.powerbi.atualizar');
     Route::get('/admin/parceiro/powerbi/testar-conexao/', [PowerBiController::class, 'testarConexao'])->name('parceiro.powerbi.testarconexao');
+    Route::post('/admin/parceiro/api/gerar-token/', [PowerBiController::class, 'gerarTokenApiA2m'])->name('parceiro.api.gerartoken');
      /*FIM ROTAS DE CADASTRO POWER BI*/
 
      /*ROTAS DE CADASTRO DO POWER BI DA EMPRESA 
