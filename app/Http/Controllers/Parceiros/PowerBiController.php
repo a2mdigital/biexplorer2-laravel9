@@ -190,7 +190,7 @@ class PowerBiController extends Controller
          $atualizar['data_expira_token'] = $expira_em;
         
         // $powerbi->update($atualizar);    
-         return ['resposta' => 'ok', 'token' => $token, 'expira_em' => $expira_em_formatado];
+         //return ['resposta' => 'ok', 'token' => $token, 'expira_em' => $expira_em_formatado];
 
 
 
