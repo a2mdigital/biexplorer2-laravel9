@@ -55,6 +55,7 @@ class RelatorioEmbeddedController extends Controller
        //busca a empresa do Usuário
        $tenant = TenantUser::firstOrFail();  
        $user = auth('api')->user();
+      //$user = auth()->user();
        //verifico se o usuário que está acessando é admin ou não
        if($user->is_admin == 1){
        

@@ -84,7 +84,7 @@ class RelatorioTenantController extends Controller
                           return $botoes;
                         })
                         ->rawColumns(['action'])
-                        ->make(true);
+                        ->make(true); 
             }
             
             return view('pages.administrador.relatorios.listar', compact('grupo'));

@@ -1,29 +1,30 @@
 <?php
 
-use App\Http\Controllers\A2m\ParceirosA2mController;
-use App\Http\Controllers\Administradores\DashboardAdmController;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Administradores\DashboardController;
-use App\Http\Controllers\Parceiros\TenantController;
-use App\Http\Controllers\Administradores\RelatorioTenantController;
-use App\Http\Controllers\Parceiros\PowerBiController;
-use App\Http\Controllers\Parceiros\ParceirosDashboardController;
-use App\Http\Controllers\Parceiros\RelatorioController;
-use App\Http\Controllers\Administradores\DepartamentoController;
-use App\Http\Controllers\Administradores\PlaylistController;
-use App\Http\Controllers\Administradores\PowerBiControllerAdmin;
-use App\Http\Controllers\Administradores\UsuarioController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Parceiros\HelpController;
-use App\Http\Controllers\Parceiros\ParceiroController;
 use App\Http\Controllers\Parceiros\ThemeController;
+use App\Http\Controllers\A2m\ParceirosA2mController;
+use App\Http\Controllers\Parceiros\TenantController;
+use App\Http\Controllers\Parceiros\PowerBiController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Parceiros\ParceiroController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Parceiros\RelatorioController;
 use App\Http\Controllers\Users\DashboardUserController;
 use App\Http\Controllers\Users\PlaylistUsersController;
 use App\Http\Controllers\Users\RelatorioUsersController;
+use App\Http\Controllers\Administradores\UsuarioController;
+use App\Http\Controllers\Administradores\PlaylistController;
+use App\Http\Controllers\Administradores\DashboardController;
+use App\Http\Controllers\Embedded\RelatorioEmbeddedController;
+use App\Http\Controllers\Administradores\DashboardAdmController;
+use App\Http\Controllers\Administradores\DepartamentoController;
+use App\Http\Controllers\Administradores\PowerBiControllerAdmin;
+use App\Http\Controllers\Parceiros\ParceirosDashboardController;
+use App\Http\Controllers\Administradores\RelatorioTenantController;
 
 
 /*
