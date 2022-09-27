@@ -58,7 +58,7 @@ class RelatorioEmbeddedController extends Controller
        //verifico se o usuário que está acessando é admin ou não
        if($user->is_admin == 1){
        
-         return $this->verRelatorioAdmin($tenant, $relatorio);
+         return $this->verRelatorioAdmin($grupo, $relatorio);
        }else{
         
          return $this->viewReportUser($grupo, $id);
@@ -66,8 +66,62 @@ class RelatorioEmbeddedController extends Controller
 
    }
    
-   public function verRelatorioAdmin($tenant, $relatorio){
-    return view('pages.embedded.visualizar-relatorio-admin');
+   public function verRelatorioAdmin($grupo, $rel){
+    
+    
+    $relatorio = Relatorio::where('id', $rel->id)->where('subgrupo_relatorio_id', $grupo)->firstOrFail();
+    
+    
+        
+    $ignorar_rls_tenant = $relatorio->ignora_filtro_rls;
+    if (! Gate::allows('permissao-visualizar-relatorio-admin',$relatorio)) {
+        abort(403);
+    }else{
+     
+     $tenant = TenantUser::firstOrFail();
+   
+     if($tenant->utiliza_rls == 'S'){
+        if($tenant->regra_rls == ''){
+           Alert::error('Erro', 'Verifique o RLS no cadastro da Empresa');
+           return redirect()->back();
+        }
+      }
+     if($tenant->utiliza_filtro == 'S'){
+       if($tenant->filtro_tabela == '' || $tenant->filtro_coluna == '' || $tenant->filtro_valor == ''){
+          Alert::error('Erro', 'Verifique os filtros no cadastro da Empresa');
+          return redirect()->back();
+       }
+       
+     }
+     //GERAR TOKEN RLS OU TOKEM SEM RLS
+     //CASO O RELATÓRIO IGNORE O RLS PEGAR O TOKEN NORMAL
+     if($ignorar_rls_tenant =='S'){
+         
+        $resposta = GetTokenPowerBiService::getToken();  
+       
+     }else{
+        if($tenant->utiliza_rls == 'S'){
+            $resposta = GetTokenRlsPowerBiService::getTokenRlsTenant($relatorio, $tenant);  
+     
+        }else{
+            $resposta = GetTokenPowerBiService::getToken();  
+           
+        }
+    }
+    //
+    
+     if($resposta['resposta'] == 'ok'){
+         $token = $resposta['token'];
+     }else{
+         $erro = $resposta['error'];
+         $token = '';
+         Alert::error('Erro', $erro);
+       //  Alert::error('Erro', 'Não foi possível abrir o relatório');
+
+     } 
+    return view('pages.embedded.visualizar-relatorio-admin', compact('relatorio', 'token', 'tenant'));
+    }
+    
    
    }
 
