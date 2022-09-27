@@ -164,8 +164,7 @@ class PowerBiController extends Controller
         $email = $dados['email'];
         $password = $dados['password'];
         $parceiro_id = $dados['parceiro_id'];
-        $powerbi = PowerBiParceiro::find($parceiro_id);
-
+       
         $client = new \GuzzleHttp\Client();
         $url_autenticacao = 'https://dados.app.br/api/auth/parceiro/login';
         try {
