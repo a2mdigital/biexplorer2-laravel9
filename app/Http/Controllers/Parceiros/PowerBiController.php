@@ -158,8 +158,8 @@ class PowerBiController extends Controller
     }
 
     public function gerarTokenApiA2m(Request $request){
-
-
+ 
+        return 'teste';
         $dados = $request->all();
         $email = $dados['email'];
         $password = $dados['password'];

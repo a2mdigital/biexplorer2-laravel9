@@ -183,13 +183,15 @@ $(document).ready(function() {
           email: $("#email").val(),
           password: $("#password").val()
         };
-        
+         
         $.ajax({
           method: "POST",
           url:'{{route("parceiro.api.gerartoken")}}',
           data: formData,
           encode: true,
         }).done(function (data) {
+          console.log(data);
+          /*
           if(data.resposta == 'ok'){
             console.log(data);
             $('#modalApi').modal('hide');
@@ -200,6 +202,7 @@ $(document).ready(function() {
           }else{
             $('#mostrar-erro-senha').show();
           }
+          */
         });
         
 
