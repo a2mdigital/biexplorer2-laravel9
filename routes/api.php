@@ -51,5 +51,5 @@ Route::group(['middleware' => ['apiJwt']], function(){
 
 });
 Route::post('auth/login', [AuthController::class, 'login']);
-Route::post('auth/parceiro/login', [AuthController::class, 'loginParceiro']);
+Route::post('auth/parceiro/login', [AuthController::class, 'loginParceiro']); 
  
