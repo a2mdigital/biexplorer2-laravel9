@@ -159,7 +159,7 @@ class PowerBiController extends Controller
 
     public function gerarTokenApiA2m(Request $request){
  
-        return 'teste';
+       
         $dados = $request->all();
         $email = $dados['email'];
         $password = $dados['password'];
@@ -181,6 +181,7 @@ class PowerBiController extends Controller
             );
 
          $dados = json_decode($response->getBody()->getContents(), true);
+         return $dados;
          $token = $dados['access_token'];
          $expira_em = date("y-m-d", strtotime($dados['expires_in']));
          $expira_em_formatado = date("d-m-Y", strtotime($dados['expires_in']));
