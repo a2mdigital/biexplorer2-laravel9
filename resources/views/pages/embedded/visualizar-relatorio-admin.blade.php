@@ -3,9 +3,6 @@
         <meta http-equiv='cache-control' content='no-cache'>
         <meta http-equiv='expires' content='0'>
         <meta http-equiv='pragma' content='no-cache'>
-        <link href="{{ asset('assets/css/playlist/playlist.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('assets/css/playlist/slick.css') }}" rel="stylesheet" type="text/css">
-        <link href="{{ asset('assets/css/playlist/slick-theme.css') }}" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <style>
             .powerBIRelatorio{
@@ -40,9 +37,13 @@
 </div>
 
 </body>
-<script src="{{ asset('assets/js/powerbi.js') }}"></script>
-<script src="{{ asset('assets/js/powerbi-models.min.js') }}"></script>
-<script src="{{ asset('assets/js/jquery.powerbi.js') }}"></script>
+<script src="https://dados.app.br/js/app.js"></script>
+<script src="https://dados.app.br/assets/js/template.js"></script>
+<script src="https://dados.app.br/assets/js/temaAdmin.js"></script>
+<script src="https://dados.app.br/assets/js/template.js"></script>
+<script src="https://dados.app.br/assets/js/jquery.powerbi.js"></script>
+<script src="https://dados.app.br/assets/js/powerbi.js"></script>
+<script src="https://dados.app.br/assets/js/powerbi-models.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         //verica se esta habilitado o filtro lateral
