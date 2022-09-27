@@ -37,10 +37,9 @@
 </div>
 
 </body>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
 <script src="https://dados.app.br/js/app.js"></script>
-<script src="https://dados.app.br/assets/js/template.js"></script>
-<script src="https://dados.app.br/assets/js/temaAdmin.js"></script>
-<script src="https://dados.app.br/assets/js/template.js"></script>
 <script src="https://dados.app.br/assets/js/jquery.powerbi.js"></script>
 <script src="https://dados.app.br/assets/js/powerbi.js"></script>
 <script src="https://dados.app.br/assets/js/powerbi-models.min.js"></script>
