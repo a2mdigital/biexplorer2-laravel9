@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FavoritosController;
 use App\Http\Controllers\Administradores\RelatorioTenantController;
 use App\Http\Controllers\Api\ControleUsuariosParceiro;
+use App\Http\Controllers\Embedded\RelatorioEmbeddedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,9 @@ Route::group(['middleware' => ['apiJwt']], function(){
 
     //ROTAS DE PARCEIROS
     Route::get('parceiro/usuarios/listar', [ControleUsuariosParceiro::class, 'getUsuariosParceiro']);
+
+    //ROTA DE VISUALIZAR RELATÓRIO EMBEDADO NOS SISTEMAS
+    Route::get('embedded/grupo/{id}/report/{report_id}/view', [RelatorioEmbeddedController::class, 'viewReport']);    
 
 });
 Route::post('auth/login', [AuthController::class, 'login']);
