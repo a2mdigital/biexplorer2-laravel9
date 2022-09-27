@@ -191,7 +191,6 @@ $(document).ready(function() {
           encode: true,
         }).done(function (data) {
           if(data.resposta == 'ok'){
-            console.log(data);
             $('#modalApi').modal('hide');
             $('#mostrar-erro-senha').hide();
             $('#password').val('');
