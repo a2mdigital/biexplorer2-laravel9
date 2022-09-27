@@ -121,7 +121,7 @@
         } // FIM ABRIR RELATÓRIO COM RLS
         //ABRIR RELATÓRIO SEM FILTROS DE EMPRESA
         function abrirRelatorioSemFiltros(token, report_id, filtro_lateral){
-              alert(token);
+             
               var EmbedUrlReport = "https://app.powerbi.com/reportEmbed";
               var tokenTypeReport = 1;
               var models = window['powerbi-client'].models;
