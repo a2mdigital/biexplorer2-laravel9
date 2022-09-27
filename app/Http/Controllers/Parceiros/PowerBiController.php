@@ -189,7 +189,7 @@ class PowerBiController extends Controller
          $atualizar['bearer_token_api_a2m'] = $token;
          $atualizar['data_expira_token'] = $expira_em;
         
-         $powerbi->update($atualizar);    
+        // $powerbi->update($atualizar);    
          return ['resposta' => 'ok', 'token' => $token, 'expira_em' => $expira_em_formatado];
 
 
