@@ -181,11 +181,12 @@ class PowerBiController extends Controller
             );
 
          $dados = json_decode($response->getBody()->getContents(), true);
-         return $dados;
+       
          $token = $dados['access_token'];
          $expira_em = date("y-m-d", strtotime($dados['expires_in']));
          $expira_em_formatado = date("d-m-Y", strtotime($dados['expires_in']));
          $powerbi = PowerBiParceiro::find($parceiro_id);
+         dd($powerbi);
          $atualizar['bearer_token_api_a2m'] = $token;
          $atualizar['data_expira_token'] = $expira_em;
         
