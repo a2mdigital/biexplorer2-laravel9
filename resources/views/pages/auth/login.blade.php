@@ -63,6 +63,5 @@ body {
       </div>
     </div>
   </div>
-
 </div>
 @endsection
