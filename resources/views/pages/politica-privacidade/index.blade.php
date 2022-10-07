@@ -64,14 +64,14 @@
                    políticas de privacidade ou práticas de quaisquer sites de terceiros ou
                    Serviços.
                 </p> <p><strong>Privacidade das crianças</strong></p> <!----> <div><p>
-                    Nós não coletamos conscientemente pessoalmente
+                    Nós não coletamos 
                     informações identificáveis ​​de crianças. Nós
-                    encorajar todas as crianças a nunca enviarem
-                    informações identificáveis ​​através
-                    o Aplicativo e/ou Serviços.
+                    encorajamos a todas as crianças a nunca enviarem
+                    informações  ​​através
+                    de Aplicativos e/ou Serviços.
                     Incentivamos os pais e responsáveis ​​legais a monitorar
                     uso da Internet de seus filhos e para ajudar a fazer cumprir esta Política, instruindo
-                    seus filhos nunca forneçam informações de identificação pessoal por meio do Aplicativo e/ou Serviços sem a permissão deles.
+                    seus filhos para que nunca forneçam informações de identificação pessoal por meio de Aplicativos e/ou Serviços sem a permissão deles.
                   </p></div> <p><strong>Alterações nesta Política de Privacidade</strong></p> <p>
                   Podemos atualizar nossa Política de Privacidade de
                    tempo em tempo. Assim, você é aconselhado a rever esta página
