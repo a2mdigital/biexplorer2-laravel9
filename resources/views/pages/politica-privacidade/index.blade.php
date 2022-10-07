@@ -58,15 +58,14 @@
                    Este aplicativo pode conter links para outros sites. Se você clicar em
                    um link de terceiros, você será direcionado para esse site. Observação
                    que esses sites externos não são operados por nós.
-                   Portanto, recomendamos fortemente que você revise o
+                   Portanto, recomendamos fortemente que você revise a
                    Política de privacidade desses sites. Nós não temos
                   nenhum controle e não assumimos nenhuma responsabilidade pelo conteúdo,
                    políticas de privacidade ou práticas de quaisquer sites de terceiros ou
                    Serviços.
                 </p> <p><strong>Privacidade das crianças</strong></p> <!----> <div><p>
                     Nós não coletamos 
-                    informações identificáveis ​​de crianças. Nós
-                    encorajamos a todas as crianças a nunca enviarem
+                    informações identificáveis ​​de crianças. Nós encorajamos a todas as crianças a nunca enviarem
                     informações  ​​através
                     de Aplicativos e/ou Serviços.
                     Incentivamos os pais e responsáveis ​​legais a monitorar
