@@ -25,7 +25,7 @@ use App\Http\Controllers\Administradores\DepartamentoController;
 use App\Http\Controllers\Administradores\PowerBiControllerAdmin;
 use App\Http\Controllers\Parceiros\ParceirosDashboardController;
 use App\Http\Controllers\Administradores\RelatorioTenantController;
-
+use App\Http\Controllers\Privacidade\PoliticaDePrivacidadeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +58,7 @@ Route::get('/login', function () {
 */
 Route::get('/', [LoginController::class, 'showFormLogin'])->name('form-login');
 Route::get('/login', [LoginController::class, 'showFormLogin'])->name('form-login');
+Route::get('/politica-privacidade', [PoliticaDePrivacidadeController::class, 'index'])->name('politica-privacidade');
 //logar novamente
 Route::get('/login-novamente', function () {
     return view('pages.auth.login-novamente');
