@@ -24,12 +24,11 @@
                    qualquer pessoa, exceto conforme descrito nesta Política de Privacidade.
                 </p> <p>
                 </p> <p><strong>Coleta e uso de informações</strong></p> <p>
-                Para uma melhor experiência, ao usar nosso Serviço,
-                   pode exigir que você nos forneça certos dados pessoais ou
-                   informações identificáveis. A informação que
+                  Para uma melhor experiência, ao usar nosso Serviço,
+                   pode exigir que você nos forneça certos dados pessoais como o e-mail utilizado para fazer login com o Aplicativo, informação que
                    que solicitamos serão retidos por nós e usados conforme descrito nesta política de privacidade.
                 </p> <!----> <p><strong>Dados de Registro</strong></p> <p>
-                Queremos informá-lo que sempre que
+                    Queremos informá-lo que sempre que
                    usar nosso Serviço, em caso de erro no aplicativo
                    coletamos dados e informações (através de terceiros
                    produtos) em seu telefone chamado Log Data. Esses dados de registro podem ser que
