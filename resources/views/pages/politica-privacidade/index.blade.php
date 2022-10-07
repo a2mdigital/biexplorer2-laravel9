@@ -8,7 +8,7 @@
     </head>
     <body>
     <strong>Política de Privacidade</strong> <p>
-            A A2m Digital construiu o aplicativo Bi Explorer como
+            A A2m Digital construiu o aplicativo Bi Explorer e a plataforma BI Explorer como
                    um aplicativo gratuito. Este SERVIÇO é prestado por
                    A2m Digital sem custo e destina-se ao uso como
                    ferramenta de visualização da plataforma BI EXPLORER da A2m Digital.
@@ -25,7 +25,7 @@
                 </p> <p>
                 </p> <p><strong>Coleta e uso de informações</strong></p> <p>
                   Para uma melhor experiência, ao usar nosso Serviço,
-                   pode exigir que você nos forneça certos dados pessoais como o e-mail utilizado para fazer login com o Aplicativo, informação que
+                   pode exigir que você nos forneça certos dados pessoais como o e-mail utilizado para fazer login com o Aplicativo e com a Plataforma, informação que
                    que solicitamos serão retidos por nós e usados conforme descrito nesta política de privacidade.
                 </p> <!----> <p><strong>Dados de Registro</strong></p> <p>
                     Queremos informá-lo que sempre que
