@@ -185,7 +185,7 @@ class RelatorioController extends Controller
             );
 
             $body = json_decode($response->getBody()->getContents(), true);
-
+           
             $token = $body['access_token'];
 
             $client2 = new \GuzzleHttp\Client();
@@ -203,7 +203,7 @@ class RelatorioController extends Controller
             );
 
             $workspaces = json_decode($res->getBody()->getContents(), true);
-
+          
       
         } catch (ClientException $e) {
 
