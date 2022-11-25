@@ -11,7 +11,7 @@
                 z-index:1;
             }
         </style>
-        <title>BI| Playlists</title>
+        <title>BI| VISUALIZAR RELATÓRIO</title>
     </head>
 <body>
 
