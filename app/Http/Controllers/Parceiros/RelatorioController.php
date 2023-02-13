@@ -207,8 +207,8 @@ class RelatorioController extends Controller
       
         } catch (ClientException $e) {
  
-            dd($e->getMessage());
-            //Alert::error('Erro', 'Não foi possível se conectar com o Power BI, verifique as configurações!');
+            //dd($e->getMessage());
+            Alert::error('Erro', 'Não foi possível se conectar com o Power BI, verifique as configurações!');
             return redirect()->back();
             //return redirect()->back()->with('error', 'Não foi possível se conectar com o Power BI, verifique as configurações!');
 
