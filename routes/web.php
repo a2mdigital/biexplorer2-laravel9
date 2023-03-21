@@ -267,5 +267,5 @@ Route::get('/clear-cache', function() {
 
 // 404 for undefined routes
 Route::any('/{page?}',function(){
-    return View::make('pages.error.404');
+     return response()->view('pages.error.404-no-login', [], 404);
 })->where('page','.*');

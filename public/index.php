@@ -23,6 +23,21 @@ define('LARAVEL_START', microtime(true));
 
 require __DIR__.'/../vendor/autoload.php';
 
+
+/*
+ * --------------------------------------------------------------------
+ * REMOVE index.php from URI
+ * --------------------------------------------------------------------
+ */
+if (strpos($_SERVER['REQUEST_URI'],'index.php') !== FALSE )
+{
+    $new_uri = preg_replace('#index\.php\/?#', '', $_SERVER['REQUEST_URI']);
+    header('Location: '.$new_uri, TRUE, 301);
+    die();
+}
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Turn On The Lights

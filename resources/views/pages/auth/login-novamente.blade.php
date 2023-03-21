@@ -39,7 +39,7 @@ body {
                 </div>
                 <div class="form-group {{$errors->has('password') ? 'has-danger' : ''}}">
                   <label for="exampleInputPassword1">Senha</label>
-                  <input type="password" class="form-control {{$errors->has('password') ? 'form-control-danger' : ''}}" id="password" name="password" autocomplete="current-password" placeholder="Password">
+                  <input type="password" class="form-control {{$errors->has('password') ? 'form-control-danger' : ''}}" id="password" name="password" autocomplete="off" placeholder="Password">
                   @if($errors->has('password'))
                     <label id="name-error" class="error mt-2 text-danger" for="password">
                       {{$errors->first('password')}}

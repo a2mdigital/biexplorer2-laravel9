@@ -29,6 +29,7 @@ class ReportsController extends Controller{
         //se for usuário eu leio os relatórios de outra forma
         $user = auth()->user();
         if($user->is_admin == 1){
+            //return "admin";
             //se o usuário for admin verifico se ele tem permissão nesse grupo
             //caso contrário aborto
             if (! Gate::allows('listar-grupo-relatorio-admin',$grupo)) {
@@ -78,7 +79,6 @@ class ReportsController extends Controller{
             if (! Gate::allows('listar-grupo-relatorio-user',$grupo)) {
                 return ['response' => 'forbidden', 'reports' => ''];
             }else{
-             
                 $relatorios_user = RelatorioUserPermission::select('relatorio_id')->get();
                 $relatorios_departamento = RelatorioDepartamentoPermission::select('relatorio_id')->get();
                 $RelatoriosPermissions = Relatorio::where(function($query) use ($grupo){
@@ -89,6 +89,7 @@ class ReportsController extends Controller{
                     $query->orWhereIn('relatorios.id', $relatorios_departamento);
                 })
                 ->leftjoin('historico_relatorio_users as hru', 'relatorios.id', '=', 'hru.relatorio_id')
+                ->where('hru.user_id', $user->id)
                 ->select(
                     'relatorios.id as relatorio_id', 
                     'relatorios.subgrupo_relatorio_id as subgrupo_relatorio_id',
