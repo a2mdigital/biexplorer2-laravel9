@@ -59,7 +59,9 @@
       }
       return language
     }
-            var table = $('#relatoriosTable').DataTable({
+            var table = $('#relatoriosTable').DataTable({ 
+              pageLength : 25,
+              lengthMenu: [[25, 40, 100, -1], [25, 40, 100, 'Todos']],
               language: {
                   url: getLanguage(),
                 },

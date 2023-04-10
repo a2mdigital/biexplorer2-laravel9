@@ -101,9 +101,9 @@
                 {{$usuario->email}}
                 </td>
                 @if($usuario->ultimo_login == '')
-                  <td> - </td>
+                  <td></td>
                       @else
-                  <td>{{date("d/m/Y H:i", strtotime($usuario->ultimo_login))}}</td>
+                  <td>{{$usuario->ultimo_login}}</td>
                 @endif
               </tr>
             @endforeach
@@ -124,6 +124,9 @@
 <script src="{{ asset('assets/plugins/datatables-net-bs4/dataTables.bootstrap4.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables-net/dataTables.buttons.min.js') }}"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
+
 <script src="{{ asset('assets/plugins/datatables-net/jszip.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables-net/pdfmake.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables-net/vfs_fonts.js') }}"></script>
@@ -136,7 +139,6 @@
   <script type="text/javascript">
  $(document).ready(function() {
 
-    
 
       $('.contador').each(function () {
         $(this).prop('Counter',0).animate({
@@ -179,9 +181,12 @@
               title: 'Users'
               }
         ], 
-      pageLength : 5,
+      pageLength : 10,
       lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
-      
+      columnDefs: [{
+        render: $.fn.dataTable.render.moment('YYYY-MM-DD HH:mm:ss', 'DD/MM/YYYY HH:mm:ss'),
+        targets: 3
+      }], 
     });
     /*
     $('#auditoriaTable').DataTable({
