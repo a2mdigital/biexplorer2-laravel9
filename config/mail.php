@@ -88,6 +88,9 @@ return [
 
     'password' => env('MAIL_PASSWORD'),
 
+    'auth_mode'  => null,
+
+    'verify_peer'       => false,
     /*
     |--------------------------------------------------------------------------
     | Sendmail System Path
